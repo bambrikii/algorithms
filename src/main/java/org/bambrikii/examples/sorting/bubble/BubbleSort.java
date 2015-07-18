@@ -1,5 +1,6 @@
 package org.bambrikii.examples.sorting.bubble;
 
+import org.bambrikii.examples.sorting.ArrayAsStringFactory;
 import org.bambrikii.examples.sorting.Sortable;
 
 public class BubbleSort implements Sortable {
@@ -12,6 +13,7 @@ public class BubbleSort implements Sortable {
 					t = array[i];
 					array[i] = array[j];
 					array[j] = t;
+					ArrayAsStringFactory.log(array);
 				}
 			}
 		}

@@ -9,12 +9,6 @@ public class SortingException extends Exception {
 	}
 
 	private static String asString(int[] array, int ix) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		for (int i : array) {
-			sb.append(i).append(",");
-		}
-		sb.append("]");
-		return sb.toString() + ", " + array[ix] + "~" + array[ix + 1];
+		return ArrayAsStringFactory.asString(array) + ", " + array[ix] + "~" + array[ix + 1];
 	}
 }

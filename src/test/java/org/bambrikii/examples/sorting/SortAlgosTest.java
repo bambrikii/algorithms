@@ -5,9 +5,10 @@ import org.bambrikii.examples.sorting.quick.QuickSort;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BubbleSortTest {
+public class SortAlgosTest {
 
 	private int[] array = new int[] { 5, 8, 1, 0, 9, 4, 3, 2, 7, 6 };
+	private int[] reversed = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 
 	@Before
 	public void before() {
@@ -29,8 +30,33 @@ public class BubbleSortTest {
 	}
 
 	@Test
+	public void testBubbleSortReversed() throws SortingException {
+		Sortable algo = new BubbleSort();
+		check(algo.sort(reversed));
+	}
+
+	@Test
 	public void testQuickSort() throws SortingException {
 		Sortable algo = new QuickSort();
 		check(algo.sort(array));
 	}
+
+	@Test
+	public void testQuickSortReversed() throws SortingException {
+		Sortable algo = new QuickSort();
+		check(algo.sort(reversed));
+	}
+
+	@Test
+	public void testMySort() throws SortingException {
+		Sortable algo = new MySort();
+		check(algo.sort(array));
+	}
+
+	@Test
+	public void testMySortReversed() throws SortingException {
+		Sortable algo = new MySort();
+		check(algo.sort(reversed));
+	}
+
 }

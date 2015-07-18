@@ -1,5 +1,6 @@
 package org.bambrikii.examples.sorting.quick;
 
+import org.bambrikii.examples.sorting.ArrayAsStringFactory;
 import org.bambrikii.examples.sorting.Sortable;
 
 public class QuickSort implements Sortable {
@@ -29,6 +30,7 @@ public class QuickSort implements Sortable {
 				int t = arr[i];
 				arr[i] = arr[j];
 				arr[j] = t;
+				ArrayAsStringFactory.log(arr);
 				i++;
 				j--;
 			}
