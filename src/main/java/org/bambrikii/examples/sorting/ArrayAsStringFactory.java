@@ -1,6 +1,8 @@
 package org.bambrikii.examples.sorting;
 
 public class ArrayAsStringFactory {
+	public static boolean DEBUG = false;
+
 	public static String asString(int[] array) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
@@ -12,6 +14,8 @@ public class ArrayAsStringFactory {
 	}
 
 	public static void log(int[] array) {
-		System.out.println(asString(array));
+		if (DEBUG) {
+			System.out.println(asString(array));
+		}
 	}
 }

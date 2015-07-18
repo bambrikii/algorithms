@@ -1,15 +1,27 @@
 package org.bambrikii.examples.sorting;
 
+import java.util.Calendar;
+import java.util.Random;
+
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
 import org.bambrikii.examples.sorting.my.MyBubbleSort;
 import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class SortAlgosTest {
+public class SortAlgosPerformanceTest {
 
-	private int[] array = new int[] { 5, 8, 1, 0, 9, 4, 3, 2, 7, 6 };
-	private int[] reversed = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	private static int[] array;
+
+	@BeforeClass
+	public static void before() {
+		int n = 6800;
+		array = new int[n];
+		for (int i = 0; i < n; i++) {
+			array[i] = new Random().nextInt(n);
+		}
+	}
 
 	private void check(int[] array) throws SortingException {
 		for (int i = 0; i < array.length - 1; i++) {
@@ -21,7 +33,14 @@ public class SortAlgosTest {
 
 	private void runAlgo(Sortable algo, int[] arr) throws SortingException {
 		System.out.println("Algo: " + algo.getClass().getCanonicalName());
-		check(algo.sort(arr));
+		long start = Calendar.getInstance().getTimeInMillis();
+		int[] arr2 = new int[arr.length];
+		for (int i = 0; i < arr.length; i++) {
+			arr2[i] = arr[i];
+		}
+		check(algo.sort(arr2));
+		long end = Calendar.getInstance().getTimeInMillis();
+		System.out.println("time: " + (end - start));
 	}
 
 	@Test
@@ -30,18 +49,8 @@ public class SortAlgosTest {
 	}
 
 	@Test
-	public void testBubbleSortReversed() throws SortingException {
-		runAlgo(new BubbleSort(), reversed);
-	}
-
-	@Test
 	public void testQuickSort() throws SortingException {
 		runAlgo(new QuickSort(), array);
-	}
-
-	@Test
-	public void testQuickSortReversed() throws SortingException {
-		runAlgo(new QuickSort(), reversed);
 	}
 
 	@Test
@@ -50,17 +59,7 @@ public class SortAlgosTest {
 	}
 
 	@Test
-	public void testMySortReversed() throws SortingException {
-		runAlgo(new MySort(), reversed);
-	}
-
-	@Test
 	public void testMyBubbleSort() throws SortingException {
 		runAlgo(new MyBubbleSort(), array);
-	}
-
-	@Test
-	public void testMyBubbleSortReversed() throws SortingException {
-		runAlgo(new MyBubbleSort(), reversed);
 	}
 }
