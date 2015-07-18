@@ -1,6 +1,8 @@
 package org.bambrikii.examples.sorting;
 
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
+import org.bambrikii.examples.sorting.my.MyBubbleSort;
+import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,4 +61,15 @@ public class SortAlgosTest {
 		check(algo.sort(reversed));
 	}
 
+	@Test
+	public void testMyBubbleSort() throws SortingException {
+		Sortable algo = new MyBubbleSort();
+		check(algo.sort(array));
+	}
+
+	@Test
+	public void testMyBubbleSortReversed() throws SortingException {
+		Sortable algo = new MyBubbleSort();
+		check(algo.sort(reversed));
+	}
 }

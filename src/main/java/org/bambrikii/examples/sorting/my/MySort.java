@@ -1,4 +1,7 @@
-package org.bambrikii.examples.sorting;
+package org.bambrikii.examples.sorting.my;
+
+import org.bambrikii.examples.sorting.ArrayAsStringFactory;
+import org.bambrikii.examples.sorting.Sortable;
 
 public class MySort implements Sortable {
 
