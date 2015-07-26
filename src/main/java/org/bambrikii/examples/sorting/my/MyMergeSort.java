@@ -1,0 +1,51 @@
+package org.bambrikii.examples.sorting.my;
+
+import org.bambrikii.examples.sorting.ArrayAsStringFactory;
+import org.bambrikii.examples.sorting.Sortable;
+
+public class MyMergeSort implements Sortable {
+
+	private int step = 3;
+	private int[] arr;
+	private int[] helper;
+
+	public int[] sort(int[] array) {
+		this.arr = array;
+		helper = new int[array.length / step + 1];
+		for (int i = 0; i < array.length; i += step) {
+			int low = i;
+			int high = i + step >= array.length ? array.length - 1 : i + step;
+			sort(low, high);
+			merge();
+			System.out.println(i);
+		}
+		return arr;
+	}
+
+	private void sort(int low, int high) {
+		for (int i = low; i < high; i++) {
+			for (int j = i + 1; j < high; j++) {
+				if (arr[i] > arr[j]) {
+					exchange(i, j);
+				}
+			}
+		}
+	}
+
+	private void exchange(int i, int j) {
+		int t = arr[i];
+		arr[i] = arr[j];
+		arr[j] = t;
+		ArrayAsStringFactory.log(arr);
+	}
+
+	private void merge() {
+		int min = 0;
+		for (int i = 1; i < step; i++) {
+			if (arr[helper[i]] < arr[helper[min]]) {
+				min = i;
+			}
+		}
+		helper[min]++;
+	}
+}

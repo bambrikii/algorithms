@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Random;
 
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
+import org.bambrikii.examples.sorting.insertion.InsertionSort;
 import org.bambrikii.examples.sorting.my.MyBubbleSort;
 import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
@@ -61,5 +62,10 @@ public class SortAlgosPerformanceTest {
 	@Test
 	public void testMyBubbleSort() throws SortingException {
 		runAlgo(new MyBubbleSort(), array);
+	}
+
+	@Test
+	public void testInsertionSort() throws SortingException {
+		runAlgo(new InsertionSort(), array);
 	}
 }

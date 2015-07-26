@@ -1,7 +1,10 @@
 package org.bambrikii.examples.sorting;
 
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
+import org.bambrikii.examples.sorting.insertion.InsertionSort;
+import org.bambrikii.examples.sorting.merge.MergeSort;
 import org.bambrikii.examples.sorting.my.MyBubbleSort;
+import org.bambrikii.examples.sorting.my.MyMergeSort;
 import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
 import org.junit.Test;
@@ -62,5 +65,22 @@ public class SortAlgosTest {
 	@Test
 	public void testMyBubbleSortReversed() throws SortingException {
 		runAlgo(new MyBubbleSort(), reversed);
+	}
+
+	@Test
+	public void testMyMergeSort() throws SortingException {
+		ArrayAsStringFactory.DEBUG = true;
+		runAlgo(new MyMergeSort(), array);
+	}
+
+	@Test
+	public void testMergeSort() throws SortingException {
+		ArrayAsStringFactory.DEBUG = true;
+		runAlgo(new MergeSort(), array);
+	}
+
+	@Test
+	public void testInsertionSort() throws SortingException {
+		runAlgo(new InsertionSort(), array);
 	}
 }
