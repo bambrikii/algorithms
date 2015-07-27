@@ -14,11 +14,29 @@ public class MyMergeSort implements Sortable {
 		helper = new int[array.length / step + 1];
 		for (int i = 0; i < array.length; i += step) {
 			int low = i;
-			int high = i + step >= array.length ? array.length - 1 : i + step;
+			int high = i + step >= array.length ? array.length : i + step;
 			sort(low, high);
 			merge();
-			System.out.println(i);
 		}
+
+		for (int i = 0; i < array.length / step; i++) {
+			int ix1 = i * step;
+			int ix2 = (i + 1) * step;
+			for (int j = 0; j < step; j++) {
+				if (arr[ix1] > arr[ix2]) {
+					int l = arr[ix2];
+					for (int k = ix2; k >= ix1; k--) {
+						arr[k] = arr[k - 1];
+					}
+					arr[ix1] = i;
+					ix1++;
+				} else {
+					ix1++;
+					ix2++;
+				}
+			}
+		}
+		// System.out.println(i);
 		return arr;
 	}
 
