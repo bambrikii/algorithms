@@ -8,6 +8,7 @@ import org.bambrikii.examples.sorting.insertion.InsertionSort;
 import org.bambrikii.examples.sorting.my.MyBubbleSort;
 import org.bambrikii.examples.sorting.my.MyMergeSort;
 import org.bambrikii.examples.sorting.my.MySort;
+import org.bambrikii.examples.sorting.quick.QuickRandomSort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -54,6 +55,11 @@ public class SortAlgosPerformanceTest {
 	@Test
 	public void testQuickSort() throws SortingException {
 		runAlgo(new QuickSort(), array);
+	}
+
+	@Test
+	public void testQuickRandomSort() throws SortingException {
+		runAlgo(new QuickRandomSort(), array);
 	}
 
 	@Test

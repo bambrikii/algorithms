@@ -1,5 +1,7 @@
 package org.bambrikii.examples.sorting;
 
+import java.util.Random;
+
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
 import org.bambrikii.examples.sorting.insertion.InsertionSort;
 import org.bambrikii.examples.sorting.merge.MergeSort;
@@ -48,6 +50,11 @@ public class SortAlgosTest {
 	}
 
 	@Test
+	public void testQuickRandomSort() throws SortingException {
+		System.out.println(new Random().nextInt(10));
+	}
+
+	@Test
 	public void testMySort() throws SortingException {
 		runAlgo(new MySort(), array);
 	}
@@ -83,4 +90,5 @@ public class SortAlgosTest {
 	public void testInsertionSort() throws SortingException {
 		runAlgo(new InsertionSort(), array);
 	}
+
 }

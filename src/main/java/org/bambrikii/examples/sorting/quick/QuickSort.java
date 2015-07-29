@@ -16,7 +16,7 @@ public class QuickSort implements Sortable {
 	}
 
 	private void sort(int low, int high) {
-		int pivot = arr[low + (high - low) / 2];
+		int pivot = arr[calcPivotIndex(low, high)];
 		int i = low;
 		int j = high;
 		while (i <= j) {
@@ -41,5 +41,9 @@ public class QuickSort implements Sortable {
 		if (high > i) {
 			sort(i, high);
 		}
+	}
+
+	protected int calcPivotIndex(int low, int high) {
+		return low + (high - low) / 2;
 	}
 }
