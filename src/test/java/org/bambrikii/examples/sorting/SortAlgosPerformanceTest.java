@@ -1,18 +1,19 @@
 package org.bambrikii.examples.sorting;
 
-import java.util.Calendar;
-import java.util.Random;
-
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
 import org.bambrikii.examples.sorting.insertion.InsertionSort;
 import org.bambrikii.examples.sorting.my.MyBubbleSort;
 import org.bambrikii.examples.sorting.my.MyMergeSort;
+import org.bambrikii.examples.sorting.my.MyMinMaxSort;
 import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickRandomSort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Random;
 
 public class SortAlgosPerformanceTest {
 
@@ -81,5 +82,10 @@ public class SortAlgosPerformanceTest {
 	@Test
 	public void testInsertionSort() throws SortingException {
 		runAlgo(new InsertionSort(), array);
+	}
+
+	@Test
+	public void testMyMinMaxSort() throws SortingException {
+		runAlgo(new MyMinMaxSort(), array);
 	}
 }
