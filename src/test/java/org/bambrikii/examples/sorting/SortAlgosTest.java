@@ -1,5 +1,7 @@
 package org.bambrikii.examples.sorting;
 
+import java.util.Random;
+
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
 import org.bambrikii.examples.sorting.insertion.InsertionSort;
 import org.bambrikii.examples.sorting.merge.MergeSort;
@@ -8,14 +10,13 @@ import org.bambrikii.examples.sorting.my.MyMergeSort;
 import org.bambrikii.examples.sorting.my.MyMinMaxSort;
 import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
+import org.bambrikii.examples.sorting.three_pyramids_sort.ThreePyramidsSort;
 import org.junit.Test;
-
-import java.util.Random;
 
 public class SortAlgosTest {
 
-	private int[] array = new int[]{5, 8, 1, 0, 9, 4, 3, 2, 7, 6};
-	private int[] reversed = new int[]{9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+	private int[] array = new int[] { 5, 8, 1, 0, 9, 4, 3, 2, 7, 6 };
+	private int[] reversed = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 
 	private void check(int[] array) throws SortingException {
 		for (int i = 0; i < array.length - 1; i++) {
@@ -92,9 +93,13 @@ public class SortAlgosTest {
 		runAlgo(new InsertionSort(), array);
 	}
 
-
 	@Test
 	public void testMyMinMaxSort() throws SortingException {
 		runAlgo(new MyMinMaxSort(), array);
+	}
+
+	@Test
+	public void testThreePyramidsSort() throws SortingException {
+		runAlgo(new ThreePyramidsSort(), array);
 	}
 }
