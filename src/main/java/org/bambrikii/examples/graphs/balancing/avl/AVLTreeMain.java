@@ -5,7 +5,7 @@ package org.bambrikii.examples.graphs.balancing.avl;
  */
 public class AVLTreeMain {
 	public static void main(String[] args) {
-		AVLTree tree = new AVLTree()
+		AVLTree tree = new AVLTree(true)
 				.add(9)
 				.add(12)
 				.add(14)

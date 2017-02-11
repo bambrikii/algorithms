@@ -5,6 +5,10 @@ package org.bambrikii.examples.graphs.balancing.avl;
  */
 class LeftNodeDecorator extends NodeDecorator {
 
+	public LeftNodeDecorator(String name) {
+		super(name);
+	}
+
 	@Override
 	public AVLNode getLeft(AVLNode node) {
 		return node.left;
@@ -18,5 +22,10 @@ class LeftNodeDecorator extends NodeDecorator {
 	@Override
 	public void setRight(AVLNode rightmost, AVLNode node) {
 		rightmost.right = node;
+	}
+
+	@Override
+	public void setLeft(AVLNode parent, AVLNode node) {
+		parent.left = node;
 	}
 }
