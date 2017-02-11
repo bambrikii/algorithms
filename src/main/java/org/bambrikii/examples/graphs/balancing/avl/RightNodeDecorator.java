@@ -21,7 +21,7 @@ class RightNodeDecorator extends NodeDecorator {
 
 	@Override
 	public void setRight(AVLNode rightmost, AVLNode node) {
-		node.left = rightmost;
+		rightmost.left = node;
 	}
 
 	@Override

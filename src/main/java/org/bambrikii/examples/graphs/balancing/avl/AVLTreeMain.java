@@ -19,5 +19,7 @@ public class AVLTreeMain {
 				.add(76);
 		AVLTreePrinter printer = new AVLTreePrinter();
 		printer.print(tree.root);
+		tree.balance();
+		printer.print(tree.root);
 	}
 }
