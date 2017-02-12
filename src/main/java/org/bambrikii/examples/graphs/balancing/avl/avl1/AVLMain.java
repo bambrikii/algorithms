@@ -1,9 +1,11 @@
-package org.bambrikii.examples.graphs.balancing.avl;
+package org.bambrikii.examples.graphs.balancing.avl.avl1;
+
+import org.bambrikii.examples.graphs.balancing.avl.core.AVLTreePrinter;
 
 /**
  * Created by Alexander Arakelyan on 11/02/17 10:50.
  */
-public class AVLTreeMain {
+public class AVLMain {
 	public static void main(String[] args) {
 		AVLTree tree = new AVLTree(true)
 				.add(9)
@@ -19,7 +21,8 @@ public class AVLTreeMain {
 				.add(76);
 		AVLTreePrinter printer = new AVLTreePrinter();
 		printer.print(tree.root);
-		tree.balance();
+//		tree.balance();
+		tree.balance2();
 		printer.print(tree.root);
 	}
 }

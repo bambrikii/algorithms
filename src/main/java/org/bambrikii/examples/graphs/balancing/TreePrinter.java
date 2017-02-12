@@ -14,4 +14,8 @@ public abstract class TreePrinter<T extends Node> {
 	}
 
 	protected abstract String printImpl(T node);
+
+	public String toString(T node) {
+		return node != null ? printImpl(node) : null;
+	}
 }

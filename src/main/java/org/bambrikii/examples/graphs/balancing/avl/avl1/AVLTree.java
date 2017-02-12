@@ -1,4 +1,9 @@
-package org.bambrikii.examples.graphs.balancing.avl;
+package org.bambrikii.examples.graphs.balancing.avl.avl1;
+
+import org.bambrikii.examples.graphs.balancing.avl.core.AVLNodeComparator;
+import org.bambrikii.examples.graphs.balancing.avl.core.LeftNodeDecorator;
+import org.bambrikii.examples.graphs.balancing.avl.core.NodeDecorator;
+import org.bambrikii.examples.graphs.balancing.avl.core.RightNodeDecorator;
 
 import java.util.Comparator;
 
@@ -40,7 +45,7 @@ public class AVLTree {
 	private void add(AVLNode parent, AVLNode node) {
 		if (parent != null) {
 			parent.height++;
-			NodeDecorator nodeDecorator = COMPARATOR.compare(node, parent) < 0 ? LEFT_NODE_DECORATOR : RIGHT_NODE_DECORATOR;
+			NodeDecorator<AVLNode> nodeDecorator = COMPARATOR.compare(node, parent) < 0 ? LEFT_NODE_DECORATOR : RIGHT_NODE_DECORATOR;
 			debug("walking into ", parent, node, nodeDecorator);
 			if (nodeDecorator.getLeft(parent) == null) {
 				debug("inserting into ", parent, node, nodeDecorator);
@@ -50,6 +55,8 @@ public class AVLTree {
 			}
 		}
 	}
+
+	// Balance 1
 
 	public void balance() {
 		balance(root);
@@ -80,7 +87,7 @@ public class AVLTree {
 		return leftHeight - rightHeight;
 	}
 
-	private AVLNode rotate(AVLNode node, NodeDecorator nodeDecorator) {
+	private AVLNode rotate(AVLNode node, NodeDecorator<AVLNode> nodeDecorator) {
 		if (node == null) {
 			return node;
 		}
@@ -90,14 +97,57 @@ public class AVLTree {
 		if (root == node) {
 			root = left;
 		}
-		AVLNode rightmost = left;
-		while (nodeDecorator.getRight(rightmost) != null) {
-			rightmost = nodeDecorator.getRight(rightmost);
-		}
+		AVLNode rightmost = retrieveRightmost(left, nodeDecorator);
 		nodeDecorator.setRight(rightmost, node);
 		nodeDecorator.setLeft(node, null);
 		rightmost.height += (node.height + 1);
 		return left;
+	}
+
+	private AVLNode retrieveRightmost(AVLNode left, NodeDecorator<AVLNode> nodeDecorator) {
+		AVLNode rightmost = left;
+		while (nodeDecorator.getRight(rightmost) != null) {
+			rightmost = nodeDecorator.getRight(rightmost);
+		}
+		return rightmost;
+	}
+
+	// Balance 2
+
+	public void balance2() {
+		debug("balancing 2");
+		balance2(root, root.left, LEFT_NODE_DECORATOR);
+		balance2(root, root.right, RIGHT_NODE_DECORATOR);
+	}
+
+	private void balance2(AVLNode parent, AVLNode node, NodeDecorator<AVLNode> nodeDecorator) {
+		if (node == null) {
+			return;
+		}
+		debug("balancing 2", parent, node, nodeDecorator);
+		balance2(node, node.left, LEFT_NODE_DECORATOR);
+		balance2(node, node.right, RIGHT_NODE_DECORATOR);
+		AVLNode left = nodeDecorator.getLeft(node);
+		AVLNode right = nodeDecorator.getRight(node);
+		if (left != null && right == null) {
+			debug("balancing 2, swapping", node, left, nodeDecorator);
+			nodeDecorator.setLeft(parent, left);
+			AVLNode rightmost = retrieveRightmost(left, nodeDecorator);
+			nodeDecorator.setRight(rightmost, node);
+			nodeDecorator.setLeft(node, null);
+			node.height -= left.height + 1;
+			rightmost.height += node.height + 1;
+			left.height += node.height + 1;
+		} else if (left == null && right != null) {
+			debug("balancing 2, swapping", node, right, nodeDecorator);
+			nodeDecorator.setRight(parent, right);
+			AVLNode rightmost = retrieveRightmost(left, nodeDecorator.getOther());
+			nodeDecorator.setLeft(rightmost, node);
+			nodeDecorator.setRight(node, null);
+			node.height -= (right.height + 1);
+			rightmost.height += node.height + 1;
+			right.height += (node.height + 1);
+		}
 	}
 
 	// Debugging
