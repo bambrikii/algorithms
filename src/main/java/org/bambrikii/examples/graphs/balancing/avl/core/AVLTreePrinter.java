@@ -13,9 +13,11 @@ public class AVLTreePrinter extends TreePrinter<AbstractAVLNode> {
 			sb
 					.append("(")
 					.append(node.value).append("[").append(node.height).append("]:")
-					.append(printImpl((AbstractAVLNode) node.left)).append(",").append(printImpl((AbstractAVLNode) node.right))
+					.append(printImpl((AbstractAVLNode) node.left)).append("-").append(printImpl((AbstractAVLNode) node.right))
 					.append(")")
 			;
+		} else {
+			sb.append("?");
 		}
 		return sb.toString();
 	}

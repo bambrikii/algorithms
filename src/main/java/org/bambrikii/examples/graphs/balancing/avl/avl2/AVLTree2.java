@@ -73,12 +73,14 @@ public class AVLTree2 {
 	private void add(AVLNode2 parent, AVLNode2 node, NodeDecorator<AVLNode2> nodeDecorator) {
 		AVLNode2 left = nodeDecorator.getLeft(parent);
 		if (left == null) {
+			onAdding(parent, node);
 			parent.height++;
 			nodeDecorator.setLeft(parent, node);
 			node.parent = parent;
 			onAdded(parent, node);
 		} else {
 			onAdding(parent, node);
+			parent.height++;
 			add(left, node);
 			balance(node);
 		}
@@ -101,8 +103,8 @@ public class AVLTree2 {
 		if (node == null) {
 			return;
 		}
-		int leftHeight = node.left != null ? node.left.height : 0;
-		int rightHeight = node.right != null ? node.right.height : 0;
+		int leftHeight = node.left != null ? node.left.height + 1 : 0;
+		int rightHeight = node.right != null ? node.right.height + 1 : 0;
 		int leftHeightDiff = leftHeight - rightHeight;
 		if (leftHeightDiff > 1) {
 			rotate(node, LEFT_NODE_DECORATOR);
@@ -133,21 +135,24 @@ public class AVLTree2 {
 		node.height -= nodeDecorator.getLeft(node).height + 1;
 		int nodeHeight = node.height + 1;
 
-		AVLNode2 rightmost = nodeDecorator.getLeft(node);
+		AVLNode2 left = nodeDecorator.getLeft(node);
 		if (node.parent != null) {
-			rightmost.parent = node.parent;
+			left.parent = node.parent;
+			nodeDecorator.setLeft(left.parent, left);
 		} else {
-			root = rightmost;
+			root = left;
+			left.parent = null;
 		}
-		rightmost.height += nodeHeight;
+		left.height += nodeHeight;
+		AVLNode2 rightmost = left;
 		while (nodeDecorator.getRight(rightmost) != null) {
 			rightmost = nodeDecorator.getRight(rightmost);
 			rightmost.height += nodeHeight;
 		}
-		nodeDecorator.setRight(nodeDecorator.getRight(rightmost), node);
-
+		nodeDecorator.setRight(rightmost, node);
 		node.parent = rightmost;
 		nodeDecorator.setLeft(node, null);
+
 		onRotated(node, nodeDecorator);
 	}
 
