@@ -44,7 +44,6 @@ public class AVLTree {
 
 	private void add(AVLNode parent, AVLNode node) {
 		if (parent != null) {
-			parent.height++;
 			NodeDecorator<AVLNode> nodeDecorator = COMPARATOR.compare(node, parent) < 0 ? LEFT_NODE_DECORATOR : RIGHT_NODE_DECORATOR;
 			debug("walking into ", parent, node, nodeDecorator);
 			if (nodeDecorator.getLeft(parent) == null) {

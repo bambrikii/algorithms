@@ -12,7 +12,7 @@ public class AVLTreePrinter extends TreePrinter<AbstractAVLNode> {
 		if (node != null) {
 			sb
 					.append("(")
-					.append(node.value).append("[").append(node.height).append("]:")
+					.append(node.value).append(":")
 					.append(printImpl((AbstractAVLNode) node.left)).append("-").append(printImpl((AbstractAVLNode) node.right))
 					.append(")")
 			;

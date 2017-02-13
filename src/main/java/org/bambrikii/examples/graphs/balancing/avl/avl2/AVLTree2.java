@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
+
 /**
  * Created by Alexander Arakelyan on 12/02/17 18:51.
  */
@@ -74,13 +77,11 @@ public class AVLTree2 {
 		AVLNode2 left = nodeDecorator.getLeft(parent);
 		if (left == null) {
 			onAdding(parent, node);
-			parent.height++;
 			nodeDecorator.setLeft(parent, node);
 			node.parent = parent;
 			onAdded(parent, node);
 		} else {
 			onAdding(parent, node);
-			parent.height++;
 			add(left, node);
 			balance(node);
 		}
@@ -103,9 +104,7 @@ public class AVLTree2 {
 		if (node == null) {
 			return;
 		}
-		int leftHeight = node.left != null ? node.left.height + 1 : 0;
-		int rightHeight = node.right != null ? node.right.height + 1 : 0;
-		int leftHeightDiff = leftHeight - rightHeight;
+		int leftHeightDiff = calcHeightDiff(node);
 		if (leftHeightDiff > 1) {
 			rotate(node, LEFT_NODE_DECORATOR);
 		} else if (leftHeightDiff < -1) {
@@ -113,6 +112,32 @@ public class AVLTree2 {
 		}
 		balance(node.parent);
 		onBalanced(node);
+	}
+
+	private int calcHeightDiff(AVLNode2 node) {
+		if (node == null) {
+			return 0;
+		}
+		int leftHeight = node.left != null ? abs(calcMaxHeight(node.left)) + 1 : 0;
+		int rightHeight = node.right != null ? abs(calcMaxHeight(node.right)) + 1 : 0;
+		int leftHeightDiff = leftHeight - rightHeight;
+		return leftHeightDiff;
+	}
+
+	private int calcMaxHeight(AVLNode2 node) {
+		if (node == null) {
+			return 0;
+		}
+		int leftHeight = node.left != null ? abs(calcMaxHeight(node.left)) + 1 : 0;
+		int rightHeight = node.right != null ? abs(calcMaxHeight(node.right)) + 1 : 0;
+		int leftHeightDiff = leftHeight - rightHeight;
+		int multiplier = 1;
+		if (leftHeightDiff > 1) {
+			multiplier = 1;
+		} else if (leftHeightDiff < -1) {
+			multiplier = -1;
+		}
+		return multiplier * max(leftHeight, rightHeight);
 	}
 
 	private void onBalanced(AVLNode2 node) {
@@ -132,9 +157,7 @@ public class AVLTree2 {
 		if (node == null) {
 			return;
 		}
-		node.height -= nodeDecorator.getLeft(node).height + 1;
-		int nodeHeight = node.height + 1;
-
+		// Decrease height of the node
 		AVLNode2 left = nodeDecorator.getLeft(node);
 		if (node.parent != null) {
 			left.parent = node.parent;
@@ -143,11 +166,9 @@ public class AVLTree2 {
 			root = left;
 			left.parent = null;
 		}
-		left.height += nodeHeight;
 		AVLNode2 rightmost = left;
 		while (nodeDecorator.getRight(rightmost) != null) {
 			rightmost = nodeDecorator.getRight(rightmost);
-			rightmost.height += nodeHeight;
 		}
 		nodeDecorator.setRight(rightmost, node);
 		node.parent = rightmost;
