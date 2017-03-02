@@ -1,4 +1,4 @@
-package org.bambrikii.examples.graphs.permutations;
+package org.bambrikii.examples.permutations;
 
 /**
  * Created by Alexander Arakelyan on 26/02/17 13:22.

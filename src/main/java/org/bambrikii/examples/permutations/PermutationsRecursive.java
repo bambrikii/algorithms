@@ -1,4 +1,4 @@
-package org.bambrikii.examples.graphs.permutations;
+package org.bambrikii.examples.permutations;
 
 /**
  * https://vasanthexperiments.wordpress.com/tag/algorithm-to-find-permutation-of-given-array/
