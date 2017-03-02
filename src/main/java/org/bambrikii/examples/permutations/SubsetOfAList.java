@@ -15,11 +15,24 @@ package org.bambrikii.examples.permutations;
  */
 public class SubsetOfAList {
 	public static void main(String[] args) {
-		printAllSubSets(new int[]{1, 2, 3});
+		printAllSubSets(3);
+		System.out.println("---");
+		printAllSubSets(new int[]{4, 5, 6});
 	}
 
-	public static void printAllSubSets(int[] arr) {
-		int n = arr.length;
+	private static void printAllSubSets(int[] ints) {
+		int n = 1 << ints.length;
+		for (int i = 1; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if ((i & (1 << j)) > 0) {
+					System.out.print(ints[j] + " ");
+				}
+			}
+			System.out.println();
+		}
+	}
+
+	public static void printAllSubSets(int n) {
 		int allMasks = (1 << n);
 		for (int i = 1; i < allMasks; i++) {
 			for (int j = 0; j < n; j++) {
