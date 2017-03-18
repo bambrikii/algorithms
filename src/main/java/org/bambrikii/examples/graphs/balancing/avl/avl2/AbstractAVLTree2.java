@@ -12,17 +12,17 @@ import java.util.List;
 /**
  * Created by Alexander Arakelyan on 18/03/17 11:15.
  */
-public abstract class AbstractAVLTree2<E extends AVLTreeable, T extends AVLNode2> implements AVLTreeable<E, T> {
-	protected static final NodeDecorator LEFT_NODE_DECORATOR;
-	protected static final NodeDecorator RIGHT_NODE_DECORATOR;
+public abstract class AbstractAVLTree2<E extends AbstractAVLTree2, T extends AVLNode2> implements AVLTreeable<E, T> {
+	protected final NodeDecorator<T> leftNodeDecorator;
+	protected final NodeDecorator<T> rightNodeDecorator;
 	protected final Comparator<T> comparator;
 	protected List<AVLTreeListener> listeners = new ArrayList<>();
 
-	static {
-		LEFT_NODE_DECORATOR = new LeftNodeDecorator("left");
-		RIGHT_NODE_DECORATOR = new RightNodeDecorator("right");
-		LEFT_NODE_DECORATOR.setOther(RIGHT_NODE_DECORATOR);
-		RIGHT_NODE_DECORATOR.setOther(LEFT_NODE_DECORATOR);
+	{
+		leftNodeDecorator = new LeftNodeDecorator<T>("left");
+		rightNodeDecorator = new RightNodeDecorator<T>("right");
+		leftNodeDecorator.setOther(rightNodeDecorator);
+		rightNodeDecorator.setOther(leftNodeDecorator);
 	}
 
 	protected T root;
@@ -68,9 +68,9 @@ public abstract class AbstractAVLTree2<E extends AVLTreeable, T extends AVLNode2
 	protected void add(T parent, T node) {
 		int compare = comparator.compare(parent, node);
 		if (compare < 0) {
-			add(parent, node, LEFT_NODE_DECORATOR);
+			add(parent, node, leftNodeDecorator);
 		} else if (compare > 0) {
-			add(parent, node, RIGHT_NODE_DECORATOR);
+			add(parent, node, rightNodeDecorator);
 		}
 	}
 
@@ -79,7 +79,7 @@ public abstract class AbstractAVLTree2<E extends AVLTreeable, T extends AVLNode2
 		if (left == null) {
 			onAdding(parent, node);
 			nodeDecorator.setLeft(parent, node);
-			node.parent = parent;
+			node.setParent(parent);
 			onAdded(parent, node);
 		} else {
 			onAdding(parent, node);
@@ -103,28 +103,53 @@ public abstract class AbstractAVLTree2<E extends AVLTreeable, T extends AVLNode2
 	protected abstract void balance(T node);
 
 
-	protected void onBalanced(AVLNode2 node) {
+	protected void onBalanced(T node) {
 		for (AVLTreeListener listener : listeners) {
 			listener.onBalanced(node);
 		}
 	}
 
-	protected void onBalancing(AVLNode2 node) {
+	protected void onBalancing(T node) {
 		for (AVLTreeListener listener : listeners) {
 			listener.onBalancing(node);
 		}
 	}
 
-	protected void onRotated(AVLNode2 node, NodeDecorator<AVLNode2> nodeDecorator) {
+	protected void onRotated(T node, NodeDecorator<T> nodeDecorator) {
 		for (AVLTreeListener listener : listeners) {
 			listener.onRotated(node, nodeDecorator);
 		}
 	}
 
-	protected void onRotating(AVLNode2 node, NodeDecorator<AVLNode2> nodeDecorator) {
+	protected void onRotating(T node, NodeDecorator<T> nodeDecorator) {
 		for (AVLTreeListener listener : listeners) {
 			listener.onRotating(node, nodeDecorator);
 		}
+	}
+
+	protected void rotate(T node, NodeDecorator<T> nodeDecorator) {
+		onRotating(node, nodeDecorator);
+		if (node == null) {
+			return;
+		}
+		// Decrease height of the node
+		T left = nodeDecorator.getLeft(node);
+		if (node.getParent() != null) {
+			left.setParent(node.getParent());
+			nodeDecorator.setLeft((T) left.getParent(), left);
+		} else {
+			root = left;
+			left.setParent(null);
+		}
+		T rightmost = left;
+		while (nodeDecorator.getRight(rightmost) != null) {
+			rightmost = nodeDecorator.getRight(rightmost);
+		}
+		nodeDecorator.setRight(rightmost, node);
+		node.setParent(rightmost);
+		nodeDecorator.setLeft(node, null);
+
+		onRotated(node, nodeDecorator);
 	}
 
 }
