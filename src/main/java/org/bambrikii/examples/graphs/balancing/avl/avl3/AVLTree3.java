@@ -2,6 +2,7 @@ package org.bambrikii.examples.graphs.balancing.avl.avl3;
 
 import org.bambrikii.examples.graphs.balancing.avl.avl2.AVLTreeListener;
 import org.bambrikii.examples.graphs.balancing.avl.avl2.AbstractAVLTree2;
+import org.bambrikii.examples.graphs.balancing.avl.core.NodeDecorator;
 
 /**
  * Created by Alexander Arakelyan on 18/03/17 11:12.
@@ -37,16 +38,34 @@ public class AVLTree3 extends AbstractAVLTree2<AVLTree3, AVLNode3> {
 	@Override
 	protected void onAdding(AVLNode3 parent, AVLNode3 node) {
 		super.onAdding(parent, node);
-		parent.height += node.height;
 	}
 
-	protected void updateHeight(AVLNode3 left, AVLNode3 node) {
-		node.height -= left.height;
-		left.height += node.height;
+	protected void addHeight(AVLNode3 parent, AVLNode3 node) {
+		int newHeight = node.height + 1;
+		if (newHeight > parent.height) {
+			parent.height = newHeight;
+			while (parent.getParent() != null) {
+				addHeight((AVLNode3) parent.getParent(), parent);
+				parent = (AVLNode3) parent.getParent();
+			}
+		}
 	}
 
-	protected void updateHeight2(AVLNode3 left, AVLNode3 node) {
-		left.height += node.height;
+	protected void updateHeightRotation(AVLNode3 left, AVLNode3 node, NodeDecorator<AVLNode3> nodeDecorator) {
+		AVLNode3 right = nodeDecorator.getRight(node);
+		int rightHeight = right != null ? right.height : 0;
+		node.height = rightHeight;
+		int newHeight = rightHeight + 1;
+		if (newHeight > left.height) {
+			left.height = newHeight;
+		}
+	}
+
+	protected void updateHeightBubbling(AVLNode3 left, AVLNode3 node, NodeDecorator<AVLNode3> nodeDecorator) {
+		int newHeight = node.height + 1;
+		if (newHeight > left.height) {
+			left.height = newHeight;
+		}
 	}
 
 }
