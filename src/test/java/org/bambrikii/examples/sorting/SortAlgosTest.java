@@ -1,7 +1,5 @@
 package org.bambrikii.examples.sorting;
 
-import java.util.Random;
-
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
 import org.bambrikii.examples.sorting.insertion.InsertionSort;
 import org.bambrikii.examples.sorting.merge.MergeSort;
@@ -12,6 +10,8 @@ import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
 import org.bambrikii.examples.sorting.three_pyramids_sort.ThreePyramidsSort;
 import org.junit.Test;
+
+import java.util.Random;
 
 public class SortAlgosTest {
 

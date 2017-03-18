@@ -6,7 +6,7 @@ import org.bambrikii.examples.graphs.balancing.avl.core.NodeDecorator;
 /**
  * Created by Alexander Arakelyan on 12/02/17 21:50.
  */
-class AVLTree2Printer implements AVLTreeListener {
+public class AVLTree2Printer implements AVLTreeListener {
 	private AVLTreePrinter printer;
 
 	public AVLTree2Printer(AVLTreePrinter printer) {
