@@ -8,6 +8,13 @@ import static java.lang.Math.max;
  */
 public class AVLTree2 extends AbstractAVLTree2<AVLTree2, AVLNode2> {
 
+	protected void init() {
+		leftNodeDecorator = new LeftNodeDecorator2<>("left");
+		rightNodeDecorator = new RightNodeDecorator2<>("right");
+		leftNodeDecorator.setOther(rightNodeDecorator);
+		rightNodeDecorator.setOther(leftNodeDecorator);
+	}
+
 	public AVLTree2(AVLTreeListener... listeners) {
 		super(listeners);
 	}
@@ -17,22 +24,7 @@ public class AVLTree2 extends AbstractAVLTree2<AVLTree2, AVLNode2> {
 		return node;
 	}
 
-	protected void balance(AVLNode2 node) {
-		onBalancing(node);
-		if (node == null) {
-			return;
-		}
-		int leftHeightDiff = calcHeightDiff(node);
-		if (leftHeightDiff > 1) {
-			rotate(node, leftNodeDecorator);
-		} else if (leftHeightDiff < -1) {
-			rotate(node, rightNodeDecorator);
-		}
-		balance(node.getParent());
-		onBalanced(node);
-	}
-
-	private int calcHeightDiff(AVLNode2 node) {
+	protected int calcHeightDiff(AVLNode2 node) {
 		if (node == null) {
 			return 0;
 		}

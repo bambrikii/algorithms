@@ -1,9 +1,7 @@
 package org.bambrikii.examples.graphs.balancing.avl.avl2;
 
 import org.bambrikii.examples.graphs.balancing.avl.core.AVLNodeComparator;
-import org.bambrikii.examples.graphs.balancing.avl.core.LeftNodeDecorator;
 import org.bambrikii.examples.graphs.balancing.avl.core.NodeDecorator;
-import org.bambrikii.examples.graphs.balancing.avl.core.RightNodeDecorator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,25 +11,22 @@ import java.util.List;
  * Created by Alexander Arakelyan on 18/03/17 11:15.
  */
 public abstract class AbstractAVLTree2<E extends AbstractAVLTree2, T extends AVLNode2> implements AVLTreeable<E, T> {
-	protected final NodeDecorator<T> leftNodeDecorator;
-	protected final NodeDecorator<T> rightNodeDecorator;
+	protected NodeDecorator<T> leftNodeDecorator;
+	protected NodeDecorator<T> rightNodeDecorator;
 	protected final Comparator<T> comparator;
 	protected List<AVLTreeListener> listeners = new ArrayList<>();
 
-	{
-		leftNodeDecorator = new LeftNodeDecorator<T>("left");
-		rightNodeDecorator = new RightNodeDecorator<T>("right");
-		leftNodeDecorator.setOther(rightNodeDecorator);
-		rightNodeDecorator.setOther(leftNodeDecorator);
-	}
+	protected abstract void init();
 
 	protected T root;
 
 	public AbstractAVLTree2() {
+		init();
 		comparator = new AVLNodeComparator<>();
 	}
 
 	public AbstractAVLTree2(Comparator<T> comparator) {
+		init();
 		this.comparator = comparator;
 	}
 
@@ -100,8 +95,22 @@ public abstract class AbstractAVLTree2<E extends AbstractAVLTree2, T extends AVL
 		}
 	}
 
-	protected abstract void balance(T node);
+	protected void balance(T node) {
+		onBalancing(node);
+		if (node == null) {
+			return;
+		}
+		int leftHeightDiff = calcHeightDiff(node);
+		if (leftHeightDiff > 1) {
+			rotate(node, leftNodeDecorator);
+		} else if (leftHeightDiff < -1) {
+			rotate(node, rightNodeDecorator);
+		}
+		balance((T) node.getParent());
+		onBalanced(node);
+	}
 
+	protected abstract int calcHeightDiff(T node);
 
 	protected void onBalanced(T node) {
 		for (AVLTreeListener listener : listeners) {
@@ -141,15 +150,25 @@ public abstract class AbstractAVLTree2<E extends AbstractAVLTree2, T extends AVL
 			root = left;
 			left.setParent(null);
 		}
+		updateHeight(left, node);
 		T rightmost = left;
 		while (nodeDecorator.getRight(rightmost) != null) {
 			rightmost = nodeDecorator.getRight(rightmost);
+			updateHeight2(rightmost, node);
 		}
 		nodeDecorator.setRight(rightmost, node);
 		node.setParent(rightmost);
 		nodeDecorator.setLeft(node, null);
 
 		onRotated(node, nodeDecorator);
+	}
+
+	protected void updateHeight(T left, T node) {
+
+	}
+
+	protected void updateHeight2(T left, T node) {
+
 	}
 
 }

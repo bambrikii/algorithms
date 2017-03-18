@@ -1,9 +1,9 @@
 package org.bambrikii.examples.graphs.balancing.avl.avl1;
 
 import org.bambrikii.examples.graphs.balancing.avl.core.AVLNodeComparator;
-import org.bambrikii.examples.graphs.balancing.avl.core.LeftNodeDecorator;
+import org.bambrikii.examples.graphs.balancing.avl.avl2.LeftNodeDecorator2;
 import org.bambrikii.examples.graphs.balancing.avl.core.NodeDecorator;
-import org.bambrikii.examples.graphs.balancing.avl.core.RightNodeDecorator;
+import org.bambrikii.examples.graphs.balancing.avl.avl2.RightNodeDecorator2;
 
 import java.util.Comparator;
 
@@ -16,8 +16,8 @@ public class AVLTree {
 	private static final Comparator<AVLNode> COMPARATOR;
 
 	static {
-		LEFT_NODE_DECORATOR = new LeftNodeDecorator("left");
-		RIGHT_NODE_DECORATOR = new RightNodeDecorator("right");
+		LEFT_NODE_DECORATOR = new LeftNodeDecorator2("left");
+		RIGHT_NODE_DECORATOR = new RightNodeDecorator2("right");
 		LEFT_NODE_DECORATOR.setOther(RIGHT_NODE_DECORATOR);
 		RIGHT_NODE_DECORATOR.setOther(LEFT_NODE_DECORATOR);
 		COMPARATOR = new AVLNodeComparator();

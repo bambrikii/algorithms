@@ -1,15 +1,15 @@
 package org.bambrikii.examples.graphs.balancing.avl.avl2;
 
-import org.bambrikii.examples.graphs.balancing.avl.core.AVLTreePrinter;
+import org.bambrikii.examples.graphs.balancing.TreePrinter;
 import org.bambrikii.examples.graphs.balancing.avl.core.NodeDecorator;
 
 /**
  * Created by Alexander Arakelyan on 12/02/17 21:50.
  */
-public class AVLTree2Printer implements AVLTreeListener<AVLNode2> {
-	private AVLTreePrinter printer;
+public class AVLTree2Printer<T extends AVLNode2> implements AVLTreeListener<T> {
+	private TreePrinter<T> printer;
 
-	public AVLTree2Printer(AVLTreePrinter printer) {
+	public AVLTree2Printer(TreePrinter<T> printer) {
 		this.printer = printer;
 	}
 
@@ -31,28 +31,28 @@ public class AVLTree2Printer implements AVLTreeListener<AVLNode2> {
 
 	@Override
 	public void onBalanced(AVLNode2 node) {
-		System.out.println("on-balanced:  " + node);
-		System.out.println("on-balanced*: " + printer.toString(getRoot(node)));
+		System.out.println("on-balance :  " + node);
+		System.out.println("on-balanced: " + printer.toString(getRoot((T) node)));
 	}
 
-	private AVLNode2 getRoot(AVLNode2 node) {
+	private T getRoot(T node) {
 		if (node == null) {
 			return null;
 		}
 		while (node.getParent() != null) {
-			node = node.getParent();
+			node = (T) node.getParent();
 		}
 		return node;
 	}
 
 	@Override
-	public void onRotating(AVLNode2 node, NodeDecorator<AVLNode2> nodeDecorator) {
+	public void onRotating(T node, NodeDecorator<T> nodeDecorator) {
 		System.out.println("on-rotating:  " + node + "." + nodeDecorator.getName());
 	}
 
 	@Override
-	public void onRotated(AVLNode2 node, NodeDecorator<AVLNode2> nodeDecorator) {
-		System.out.println("on-rotated:   " + node + "." + nodeDecorator.getName());
-		System.out.println("on-rotated*:  " + printer.toString(getRoot(node)));
+	public void onRotated(T node, NodeDecorator<T> nodeDecorator) {
+		System.out.println("on-rotate :   " + node + "." + nodeDecorator.getName());
+		System.out.println("on-rotated:  " + printer.toString(getRoot(node)));
 	}
 }
