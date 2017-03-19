@@ -76,11 +76,10 @@ public abstract class AbstractAVLTree2<E extends AbstractAVLTree2, T extends AVL
 			nodeDecorator.setLeft(parent, node);
 			node.setParent(parent);
 			onAdded(parent, node);
-			addHeight(parent, node);
+			updateHeight(parent);
 		} else {
 			onAdding(parent, node);
 			add(left, node);
-			addHeight(parent, node);
 			balance(node);
 		}
 	}
@@ -164,20 +163,12 @@ public abstract class AbstractAVLTree2<E extends AbstractAVLTree2, T extends AVL
 		}
 		nodeDecorator.setRight(rightmost, node);
 		node.setParent(rightmost);
-		updateHeightBubbling(rightmost, node, nodeDecorator);
+		updateHeight(node);
 
 		onRotated(node, nodeDecorator);
 	}
 
 	protected void updateHeight(T node) {
-
-	}
-
-	protected void addHeight(T parent, T node) {
-
-	}
-
-	protected void updateHeightBubbling(T left, T node, NodeDecorator<T> nodeDecorator) {
 
 	}
 

@@ -22,7 +22,10 @@ public class AVLMain3 {
 				.add(54)
 				.add(67)
 				.add(72)
-				.add(76);
+				.add(76)
+				.add(77)
+				.add(78)
+				.add(79);
 		printer.print((AVLNode3) tree2.getRoot());
 	}
 }
