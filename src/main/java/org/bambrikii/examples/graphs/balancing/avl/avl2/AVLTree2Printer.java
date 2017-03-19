@@ -31,7 +31,7 @@ public class AVLTree2Printer<T extends AVLNode2> implements AVLTreeListener<T> {
 
 	@Override
 	public void onBalanced(AVLNode2 node) {
-		System.out.println("on-balance :  " + node);
+		System.out.println("on-balance : => " + node);
 		System.out.println("on-balanced: " + printer.toString(getRoot((T) node)));
 	}
 

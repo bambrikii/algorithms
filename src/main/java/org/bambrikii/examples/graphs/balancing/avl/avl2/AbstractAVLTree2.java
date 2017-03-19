@@ -148,28 +148,32 @@ public abstract class AbstractAVLTree2<E extends AbstractAVLTree2, T extends AVL
 		if (node.getParent() != null) {
 			left.setParent(node.getParent());
 			nodeDecorator.setLeft((T) left.getParent(), left);
+			node.setParent(null);
+			nodeDecorator.setLeft(node, null);
+			updateHeight((T) left.getParent());
+			updateHeight(node);
 		} else {
 			root = left;
 			left.setParent(null);
+			nodeDecorator.setLeft(node, null);
+			updateHeight(node);
 		}
-		updateHeightRotation(left, node, nodeDecorator);
 		T rightmost = left;
 		while (nodeDecorator.getRight(rightmost) != null) {
 			rightmost = nodeDecorator.getRight(rightmost);
-			updateHeightBubbling(rightmost, node, nodeDecorator);
 		}
 		nodeDecorator.setRight(rightmost, node);
 		node.setParent(rightmost);
-		nodeDecorator.setLeft(node, null);
+		updateHeightBubbling(rightmost, node, nodeDecorator);
 
 		onRotated(node, nodeDecorator);
 	}
 
-	protected void addHeight(T parent, T node) {
+	protected void updateHeight(T node) {
 
 	}
 
-	protected void updateHeightRotation(T left, T node, NodeDecorator<T> nodeDecorator) {
+	protected void addHeight(T parent, T node) {
 
 	}
 
