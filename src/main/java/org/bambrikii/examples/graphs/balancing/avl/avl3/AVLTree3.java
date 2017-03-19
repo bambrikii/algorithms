@@ -39,8 +39,8 @@ public class AVLTree3 extends AbstractAVLTree2<AVLTree3, AVLNode3> {
 	protected void updateHeight(AVLNode3 node) {
 		if (node != null) {
 			int leftHeight = node.left != null ? node.left.height + 1 : 0;
-			int rightHight = node.right != null ? node.right.height + 1 : 0;
-			node.height = max(leftHeight, rightHight);
+			int rightHeight = node.right != null ? node.right.height + 1 : 0;
+			node.height = max(leftHeight, rightHeight);
 			updateHeight(node.getParent());
 		}
 	}
