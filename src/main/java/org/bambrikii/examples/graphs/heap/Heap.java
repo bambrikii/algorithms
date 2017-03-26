@@ -13,18 +13,18 @@ import java.util.List;
 public class Heap<T extends Comparable> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Heap.class);
 	private List<T> list = new ArrayList<>();
-	private int width;
+	private int base;
 
-	public Heap(int width) {
-		if (width <= 0) {
+	public Heap(int base) {
+		if (base <= 0) {
 			throw new IllegalArgumentException("div should be greater than zero");
 		}
-		this.width = width;
+		this.base = base;
 	}
 
 	public void insert(T elem) {
-		list.add(0, elem);
-		percolateDown();
+		list.add(elem);
+		percolateUp();
 	}
 
 	public T delete() {
@@ -38,7 +38,7 @@ public class Heap<T extends Comparable> {
 			}
 			list.remove(lastElemIndex);
 			if (list.size() > 0) {
-				percolateUp();
+				percolateDown();
 			}
 		}
 		return elem;
@@ -49,9 +49,9 @@ public class Heap<T extends Comparable> {
 		T elem = list.get(i);
 		int size = list.size();
 		while (i < size) {
-			int j = i * width + 1;
+			int j = i * base + 1;
 			int smallestIndex = -1;
-			while ((j < (i + 1) * (width) + 1) && (j < size)) {
+			while ((j < (i + 1) * (base) + 1) && (j < size)) {
 				if ((smallestIndex == -1) || (list.get(smallestIndex).compareTo(list.get(j)) > 0)) {
 					smallestIndex = j;
 				}
@@ -69,16 +69,16 @@ public class Heap<T extends Comparable> {
 	}
 
 	private void percolateUp() {
-		int index = list.size() - 1;
-		T elem = list.get(index);
-		while (index >= 0) {
-			int index2 = index / width;
-			if (index2 >= 0) {
-				if (elem.compareTo(list.get(index2)) < 0) {
-					T temp = list.get(index);
-					list.set(index, elem);
-					list.set(index2, temp);
-					index = index2;
+		int currentIndex = list.size() - 1;
+		while (currentIndex >= 0) {
+			T current = list.get(currentIndex);
+			int upperIndex = (currentIndex - 1) / base;
+			if (upperIndex >= 0) {
+				T upper = list.get(upperIndex);
+				if (current.compareTo(upper) < 0) {
+					list.set(upperIndex, current);
+					list.set(currentIndex, upper);
+					currentIndex = upperIndex;
 				} else {
 					break;
 				}
@@ -92,11 +92,11 @@ public class Heap<T extends Comparable> {
 		return list.iterator();
 	}
 
-	public int getWidth() {
-		return width;
+	public int getBase() {
+		return base;
 	}
 
 	public T getAt(int pos) {
-		return pos < list.size() - 1 ? list.get(pos) : null;
+		return pos < list.size() ? list.get(pos) : null;
 	}
 }

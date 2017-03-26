@@ -1,6 +1,8 @@
 package org.bambrikii.examples.graphs.heap;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Iterator;
@@ -12,40 +14,14 @@ import static org.junit.Assert.assertTrue;
  * Created by Alexander Arakelyan on 25/03/17 21:25.
  */
 public class HeapTest {
-	public static class Cls1 implements Comparable {
-		private final int val1;
 
-		private Cls1(int val1) {
-			this.val1 = val1;
-		}
+	private static final Logger LOGGER = LoggerFactory.getLogger(HeapTest.class);
 
-		public int getVal1() {
-			return val1;
-		}
-
-		@Override
-		public int compareTo(Object obj) {
-			if (obj == null) {
-				return 1;
-			}
-			if (!obj.getClass().equals(Cls1.class)) {
-				return 1;
-			}
-			Cls1 other = (Cls1) obj;
-			return val1 - other.val1;
-		}
-
-		@Override
-		public String toString() {
-			return String.valueOf(val1);
-		}
-	}
-
-	private void print(Heap<Cls1> heap) {
+	private void print(Heap<HeapSampleElement> heap) {
 		System.out.print(">>> ");
-		Iterator<Cls1> iterator = heap.iterator();
+		Iterator<HeapSampleElement> iterator = heap.iterator();
 		while (iterator.hasNext()) {
-			Cls1 next = iterator.next();
+			HeapSampleElement next = iterator.next();
 			System.out.print(next + " ");
 		}
 		System.out.println();
@@ -56,44 +32,67 @@ public class HeapTest {
 	}
 
 	private void assertHeap(Heap heap, int pos) {
-		int width = heap.getWidth();
+		int width = heap.getBase();
 		Comparable heapAt = heap.getAt(pos);
 		for (int i = 0; i < width; i++) {
 			int pos2 = pos * width + 1 + i;
 			Comparable elem = heap.getAt(pos2);
 			if (elem != null) {
-				assertTrue(MessageFormat.format("{0}({1}) !< {2}({3})", heapAt, pos, elem, pos2), heapAt.compareTo(elem) <= 0);
+				LOGGER.debug("Assert: {}({}) - {}({})", heapAt, pos, elem, pos2);
 				assertHeap(heap, pos2);
+				assertTrue(MessageFormat.format("{0}({1}) !< {2}({3})", heapAt, pos, elem, pos2), heapAt.compareTo(elem) <= 0);
 			}
 		}
 	}
 
 	@Test
 	public void testHeapInsert() {
-		Heap<Cls1> heap = new Heap<>(2);
-		heap.insert(new Cls1(21));
+		Heap<HeapSampleElement> heap = new Heap<>(2);
+		heap.insert(new HeapSampleElement(3));
 		print(heap);
-		heap.insert(new Cls1(15));
+		heap.insert(new HeapSampleElement(4));
 		print(heap);
-		heap.insert(new Cls1(8));
+		heap.insert(new HeapSampleElement(12));
 		print(heap);
-		heap.insert(new Cls1(2));
+		heap.insert(new HeapSampleElement(3));
 		print(heap);
-		heap.insert(new Cls1(5));
+		heap.insert(new HeapSampleElement(5));
 		print(heap);
-		heap.insert(new Cls1(1));
+		heap.insert(new HeapSampleElement(5));
 		print(heap);
-		heap.insert(new Cls1(3));
+		heap.insert(new HeapSampleElement(4));
+		print(heap);
+		assertHeap(heap);
+		heap.insert(new HeapSampleElement(8));
+		print(heap);
+		assertHeap(heap);
+	}
+
+	@Test
+	public void testHeapInsert3() {
+		Heap<HeapSampleElement> heap = new Heap<>(2);
+		heap.insert(new HeapSampleElement(7));
+		print(heap);
+		heap.insert(new HeapSampleElement(6));
+		print(heap);
+		heap.insert(new HeapSampleElement(8));
+		print(heap);
+		heap.insert(new HeapSampleElement(12));
+		print(heap);
+		heap.insert(new HeapSampleElement(1));
+		print(heap);
+		assertHeap(heap);
+		heap.insert(new HeapSampleElement(2));
 		print(heap);
 		assertHeap(heap);
 	}
 
 	@Test
 	public void testHeapDelete() {
-		Heap<Cls1> heap = new Heap<>(2);
-		randomFill(heap, 2);
-		heap.insert(new Cls1(2));
-		heap.insert(new Cls1(1));
+		Heap<HeapSampleElement> heap = new Heap<>(2);
+		randomFill(heap, 15);
+		heap.insert(new HeapSampleElement(2));
+		heap.insert(new HeapSampleElement(1));
 		assertHeap(heap);
 		heap.delete();
 		print(heap);
@@ -102,20 +101,25 @@ public class HeapTest {
 
 	@Test
 	public void testHeap() {
-		Heap<Cls1> heap = new Heap<>(2);
+		Heap<HeapSampleElement> heap = new Heap<>(2);
 		randomFill(heap, 15);
+		assertHeap(heap);
 		System.out.print(">>> ");
-		Cls1 elem = heap.delete();
+		HeapSampleElement elem = heap.delete();
 		while (elem != null) {
 			System.out.print(elem + " ");
-			elem = heap.delete();
+			HeapSampleElement elem2 = heap.delete();
+			if (elem2 != null) {
+				assertTrue(elem.compareTo(elem2) <= 0);
+			}
+			elem = elem2;
 		}
 	}
 
-	private void randomFill(Heap<Cls1> heap, int n) {
+	private void randomFill(Heap<HeapSampleElement> heap, int n) {
 		Random rand = new Random();
 		for (int i = 0; i < n; i++) {
-			Cls1 elem = new Cls1(rand.nextInt(n));
+			HeapSampleElement elem = new HeapSampleElement(rand.nextInt(n));
 			System.out.println(elem);
 			heap.insert(elem);
 			print(heap);
@@ -126,17 +130,28 @@ public class HeapTest {
 
 	@Test
 	public void testHeapInsert2() {
-		Heap<Cls1> heap = new Heap<>(2);
-		heap.insert(new Cls1(12));
+		Heap<HeapSampleElement> heap = new Heap<>(2);
+		heap.insert(new HeapSampleElement(12));
 		print(heap);
-		heap.insert(new Cls1(7));
+		heap.insert(new HeapSampleElement(7));
 		print(heap);
-		heap.insert(new Cls1(10));
+		heap.insert(new HeapSampleElement(10));
 		print(heap);
-		heap.insert(new Cls1(1));
+		heap.insert(new HeapSampleElement(1));
 		print(heap);
-		heap.insert(new Cls1(12));
+		heap.insert(new HeapSampleElement(12));
 		print(heap);
 		assertHeap(heap);
+	}
+
+	@Test
+	public void testHeapWithBase3() {
+		Heap<HeapSampleElement> heap = new Heap<>(3);
+		randomFill(heap, 15);
+		print(heap);
+		assertHeap(heap);
+		for (int i = 0; i < 5; i++) {
+			LOGGER.debug("Top of the heap: {} / {} ", heap.delete(), i);
+		}
 	}
 }
