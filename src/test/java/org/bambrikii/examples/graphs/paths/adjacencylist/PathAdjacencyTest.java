@@ -1,12 +1,15 @@
 package org.bambrikii.examples.graphs.paths.adjacencylist;
 
+import org.junit.Test;
+
 import java.util.LinkedList;
 
 /**
  * Created by Alexander Arakelyan on 03/06/18 17:18.
  */
-public class PathAdjacencyMain {
-    public static void main(String[] args) {
+public class PathAdjacencyTest {
+    @Test
+    public void testAdjacencyPath() {
 //        int[][][] graph = new int[][][]{
 //                {{0, 1}, {2, 2}, {3, 2}},
 //                {{2, 1}},
