@@ -1,0 +1,4 @@
+rootProject.name = "algorithms"
+
+include "algorithms"
+include "incubator"

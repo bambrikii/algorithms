@@ -1,6 +1,9 @@
-/target/
+target
+build
+out
+.idea
 .classpath
 .project
-.settings
-/sorting-algos.iml
+.settings/
+sorting-algos.iml
 *.iml
