@@ -1,28 +1,24 @@
 package org.bambrikii.examples.algorithms.incubator;
 
-import java.util.Random;
+import static org.bambrikii.examples.algorithms.incubator.SortUtils.prepareArray;
+import static org.bambrikii.examples.algorithms.incubator.SortUtils.printArray;
 
 public class InsertionSort {
     public static void main(String[] args) {
-        int n = 15;
-        int[] arr = new int[n];
-        Random random = new Random();
-        for (int i = 0; i < 15; i++) {
-            arr[i] = random.nextInt(n * n);
-        }
+        int[] arr = new int[15];
+        prepareArray(arr);
+        printArray(arr);
 
-        for (int i = 1; i < n; i++) {
+        for (int i = 1; i < arr.length; i++) {
             int curr = arr[i];
             int j = i - 1;
-            while (j > -1 && curr <= arr[j]) {
-                arr[i] = arr[j];
-                arr[j] = curr;
+            while (j > -1 && curr < arr[j]) {
+                arr[j + 1] = arr[j];
                 j--;
             }
+            arr[j + 1] = curr;
         }
 
-        for (int i = 0; i < n; i++) {
-            System.out.print(" " + arr[i]);
-        }
+        printArray(arr);
     }
 }
