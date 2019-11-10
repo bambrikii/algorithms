@@ -5,8 +5,7 @@ import static org.bambrikii.examples.algorithms.incubator.SortUtils.printArray;
 
 public class InsertionSort {
     public static void main(String[] args) {
-        int[] arr = new int[15];
-        prepareArray(arr);
+        int[] arr = prepareArray(15);
         printArray(arr);
 
         for (int i = 1; i < arr.length; i++) {

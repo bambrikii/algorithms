@@ -3,13 +3,14 @@ package org.bambrikii.examples.algorithms.incubator;
 import java.util.Random;
 
 public class SortUtils {
-    public static void prepareArray(int[] arr) {
+    public static int[] prepareArray(int n) {
+        int[] arr = new int[n];
         Random random = new Random();
         int length = arr.length;
         for (int i = 0; i < length; i++) {
-            arr[i] = random.nextInt(length);
+            arr[i] = random.nextInt(length * 2);
         }
-        System.out.println();
+        return arr;
     }
 
     public static void printArray(int[] arr) {
