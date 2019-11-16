@@ -1,54 +1,58 @@
 package org.bambrikii.examples.sorting.merge;
 
-import org.bambrikii.examples.sorting.ArrayAsStringFactory;
 import org.bambrikii.examples.sorting.Sortable;
 
 public class MergeSort implements Sortable {
+    public int[] sort(int[] array) {
+        sort(array, 0);
+        return array;
+    }
 
-	private int[] arr;
+    private void sort(int[] arr, int depth) {
+        int len = arr.length;
+        if (len == 1) {
+            return;
+        }
+        int mid = len / 2;
 
-	public int[] sort(int[] array) {
-		this.arr = array;
-		sort(0, arr.length - 1);
-		return arr;
-	}
+        int[] arrLeft = new int[mid];
+        System.arraycopy(arr, 0, arrLeft, 0, mid);
 
-	private void sort(int low, int high) {
-		if (low < high) {
-			int middle = low + (high - low) / 2;
-			sort(low, middle);
-			sort(middle + 1, high);
-			sort(low, middle, high);
-		}
-	}
+        int[] arrRight = new int[len - mid];
+        System.arraycopy(arr, mid, arrRight, 0, arrRight.length);
 
-	private void sort(int low, int middle, int high) {
-		int i = low;
-		int j = middle + 1;
-		int k = low;
+        sort(arrLeft, ++depth);
+        sort(arrRight, depth);
 
-		while (i <= middle && j <= high) {
-			if (arr[i] < arr[j]) {
-				exchange(k, i);
-				i++;
-			} else {
-				exchange(k, j);
-				j++;
-			}
-			k++;
-		}
+        merge(arr, arrLeft, arrRight);
+    }
 
-		while (i < high) {
-			k++;
-			i++;
-		}
-	}
-
-	private void exchange(int i, int j) {
-		int t = arr[i];
-		arr[i] = arr[j];
-		arr[j] = t;
-		ArrayAsStringFactory.log(arr);
-	}
-
+    private void merge(int[] arr, int[] arrLeft, int[] arrRight) {
+        int left = 0;
+        int right = 0;
+        int pos = 0;
+        while (left < arrLeft.length && right < arrRight.length) {
+            if (arrLeft[left] < arrRight[right]) {
+                arr[pos] = arrLeft[left];
+                left++;
+            } else if (arrRight[right] < arrLeft[left]) {
+                arr[pos] = arrRight[right];
+                right++;
+            } else {
+                arr[pos] = arrLeft[left];
+                left++;
+            }
+            pos++;
+        }
+        while (left < arrLeft.length) {
+            arr[pos] = arrLeft[left];
+            left++;
+            pos++;
+        }
+        while (right < arrRight.length) {
+            arr[pos] = arrRight[right];
+            right++;
+            pos++;
+        }
+    }
 }
