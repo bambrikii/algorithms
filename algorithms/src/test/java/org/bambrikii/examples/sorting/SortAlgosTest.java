@@ -1,6 +1,7 @@
 package org.bambrikii.examples.sorting;
 
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
+import org.bambrikii.examples.sorting.count.CountSort;
 import org.bambrikii.examples.sorting.heap.HeapSort;
 import org.bambrikii.examples.sorting.insertion.InsertionSort;
 import org.bambrikii.examples.sorting.merge.MergeSort;
@@ -16,7 +17,6 @@ import org.junit.Test;
 import java.util.Random;
 
 public class SortAlgosTest {
-
     private int[] array = new int[]{5, 8, 1, 0, 9, 4, 3, 2, 7, 6};
     private int[] reversed = new int[]{9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 
@@ -115,5 +115,10 @@ public class SortAlgosTest {
     public void testHeapSort() throws SortingException {
         ArrayAsStringFactory.DEBUG = true;
         runAlgo(new HeapSort(), array);
+    }
+
+    @Test
+    public void testCountSort() throws SortingException {
+        runAlgo(new CountSort(), array);
     }
 }
