@@ -1,6 +1,7 @@
 package org.bambrikii.examples.sorting;
 
 import org.bambrikii.examples.sorting.bubble.BubbleSort;
+import org.bambrikii.examples.sorting.bucket.BucketSort;
 import org.bambrikii.examples.sorting.count.CountSort;
 import org.bambrikii.examples.sorting.heap.HeapSort;
 import org.bambrikii.examples.sorting.insertion.InsertionSort;
@@ -98,10 +99,10 @@ public class SortAlgosPerformanceTest {
         runAlgo(new MyMinMaxSort(), array);
     }
 
-	@Test
-	public void testThreePyramidsSort() throws SortingException {
-		runAlgo(new ThreePyramidsSort(), array);
-	}
+    @Test
+    public void testThreePyramidsSort() throws SortingException {
+        runAlgo(new ThreePyramidsSort(), array);
+    }
 
     @Test
     public void testHeapSort() throws SortingException {
@@ -111,5 +112,10 @@ public class SortAlgosPerformanceTest {
     @Test
     public void testCountSort() throws SortingException {
         runAlgo(new CountSort(), array);
+    }
+
+    @Test
+    public void testBucketSort() throws SortingException {
+        runAlgo(new BucketSort(), array);
     }
 }
