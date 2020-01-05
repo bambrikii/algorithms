@@ -5,6 +5,8 @@
  */
 package org.bambrikii.examples.algorithms.incubator.redblackrtee;
 
+import static org.bambrikii.examples.algorithms.incubator.redblackrtee.RBColorEnum.RED;
+
 /**
  * @author asd
  */
@@ -30,7 +32,15 @@ public class RBNode<T> {
     }
 
     public void setColorRed() {
-        this.color = RBColorEnum.RED;
+        this.color = RED;
+    }
+
+    public boolean isColorBlack() {
+        return RBColorEnum.BLACK.equals(this.color);
+    }
+
+    public boolean isColorRed() {
+        return RED.equals(this.color);
     }
 
     public RBNode<T> getParent() {
@@ -65,4 +75,7 @@ public class RBNode<T> {
         this.color = color;
     }
 
+    public String toString() {
+        return val + "[" + RBColorEnum.toString(color) + "]";
+    }
 }

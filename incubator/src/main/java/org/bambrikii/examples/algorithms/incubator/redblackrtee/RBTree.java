@@ -13,26 +13,14 @@ import static org.bambrikii.examples.algorithms.incubator.redblackrtee.RBColorEn
 /**
  * @author asd
  */
-public class RBTree<T> {
-
-    private RBNode<T> root;
-    private Comparator<T> comparator;
-
+public class RBTree<T> extends AbstractRBTree<T> {
     public RBTree(Comparator<T> comparator) {
-        this.comparator = comparator;
-    }
-
-    public RBNode<T> getRoot() {
-        return root;
+        super(comparator);
     }
 
     // Insert
     public void insert(T val) {
-        if (root == null) {
-            root = new RBNode(val);
-            return;
-        }
-        RBNode<T> newNode = insert(root, val);
+        RBNode<T> newNode = insertBefore(val);
         insertBalance(newNode);
     }
 
@@ -105,42 +93,8 @@ public class RBTree<T> {
         return g.getLeft() == p ? g.getRight() : g.getLeft();
     }
 
-    private RBNode<T> insert(RBNode<T> n, T val) {
-        int cmp = comparator.compare(n.getVal(), val);
-        if (cmp == 0) {
-            throw new IllegalArgumentException("Node's " + n + " value is equal to " + val + "! But shouldn't!");
-        }
-        if (cmp < 0) {
-            return insertRight(n, val);
-        } else {
-            return insertLeft(n, val);
-        }
-    }
-
-    private RBNode<T> insertLeft(RBNode<T> n, T val) {
-        if (n.getLeft() == null) {
-            RBNode<T> newNode = new RBNode<>(val);
-            newNode.setColor(RED);
-            newNode.setParent(n);
-            n.setLeft(newNode);
-            return newNode;
-        }
-        return insert(n.getLeft(), val);
-    }
-
-    private RBNode<T> insertRight(RBNode<T> n, T val) {
-        if (n.getRight() == null) {
-            RBNode<T> newNode = new RBNode<>(val);
-            newNode.setColor(RED);
-            newNode.setParent(n);
-            n.setRight(newNode);
-            return newNode;
-        }
-        return insert(n.getRight(), val);
-    }
-
     // Rotate
-    private void rotateRight(RBNode<T> n) {
+    protected void rotateRight(RBNode<T> n) {
         RBNode<T> nnew = n.getLeft();
         RBNode<T> p = n.getParent();
         // assert(nnew != nullptr);  // Since the leaves of a red-black tree are empty,
@@ -166,7 +120,7 @@ public class RBTree<T> {
         nnew.setParent(p);
     }
 
-    private void rotateLeft(RBNode<T> n) {
+    protected void rotateLeft(RBNode<T> n) {
         RBNode<T> nnew = n.getRight();
         RBNode<T> p = n.getParent();
 // assert (nnew != null); // TODO: Since the leaves of a red-black tree are empty, they cannot become internal nodes.

@@ -5,6 +5,8 @@
  */
 package org.bambrikii.examples.algorithms.incubator.redblackrtee;
 
+import org.bambrikii.examples.algorithms.incubator.redblackrtee.print.RBTreePrinter;
+
 /**
  *
  * @author asd
@@ -17,11 +19,11 @@ public class RBMain {
 	    tree.insert(i);
 	}
 	RBTreePrinter printer = new RBTreePrinter();
-	printer.print(tree);
+	printer.print(tree.getRoot());
 
 	for (int i = 3; i < 6; i++) {
 	    tree.delete(i);
 	}
-	printer.print(tree);
+	printer.print(tree.getRoot());
     }
 }
