@@ -32,28 +32,26 @@ public class RBTree2<T> extends AbstractRBTree<T> {
                 break;
             }
             RBNode<T> g = p.getParent();
-            if (g == null) {
-                break;
-            }
             RotationDecorator gDec = RotationDecoratorFactory.byParent(x);
-            RBNode<T> u = gDec.getRight(g);
+            RBNode<T> u = g != null ? gDec.getRight(g) : null;
             if (u == null || u.isColorBlack()) {
-//                RotationDecorator pDec = RotationDecoratorFactory.byParent(x);
-//                RBNode<T> left = pDec.getLeft(p);
-//                if (x.equals(left)) {
-//                    RotationUtils.rotateUp(x);
-//                    ensureRoot(p, x);
-//                    printRoot();
-//                }
-                p.setColorBlack();
-                g.setColorRed();
                 RotationUtils.rotateUp(p);
+                p.setColorBlack();
+                if (g != null) {
+                    g.setColorRed();
+                }
+                x.setColorRed();
                 ensureRoot(g, p);
+                x = p;
                 printRoot();
             } else {
                 p.setColorBlack();
-                u.setColorBlack();
-                g.setColorRed();
+                if (u != null) {
+                    u.setColorBlack();
+                }
+                if (g != null) {
+                    g.setColorRed();
+                }
             }
         }
     }
