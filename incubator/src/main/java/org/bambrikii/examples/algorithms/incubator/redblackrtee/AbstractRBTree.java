@@ -1,7 +1,7 @@
 package org.bambrikii.examples.algorithms.incubator.redblackrtee;
 
 import org.bambrikii.examples.algorithms.incubator.redblacktree2.RotationDecorator;
-import org.bambrikii.examples.algorithms.incubator.redblacktree2.RotationDecoratorFactory;
+import org.bambrikii.examples.algorithms.incubator.redblacktree2.utils.RotationDecoratorFactory;
 
 import java.util.Comparator;
 
@@ -30,17 +30,16 @@ public abstract class AbstractRBTree<T> {
     }
 
     private RBNode<T> insert(RBNode<T> p, T val) {
-        int cmp = comparator.compare(p.getVal(), val);
+        int cmp = comparator.compare(val, p.getVal());
         if (cmp == 0) {
             throw new IllegalArgumentException("Node's " + p + " value is equal to " + val + "! But shouldn't!");
         }
-        RBNode<T> x = new RBNode<>(val);
-        x.setParent(p);
         RotationDecorator rotationDecorator = RotationDecoratorFactory.byDirection(cmp);
-        if (rotationDecorator.getLeft(p) == null) {
-            rotationDecorator.setLeft(p, x);
+        if (rotationDecorator.getRight(p) == null) {
+            RBNode<T> x = new RBNode<>(val);
+            rotationDecorator.setRight(p, x);
             return x;
         }
-        return insert(rotationDecorator.getLeft(p), val);
+        return insert(rotationDecorator.getRight(p), val);
     }
 }
