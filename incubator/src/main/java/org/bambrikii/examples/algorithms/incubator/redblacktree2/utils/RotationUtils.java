@@ -13,16 +13,17 @@ public class RotationUtils {
             return p;
         }
         RBNode<T> g = p.getParent();
-
-        RotationDecorator gDec = RotationDecoratorFactory.byParent(p);
         RotationDecorator pDec = RotationDecoratorFactory.byParent(x);
+        if (g != null) {
+            RotationDecorator gDec = RotationDecoratorFactory.byParent(p);
+            gDec.setLeft(g, x);
+            x.setParent(g);
+        } else {
+            x.setParent(null);
+        }
 
         RBNode<T> c = pDec.getRight(x);
-        x.setParent(g);
-        gDec.setLeft(g, x);
-
         pDec.setRight(x, p);
-        p.setParent(x);
         pDec.setLeft(p, c);
 
         return x;

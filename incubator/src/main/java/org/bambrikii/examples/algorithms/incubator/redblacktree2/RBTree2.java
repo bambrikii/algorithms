@@ -19,8 +19,6 @@ public class RBTree2<T> extends AbstractRBTree<T> {
         RBNode<T> x = insertBefore(val);
         x.setColorRed();
 
-        printRoot();
-
         while (!x.equals(getRoot())
                 && (x.getParent() != null
                 && x.getParent().getColor().equals(RED)
@@ -37,18 +35,20 @@ public class RBTree2<T> extends AbstractRBTree<T> {
             if (g == null) {
                 break;
             }
-            RotationDecorator rDec = RotationDecoratorFactory.byParent(x);
-            RBNode<T> u = rDec.getRight(g);
+            RotationDecorator gDec = RotationDecoratorFactory.byParent(x);
+            RBNode<T> u = gDec.getRight(g);
             if (u == null || u.isColorBlack()) {
-                RBNode<T> left = rDec.getLeft(p);
-                if (x.equals(left)) {
-                    x = RotationUtils.rotateUp(x);
-                    x = ensureRoot(p, x);
-                }
+//                RotationDecorator pDec = RotationDecoratorFactory.byParent(x);
+//                RBNode<T> left = pDec.getLeft(p);
+//                if (x.equals(left)) {
+//                    RotationUtils.rotateUp(x);
+//                    ensureRoot(p, x);
+//                    printRoot();
+//                }
                 p.setColorBlack();
                 g.setColorRed();
-                RBNode<T> newP = RotationUtils.rotateUp(p);
-                ensureRoot(p, newP);
+                RotationUtils.rotateUp(p);
+                ensureRoot(g, p);
                 printRoot();
             } else {
                 p.setColorBlack();
@@ -59,7 +59,11 @@ public class RBTree2<T> extends AbstractRBTree<T> {
     }
 
     private void printRoot() {
-        RBTreePrinter.print(root);
+        RBNode<T> node = root;
+//        while (node.getParent() != null) {
+//            node = node.getParent();
+//        }
+        RBTreePrinter.print(node);
     }
 
     private RBNode<T> ensureRoot(RBNode<T> previousRoot, RBNode<T> x) {
