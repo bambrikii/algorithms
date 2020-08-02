@@ -5,11 +5,11 @@ import org.bambrikii.examples.algorithms.incubator.redblacktree2.utils.RotationD
 
 import java.util.Comparator;
 
-public abstract class AbstractRBTree<T> {
+public abstract class AbstractRbTree<T> {
     protected RBNode<T> root;
     protected final Comparator<T> comparator;
 
-    public AbstractRBTree(Comparator<T> comparator) {
+    public AbstractRbTree(Comparator<T> comparator) {
         this.comparator = comparator;
     }
 
@@ -23,7 +23,7 @@ public abstract class AbstractRBTree<T> {
 
     protected RBNode<T> insertBefore(T val) {
         if (root == null) {
-            root = new RBNode(val);
+            root = new RBNode<T>(val);
             return root;
         }
         return insert(root, val);

@@ -13,7 +13,7 @@ import static org.bambrikii.examples.algorithms.incubator.redblackrtee.RBColorEn
 /**
  * @author asd
  */
-public class RBTree<T> extends AbstractRBTree<T> {
+public class RBTree<T> extends AbstractRbTree<T> {
     public RBTree(Comparator<T> comparator) {
         super(comparator);
     }

@@ -28,4 +28,31 @@ public class RotationUtils {
 
         return x;
     }
+
+    public static <T> RBNode<T> min(RBNode<T> n) {
+        RotationDecorator decorator = RotationDecoratorFactory.byParent(n);
+        RBNode<T> last = n;
+        RBNode<T> left = decorator.getLeft(n);
+        while (left != null) {
+            last = left;
+            left = decorator.getLeft(n);
+        }
+        return last;
+    }
+
+    public static <T> RBNode<T> replace(RBNode<T> what, RBNode<T> with) {
+        RBNode<T> whatParent = what.getParent();
+        if (whatParent == null) {
+            with.setParent(null);
+            return with;
+        }
+
+        RotationDecorator whatDecorator = RotationDecoratorFactory.byParent(what);
+        whatDecorator.setLeft(whatDecorator.getLeft(whatParent), with);
+
+        RBNode<T> withParent = with.getParent();
+        withParent.setParent(whatParent);
+
+        return whatParent;
+    }
 }
