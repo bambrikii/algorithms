@@ -28,21 +28,12 @@ public class Treap<T extends Comparable<T>> {
 		} else {
 			int weightDiff = WEIGHT_COMPARATOR.compare(root, newNode);
 			if (weightDiff < 0) {
-				newNode.setLeft(root.getLeft());
-				newNode.setRight(root.getRight());
+				TreapRotation<T> rotation = TreapUtils.getRotation(newNode, root);
+				rotation.addLeftChild(newNode, root);
 				root = newNode;
 			} else {
-				insert(root, newNode);
+				insertDown(root, newNode);
 			}
-		}
-	}
-
-	private void insert(TreapNode<T> node, TreapNode<T> newNode) {
-		int weightDiff = WEIGHT_COMPARATOR.compare(node, newNode);
-		if (weightDiff < 0) {
-			insertDown(node, newNode);
-		} else {
-			insertWeighted(node, newNode);
 		}
 	}
 
@@ -52,22 +43,13 @@ public class Treap<T extends Comparable<T>> {
 		if (child == null) {
 			rotation.addLeftChild(node, newNode);
 		} else {
-			insert(child, newNode);
-		}
-	}
-
-	private void insertWeighted(TreapNode<T> node, TreapNode<T> newNode) {
-		TreapRotation<T> rotation = TreapUtils.getRotation(node, newNode);
-		TreapNode<T> child = rotation.getLeftChild(node);
-		if (child == null) {
-			rotation.addLeftChild(node, newNode);
-		} else {
-			int weightDiff = WEIGHT_COMPARATOR.compare(newNode, child);
+			int weightDiff = WEIGHT_COMPARATOR.compare(child, newNode);
 			if (weightDiff < 0) {
-				insertWeighted(child, newNode);
-			} else {
 				rotation.addLeftChild(node, newNode);
-				insertWeighted(newNode, child);
+				TreapRotation<T> newRotation = TreapUtils.getRotation(newNode, child);
+				newRotation.addLeftChild(newNode, child);
+			} else {
+				insertDown(child, newNode);
 			}
 		}
 	}

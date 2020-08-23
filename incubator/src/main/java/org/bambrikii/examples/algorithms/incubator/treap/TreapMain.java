@@ -8,13 +8,13 @@ public class TreapMain {
 		treap.add(1, 5);
 		RBTreePrinter.print(treap.getRoot());
 
-		treap.add(3, 4);
+		treap.add(-3, 4);
 		RBTreePrinter.print(treap.getRoot());
 
 		treap.add(5, 3);
 		RBTreePrinter.print(treap.getRoot());
 
-		treap.add(4, 4);
+		treap.add(-4, 4);
 		RBTreePrinter.print(treap.getRoot());
 
 		treap.add(2, 5);
