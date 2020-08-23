@@ -1,2 +1,2 @@
 apply plugin: "java"
-apply from: "../dependencies.gradle"
+apply from: "../gradle/dependencies.gradle"

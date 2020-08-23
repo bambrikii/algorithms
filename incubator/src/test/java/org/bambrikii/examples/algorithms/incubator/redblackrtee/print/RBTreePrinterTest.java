@@ -1,5 +1,6 @@
 package org.bambrikii.examples.algorithms.incubator.redblackrtee.print;
 
+import org.bambrikii.examples.algorithms.incubator.treeutils.RBTreePrinter;
 import org.junit.Test;
 
 public class RBTreePrinterTest {

@@ -1,7 +1,7 @@
 package org.bambrikii.examples.algorithms.incubator.redblacktree2;
 
 import org.bambrikii.examples.algorithms.incubator.redblackrtee.IntegerComparator;
-import org.bambrikii.examples.algorithms.incubator.redblackrtee.print.RBTreePrinter;
+import org.bambrikii.examples.algorithms.incubator.treeutils.RBTreePrinter;
 import org.junit.Test;
 
 public class RbTree2OpeartionsTest {

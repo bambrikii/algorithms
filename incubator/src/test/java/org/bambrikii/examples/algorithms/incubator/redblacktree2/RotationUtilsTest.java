@@ -1,8 +1,8 @@
 package org.bambrikii.examples.algorithms.incubator.redblacktree2;
 
 import org.bambrikii.examples.algorithms.incubator.redblackrtee.RBNode;
-import org.bambrikii.examples.algorithms.incubator.redblackrtee.print.RBTreePrinter;
 import org.bambrikii.examples.algorithms.incubator.redblacktree2.utils.RotationUtils;
+import org.bambrikii.examples.algorithms.incubator.treeutils.RBTreePrinter;
 import org.junit.Test;
 
 public class RotationUtilsTest {

@@ -5,7 +5,7 @@
  */
 package org.bambrikii.examples.algorithms.incubator.redblackrtee;
 
-import org.bambrikii.examples.algorithms.incubator.redblackrtee.print.RBTreePrinter;
+import org.bambrikii.examples.algorithms.incubator.treeutils.RBTreePrinter;
 
 /**
  *
