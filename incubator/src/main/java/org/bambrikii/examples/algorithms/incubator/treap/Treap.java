@@ -5,6 +5,7 @@ import java.util.Comparator;
 import org.bambrikii.examples.algorithms.incubator.redblackrtee.IntegerComparator;
 import org.bambrikii.examples.algorithms.incubator.treap.TreapUtils.TreapRotation;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
@@ -54,7 +55,74 @@ public class Treap<T extends Comparable<T>> {
 		}
 	}
 
-	public void remove(T val) {
-		// TODO:
+	public TreapNode<T> find(T val) {
+		FoundNodePair<T> nodes = find(root, val);
+		if (nodes == null) {
+			return null;
+		}
+		return nodes.getChild();
+	}
+
+	private FoundNodePair<T> find(TreapNode<T> node, T val) {
+		if (node == null) {
+			return null;
+		}
+		TreapNode<T> parentNode = null;
+		while (node != null) {
+			int valDiff = node.getVal().compareTo(val);
+			if (valDiff == 0) {
+				return new FoundNodePair<>(parentNode, node);
+			}
+			parentNode = node;
+			if (valDiff < 0) {
+				node = node.getLeft();
+			} else {
+				node = node.getRight();
+			}
+		}
+		return null;
+	}
+
+	public TreapNode<T> remove(T val) {
+		if (root == null) {
+			throw new IllegalArgumentException("Node with value " + val + " is not found!");
+		}
+
+		FoundNodePair<T> nodes = find(root, val);
+		if (nodes == null) {
+			return null;
+		}
+
+		TreapNode<T> parent = nodes.getParent();
+		TreapNode<T> node = nodes.getChild();
+		while (node.getRight() != null || node.getLeft() != null) {
+			TreapRotation<T> parentRotation;
+			TreapNode<T> oldParent = parent;
+			TreapNode<T> rotated;
+			if (node.getLeft() != null) {
+				TreapRotation<T> rotation = TreapUtils.getLeftRotation();
+				TreapNode<T> left = node.getLeft();
+				rotated = rotation.rotate(node);
+				parent = left;
+			} else {
+				TreapRotation<T> rotation = TreapUtils.getRightRotation();
+				TreapNode<T> right = node.getRight();
+				rotated = rotation.rotate(node);
+				parent = right;
+			}
+			if (oldParent != null) {
+				parentRotation = TreapUtils.getRotation(oldParent, node);
+				parentRotation.addLeftChild(oldParent, rotated);
+			}
+			if (node == root) {
+				root = rotated;
+			}
+		}
+		if (parent == null) {
+			root = null;
+		}
+		TreapRotation<T> rotation = TreapUtils.getRotation(parent, node);
+		rotation.addLeftChild(parent, null);
+		return node;
 	}
 }
