@@ -5,7 +5,6 @@ import java.util.Comparator;
 import org.bambrikii.examples.algorithms.incubator.redblackrtee.IntegerComparator;
 import org.bambrikii.examples.algorithms.incubator.treap.TreapUtils.TreapRotation;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
@@ -99,16 +98,42 @@ public class Treap<T extends Comparable<T>> {
 			TreapRotation<T> parentRotation;
 			TreapNode<T> oldParent = parent;
 			TreapNode<T> rotated;
-			if (node.getLeft() != null) {
-				TreapRotation<T> rotation = TreapUtils.getLeftRotation();
-				TreapNode<T> left = node.getLeft();
-				rotated = rotation.rotate(node);
-				parent = left;
+
+			TreapNode<T> originalLeft = node.getLeft();
+			TreapNode<T> originalRight = node.getRight();
+
+			if (originalLeft != null && originalRight != null) {
+				int weightDiff = WEIGHT_COMPARATOR.compare(originalLeft, originalRight);
+				if (weightDiff > 0) {
+					RotationPair<T> pair = rotateLeft(node);
+					rotated = pair.getRotated();
+					parent = pair.getParent();
+				} else if (weightDiff < 0) {
+					RotationPair<T> pair = rotateRight(node);
+					rotated = pair.getRotated();
+					parent = pair.getParent();
+				} else {
+					T leftVal = originalLeft.getVal();
+					T rightValVal = originalRight.getVal();
+					int valDiff = leftVal.compareTo(rightValVal);
+					if (valDiff > 0) {
+						RotationPair<T> pair = rotateLeft(node);
+						rotated = pair.getRotated();
+						parent = pair.getParent();
+					} else {
+						RotationPair<T> pair = rotateRight(node);
+						rotated = pair.getRotated();
+						parent = pair.getParent();
+					}
+				}
+			} else if (originalLeft != null) {
+				RotationPair<T> pair = rotateLeft(node);
+				rotated = pair.getRotated();
+				parent = pair.getParent();
 			} else {
-				TreapRotation<T> rotation = TreapUtils.getRightRotation();
-				TreapNode<T> right = node.getRight();
-				rotated = rotation.rotate(node);
-				parent = right;
+				RotationPair<T> pair = rotateRight(node);
+				rotated = pair.getRotated();
+				parent = pair.getParent();
 			}
 			if (oldParent != null) {
 				parentRotation = TreapUtils.getRotation(oldParent, node);
@@ -124,5 +149,17 @@ public class Treap<T extends Comparable<T>> {
 		TreapRotation<T> rotation = TreapUtils.getRotation(parent, node);
 		rotation.addLeftChild(parent, null);
 		return node;
+	}
+
+	private RotationPair<T> rotateLeft(TreapNode<T> node) {
+		TreapRotation<T> rotation = TreapUtils.getLeftRotation();
+		TreapNode<T> left = node.getLeft();
+		return new RotationPair<T>(rotation.rotate(node), left);
+	}
+
+	private RotationPair<T> rotateRight(TreapNode<T> node) {
+		TreapRotation<T> rotation = TreapUtils.getRightRotation();
+		TreapNode<T> right = node.getRight();
+		return new RotationPair<T>(rotation.rotate(node), right);
 	}
 }
