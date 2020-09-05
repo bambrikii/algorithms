@@ -1,6 +1,6 @@
-package org.bambrikii.examples.algorithms.incubator.selforganizinglist.bymovingtofirstposition;
+package org.bambrikii.examples.selforganizinglists.bymovingtofirstposition;
 
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.AbstractSelfOrganizingList;
+import org.bambrikii.examples.selforganizinglists.AbstractSelfOrganizingList;
 
 public class ByMovingToFirstPositionList<K, V>
 		extends AbstractSelfOrganizingList<K, V, ByFirstPositionElementElement<K, V>> {

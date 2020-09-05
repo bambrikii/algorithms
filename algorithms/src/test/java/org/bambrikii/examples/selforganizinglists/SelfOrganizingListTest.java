@@ -1,8 +1,8 @@
-package org.bambrikii.examples.algorithms.incubator.selforganizinglist;
+package org.bambrikii.examples.selforganizinglists;
 
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.bycount.ByCountList;
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.bymovingtofirstposition.ByMovingToFirstPositionList;
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.byswapping.BySwappingList;
+import org.bambrikii.examples.selforganizinglists.bycount.ByCountList;
+import org.bambrikii.examples.selforganizinglists.bymovingtofirstposition.ByMovingToFirstPositionList;
+import org.bambrikii.examples.selforganizinglists.byswapping.BySwappingList;
 import org.junit.Test;
 
 public class SelfOrganizingListTest {

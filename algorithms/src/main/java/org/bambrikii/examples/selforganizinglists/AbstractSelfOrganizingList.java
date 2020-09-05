@@ -1,4 +1,4 @@
-package org.bambrikii.examples.algorithms.incubator.selforganizinglist;
+package org.bambrikii.examples.selforganizinglists;
 
 public abstract class AbstractSelfOrganizingList<K, V, E extends SelfOrganizingListElement<E, K, V>>
 		implements SelfOrganizingList<K, V, E> {

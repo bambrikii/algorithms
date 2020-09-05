@@ -1,6 +1,6 @@
-package org.bambrikii.examples.algorithms.incubator.selforganizinglist.byswapping;
+package org.bambrikii.examples.selforganizinglists.byswapping;
 
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.AbstractSelfOrganizingList;
+import org.bambrikii.examples.selforganizinglists.AbstractSelfOrganizingList;
 
 public class BySwappingList<K, V> extends AbstractSelfOrganizingList<K, V, BySwappingElement<K, V>> {
 	@Override

@@ -1,4 +1,4 @@
-package org.bambrikii.examples.algorithms.incubator.selforganizinglist;
+package org.bambrikii.examples.selforganizinglists;
 
 import lombok.AccessLevel;
 import lombok.Getter;

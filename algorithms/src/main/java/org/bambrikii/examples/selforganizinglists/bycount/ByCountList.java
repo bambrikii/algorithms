@@ -1,6 +1,6 @@
-package org.bambrikii.examples.algorithms.incubator.selforganizinglist.bycount;
+package org.bambrikii.examples.selforganizinglists.bycount;
 
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.AbstractSelfOrganizingList;
+import org.bambrikii.examples.selforganizinglists.AbstractSelfOrganizingList;
 
 public class ByCountList<K, V> extends AbstractSelfOrganizingList<K, V, ByCountElement<K, V>> {
 	@Override

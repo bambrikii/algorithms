@@ -1,4 +1,4 @@
-package org.bambrikii.examples.algorithms.incubator.selforganizinglist;
+package org.bambrikii.examples.selforganizinglists;
 
 /**
  * https://www.geeksforgeeks.org/self-organizing-list-set-1-introduction/

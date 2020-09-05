@@ -1,4 +1,4 @@
-package org.bambrikii.examples.algorithms.incubator.selforganizinglist;
+package org.bambrikii.examples.selforganizinglists;
 
 public interface SelfOrganizingList<K, V, E extends SelfOrganizingListElement<E, K, V>> {
 	E find(K key);
