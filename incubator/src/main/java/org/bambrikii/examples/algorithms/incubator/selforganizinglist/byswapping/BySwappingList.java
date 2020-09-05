@@ -1,24 +1,46 @@
 package org.bambrikii.examples.algorithms.incubator.selforganizinglist.byswapping;
 
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.SelfOrganizingList;
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.SelfOrganizingListElement;
+import org.bambrikii.examples.algorithms.incubator.selforganizinglist.AbstractSelfOrganizingList;
 
-public class BySwappingList<K, V> implements SelfOrganizingList<K, V, BySwappingElement<K, V>> {
+public class BySwappingList<K, V> extends AbstractSelfOrganizingList<K, V, BySwappingElement<K, V>> {
 	@Override
 	public BySwappingElement<K, V> find(K key) {
-		// TODO Auto-generated method stub
+		if (getFirst() == null) {
+			return null;
+		}
+		BySwappingElement<K, V> elem = getFirst();
+		do {
+			if (key.equals(elem.getKey())) {
+				// swap
+				if (getFirst().equals(elem)) {
+					return elem;
+				}
+				BySwappingElement<K, V> prev = elem.getPrev();
+				BySwappingElement<K, V> next = elem.getNext();
+				BySwappingElement<K, V> prevPrev = prev.getPrev();
+				prev.setPrev(elem);
+				prev.setNext(next);
+				if (next != null) {
+					next.setPrev(prev);
+				}
+				if (prevPrev != null) {
+					prevPrev.setNext(elem);
+				}
+
+				elem.setPrev(prevPrev);
+				elem.setNext(prev);
+
+				if (prevPrev == null) {
+					setFirst(elem);
+				}
+				return elem;
+			}
+		} while (((elem = elem.getNext()) != null));
 		return null;
 	}
 
 	@Override
-	public BySwappingElement<K, V> add(K key, V value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BySwappingElement<K, V> remove(K key) {
-		// TODO Auto-generated method stub
-		return null;
+	protected BySwappingElement<K, V> createElement(K key, V value) {
+		return new BySwappingElement<>(key, value);
 	}
 }

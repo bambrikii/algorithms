@@ -7,6 +7,7 @@ import org.junit.Test;
 
 public class SelfOrganizingListTest {
 	private void fillAndFindAndPurge(SelfOrganizingList<Integer, String, ?> list) {
+		System.out.println("--- " + list.getClass().getName());
 		System.out.println("Added " + list.add(1, "one") + "\t=> " + list);
 		System.out.println("Added " + list.add(2, "two") + "\t=> " + list);
 		System.out.println("Added " + list.add(3, "three") + "\t=> " + list);

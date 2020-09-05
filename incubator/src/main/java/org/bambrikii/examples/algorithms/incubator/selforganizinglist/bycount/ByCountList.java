@@ -1,26 +1,24 @@
 package org.bambrikii.examples.algorithms.incubator.selforganizinglist.bycount;
 
-import org.bambrikii.examples.algorithms.incubator.selforganizinglist.SelfOrganizingList;
+import org.bambrikii.examples.algorithms.incubator.selforganizinglist.AbstractSelfOrganizingList;
 
-public class ByCountList<K, V> implements SelfOrganizingList<K, V, ByCountElement<K, V>> {
-	private ByCountElement<K, V> first;
-
+public class ByCountList<K, V> extends AbstractSelfOrganizingList<K, V, ByCountElement<K, V>> {
 	@Override
 	public ByCountElement<K, V> find(K key) {
-		if (first == null) {
+		if (getFirst() == null) {
 			return null;
 		}
-		ByCountElement<K, V> elem = first;
+		ByCountElement<K, V> elem = getFirst();
 		do {
 			if (key.equals(elem.getKey())) {
 				elem.incCount();
 
 				// move to first position
-				if (first.equals(elem)) {
+				if (getFirst().equals(elem)) {
 					return elem;
 				}
 
-				if (elem.equals(first)) {
+				if (elem.equals(getFirst())) {
 					return elem;
 				}
 
@@ -43,9 +41,9 @@ public class ByCountList<K, V> implements SelfOrganizingList<K, V, ByCountElemen
 					}
 					elemPrev.setNext(elemNext);
 					elem.setPrev(null);
-					elem.setNext(first);
-					first.setPrev(elem);
-					first = elem;
+					elem.setNext(getFirst());
+					getFirst().setPrev(elem);
+					setFirst(elem);
 					return elem;
 				}
 
@@ -64,55 +62,7 @@ public class ByCountList<K, V> implements SelfOrganizingList<K, V, ByCountElemen
 	}
 
 	@Override
-	public ByCountElement<K, V> add(K key, V value) {
-		if (first == null) {
-			first = new ByCountElement<>(key, value);
-			return first;
-		}
-		ByCountElement<K, V> last = first;
-		while (last.getNext() != null) {
-			last = last.getNext();
-		}
-		ByCountElement<K, V> elem = new ByCountElement<>(key, value);
-		last.setNext(elem);
-		elem.setPrev(last);
-		return elem;
-	}
-
-	@Override
-	public ByCountElement<K, V> remove(K key) {
-		if (first == null) {
-			return null;
-		}
-		ByCountElement<K, V> elem = first;
-		while (elem != null) {
-			if (elem.getKey().equals(key)) {
-				ByCountElement<K, V> prev = elem.getPrev();
-				ByCountElement<K, V> next = elem.getNext();
-				if (prev != null) {
-					prev.setNext(next);
-				} else {
-					first = next;
-				}
-				if (next != null) {
-					next.setPrev(prev);
-				}
-				return elem;
-			}
-			elem = elem.getNext();
-		}
-		return null;
-	}
-
-	public String toString() {
-		if (first == null) {
-			return "null ->";
-		}
-		StringBuilder sb = new StringBuilder();
-		ByCountElement<K, V> elem = first;
-		do {
-			sb.append(elem).append(" -> ");
-		} while ((elem = elem.getNext()) != null);
-		return sb.toString();
+	protected ByCountElement<K, V> createElement(K key, V value) {
+		return new ByCountElement<>(key, value);
 	}
 }
