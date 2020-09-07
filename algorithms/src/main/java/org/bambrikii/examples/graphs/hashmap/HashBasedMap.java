@@ -129,7 +129,6 @@ public class HashBasedMap<K, V> {
 	}
 
 	private void rebalance(int n) {
-		// TODO:
 		if (n == 0) {
 			return;
 		}
@@ -154,7 +153,10 @@ public class HashBasedMap<K, V> {
 			throw new IllegalStateException(
 					MessageFormat.format("Expected size {0} != actual size {1} !", size, nextSize));
 		}
-//		size = nextSize;
+	}
+
+	public int size() {
+		return size;
 	}
 
 	@Override
