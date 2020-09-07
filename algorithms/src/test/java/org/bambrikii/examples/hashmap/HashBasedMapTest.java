@@ -29,7 +29,7 @@ public class HashBasedMapTest {
 	}
 
 	@Test
-	public void shouldAddAndRemove() {
+	public void shouldAddAndSearchAndRemove() {
 		HashExtractor hash = new HashExtractor();
 		HashBasedMap<Integer, String> map = new HashBasedMap<Integer, String>(hash, 0.85);
 

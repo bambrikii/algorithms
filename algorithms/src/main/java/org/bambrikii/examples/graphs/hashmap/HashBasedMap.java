@@ -33,37 +33,36 @@ public class HashBasedMap<K, V> {
 		if (next == null) {
 			buckets[i] = node;
 			return elem;
-		} else {
-			HashBasedBucketNode<K, V> nextPrev = null;
-			while (next != null) {
-				int cmp = hash.compare(next.getElem().getKey(), key);
-				if (cmp < 0) {
-					nextPrev = next;
-					next = next.getNext();
-					if (next == null) {
-						nextPrev.setNext(node);
-						return elem;
-					}
-				} else if (cmp > 0) { // adding
-					if (nextPrev != null) {
-						nextPrev.setNext(node);
-					} else {
-						buckets[i] = node;
-					}
-					node.setNext(next);
-					return elem;
-				} else { // replacing
-					if (nextPrev != null) {
-						nextPrev.setNext(node);
-					} else {
-						buckets[i] = node;
-					}
-					node.setNext(next.getNext());
-					return null;
-				}
-			}
-			return null;
 		}
+		HashBasedBucketNode<K, V> nextPrev = null;
+		while (next != null) {
+			int cmp = hash.compare(next.getElem().getKey(), key);
+			if (cmp < 0) {
+				nextPrev = next;
+				next = next.getNext();
+				if (next == null) {
+					nextPrev.setNext(node);
+					return elem;
+				}
+			} else if (cmp > 0) { // adding
+				if (nextPrev != null) {
+					nextPrev.setNext(node);
+				} else {
+					buckets[i] = node;
+				}
+				node.setNext(next);
+				return elem;
+			} else { // replacing
+				if (nextPrev != null) {
+					nextPrev.setNext(node);
+				} else {
+					buckets[i] = node;
+				}
+				node.setNext(next.getNext());
+				return null;
+			}
+		}
+		return null;
 	}
 
 	public HashBasedElem<K, V> add(K key, V val) {
