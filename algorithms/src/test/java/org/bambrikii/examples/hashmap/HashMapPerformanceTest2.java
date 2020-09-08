@@ -1,9 +1,9 @@
 package org.bambrikii.examples.hashmap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import org.bambrikii.examples.graphs.hashmap.HashBasedMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -16,25 +16,19 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class HashBasedMapPerformanceTest {
-	public static final int SAMPLE_SIZE = 1_000_000;
-
-	private HashExtractor hash = new HashExtractor();
-
-	@Parameters(name = "case {index}: size={0}, ratio={1}, threshold={2}")
+public class HashMapPerformanceTest2 {
+	@Parameters(name = "case {index}: size={0}, ratio={1}")
 	public static List<Object> data() {
 		List<Object> data = new ArrayList<>();
-		for (int size = SAMPLE_SIZE; size <= SAMPLE_SIZE; size += 1_000) {
-			for (double ratio = 0.85; ratio < 0.95; ratio += 0.05) {
-				for (double threshold = 1.8; threshold <= 2.1; threshold += 0.1) {
-					data.add(new Object[] { size, ratio, threshold });
-				}
+		for (int size = HashBasedMapPerformanceTest.SAMPLE_SIZE; size <= HashBasedMapPerformanceTest.SAMPLE_SIZE; size += 1_000) {
+			for (double ratio = 0.75; ratio <= 1.2; ratio += 0.05) {
+				data.add(new Object[] { size, ratio });
 			}
 		}
 		return data;
 	}
 
-	private HashBasedMap<Integer, Integer> map;
+	private HashMap<Integer, Integer> map;
 
 	@Parameter(0)
 	public static int size;
@@ -42,14 +36,11 @@ public class HashBasedMapPerformanceTest {
 	@Parameter(1)
 	public static double ratio;
 
-	@Parameter(2)
-	public static double threshold;
-
 	@Before
 	public void before() {
-		map = new HashBasedMap<Integer, Integer>(hash, ratio, threshold);
+		map = new HashMap<>(0, (float) ratio);
 		for (int i = 0; i < size; i++) {
-			map.add(i, i);
+			map.put(i, i);
 		}
 	}
 
@@ -60,14 +51,14 @@ public class HashBasedMapPerformanceTest {
 	@Test
 	public void should1Add() {
 		for (int i = 0; i < size; i++) {
-			map.add(i, i);
+			map.put(i, i);
 		}
 	}
 
 	@Test
 	public void should2Find() {
 		for (int i = 0; i < size; i++) {
-			map.find(i);
+			map.get(i);
 		}
 	}
 

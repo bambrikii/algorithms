@@ -9,7 +9,7 @@ public class HashBasedMap<K, V> {
 	private final double ratio;
 	private final double threshold;
 	private int size;
-	private HashBasedBucketNode<K, V>[] buckets = new HashBasedBucketNode[1];
+	private HashBasedElem<K, V>[] buckets = new HashBasedElem[1];
 
 	public HashBasedMap(HashExtractable<K> hash) {
 		this(hash, 0.9, 2.0);
@@ -26,33 +26,31 @@ public class HashBasedMap<K, V> {
 		ratioPrecision = (int) Math.pow(10, BigDecimal.valueOf(ratio).precision());
 	}
 
-	private int index(K key, HashBasedBucketNode<K, V>[] buckets) {
+	private int index(K key, HashBasedElem<K, V>[] buckets) {
 		int hashCode = hash.hash(key);
 		int i = hashCode % buckets.length;
 		return i;
 	}
 
-	private HashBasedElem<K, V> add0(K key, V val, HashBasedBucketNode<K, V>[] buckets) {
-		HashBasedBucketNode<K, V> node = new HashBasedBucketNode<>();
-		HashBasedElem<K, V> elem = new HashBasedElem<>(key, val);
-		node.setElem(elem);
+	private HashBasedElem<K, V> add0(K key, V val, HashBasedElem<K, V>[] buckets) {
+		HashBasedElem<K, V> node = new HashBasedElem(key, val);
 
 		int i = index(key, buckets);
 
-		HashBasedBucketNode<K, V> next = buckets[i];
+		HashBasedElem<K, V> next = buckets[i];
 		if (next == null) {
 			buckets[i] = node;
-			return elem;
+			return node;
 		}
-		HashBasedBucketNode<K, V> nextPrev = null;
+		HashBasedElem<K, V> nextPrev = null;
 		while (next != null) {
-			int cmp = hash.compare(next.getElem().getKey(), key);
+			int cmp = hash.compare(next.getKey(), key);
 			if (cmp < 0) {
 				nextPrev = next;
 				next = next.getNext();
 				if (next == null) {
 					nextPrev.setNext(node);
-					return elem;
+					return node;
 				}
 			} else if (cmp > 0) { // adding
 				if (nextPrev != null) {
@@ -61,7 +59,7 @@ public class HashBasedMap<K, V> {
 					buckets[i] = node;
 				}
 				node.setNext(next);
-				return elem;
+				return node;
 			} else { // replacing
 				if (nextPrev != null) {
 					nextPrev.setNext(node);
@@ -83,17 +81,17 @@ public class HashBasedMap<K, V> {
 		return elem;
 	}
 
-	private HashBasedElem<K, V> remove0(K key, HashBasedBucketNode<K, V>[] buckets) {
-		HashBasedBucketNode<K, V> node = null;
+	private HashBasedElem<K, V> remove0(K key, HashBasedElem<K, V>[] buckets) {
+		HashBasedElem<K, V> node = null;
 		int i = index(key, buckets);
-		HashBasedBucketNode<K, V> next = buckets[i];
+		HashBasedElem<K, V> next = buckets[i];
 		if (next == null) {
 			return null;
 		}
-		HashBasedBucketNode<K, V> nextPrev = null;
+		HashBasedElem<K, V> nextPrev = null;
 		while (next != null) {
-			int cmp = hash.compare(next.getElem().getKey(), key);
-			HashBasedBucketNode<K, V> nextNext = next.getNext();
+			int cmp = hash.compare(next.getKey(), key);
+			HashBasedElem<K, V> nextNext = next.getNext();
 			if (cmp == 0) {
 				if (nextPrev == null) {
 					buckets[i] = nextNext;
@@ -109,7 +107,7 @@ public class HashBasedMap<K, V> {
 		if (node == null) {
 			return null;
 		}
-		return node != null ? node.getElem() : null;
+		return node;
 	}
 
 	public HashBasedElem<K, V> remove(K key) {
@@ -121,16 +119,16 @@ public class HashBasedMap<K, V> {
 	}
 
 	public HashBasedElem<K, V> find(K key) {
-		HashBasedBucketNode<K, V>[] buckets = this.buckets;
+		HashBasedElem<K, V>[] buckets = this.buckets;
 		int i = index(key, buckets);
-		HashBasedBucketNode<K, V> next = buckets[i];
+		HashBasedElem<K, V> next = buckets[i];
 		if (next == null) {
 			return null;
 		}
 		while (next != null) {
-			int cmp = hash.compare(next.getElem().getKey(), key);
+			int cmp = hash.compare(next.getKey(), key);
 			if (cmp == 0) {
-				return next.getElem();
+				return next;
 			}
 			next = next.getNext();
 		}
@@ -142,17 +140,16 @@ public class HashBasedMap<K, V> {
 			return;
 		}
 		size = size + ((n > 0) ? 1 : -1);
-		int nextBucketsCount = (int) Math.ceil(((ratio * ratioPrecision * size) / ratioPrecision));
-		HashBasedBucketNode<K, V>[] oldBuckets = this.buckets;
+		int nextBucketsCount = (int) (((ratio * ratioPrecision * size) / ratioPrecision));
+		HashBasedElem<K, V>[] oldBuckets = this.buckets;
 		if (Math.abs(((nextBucketsCount - oldBuckets.length) / (oldBuckets.length + 1.0))) < threshold) {
 			return;
 		}
-		HashBasedBucketNode<K, V>[] newBuckets = new HashBasedBucketNode[nextBucketsCount];
+		HashBasedElem<K, V>[] newBuckets = new HashBasedElem[nextBucketsCount];
 		int nextSize = 0;
-		for (HashBasedBucketNode<K, V> bucket : oldBuckets) {
+		for (HashBasedElem<K, V> bucket : oldBuckets) {
 			while (bucket != null) {
-				HashBasedElem<K, V> elem = bucket.getElem();
-				add0(elem.getKey(), elem.getVal(), newBuckets);
+				add0(bucket.getKey(), bucket.getVal(), newBuckets);
 				bucket = bucket.getNext();
 				nextSize++;
 			}
@@ -173,12 +170,11 @@ public class HashBasedMap<K, V> {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		for (int i = 0; i < buckets.length; i++) {
-			HashBasedBucketNode<K, V> bucket = buckets[i];
+			HashBasedElem<K, V> bucket = buckets[i];
 			sb.append(System.lineSeparator()).append("\t[").append(i).append(": ");
 			while (bucket != null) {
-				HashBasedElem<K, V> elem = bucket.getElem();
-				sb.append("key=").append(elem.getKey()).append(":").append(hash.hash(elem.getKey())).append(", val=")
-						.append(elem.getVal()).append("\t");
+				sb.append("key=").append(bucket.getKey()).append(":").append(hash.hash(bucket.getKey()))
+						.append(", val=").append(bucket.getVal()).append("\t");
 				bucket = bucket.getNext();
 			}
 			sb.append("]");

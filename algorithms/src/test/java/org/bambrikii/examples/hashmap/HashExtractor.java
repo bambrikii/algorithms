@@ -19,6 +19,14 @@ class HashExtractor implements HashExtractable<Integer> {
 		if (right == null) {
 			return 1;
 		}
-		return left.compareTo(right);
+		int leftInt = left.intValue();
+		int rightInt = right.intValue();
+		if (leftInt > rightInt) {
+			return -1;
+		}
+		if (leftInt < rightInt) {
+			return 1;
+		}
+		return 0;
 	}
 }
