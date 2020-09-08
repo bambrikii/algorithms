@@ -7,19 +7,19 @@ public class HashBasedMap<K, V> {
 	private final int ratioPrecision;
 	private final HashExtractable<K> hash;
 	private final double ratio;
-	private final int threshold;
+	private final double threshold;
 	private int size;
 	private HashBasedBucketNode<K, V>[] buckets = new HashBasedBucketNode[1];
 
 	public HashBasedMap(HashExtractable<K> hash) {
-		this(hash, 0.8, 9);
+		this(hash, 0.9, 2.0);
 	}
 
 	public HashBasedMap(HashExtractable<K> hash, double ratio) {
-		this(hash, ratio, 9);
+		this(hash, ratio, 2.0);
 	}
 
-	public HashBasedMap(HashExtractable<K> hash, double ratio, int threshold) {
+	public HashBasedMap(HashExtractable<K> hash, double ratio, double threshold) {
 		this.hash = hash;
 		this.ratio = ratio;
 		this.threshold = threshold;
@@ -144,7 +144,7 @@ public class HashBasedMap<K, V> {
 		size = size + ((n > 0) ? 1 : -1);
 		int nextBucketsCount = (int) Math.ceil(((ratio * ratioPrecision * size) / ratioPrecision));
 		HashBasedBucketNode<K, V>[] oldBuckets = this.buckets;
-		if ((nextBucketsCount >> threshold) == (oldBuckets.length >> threshold)) {
+		if (Math.abs(((nextBucketsCount - oldBuckets.length) / (oldBuckets.length + 1.0))) < threshold) {
 			return;
 		}
 		HashBasedBucketNode<K, V>[] newBuckets = new HashBasedBucketNode[nextBucketsCount];

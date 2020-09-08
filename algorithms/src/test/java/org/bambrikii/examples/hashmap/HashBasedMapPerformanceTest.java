@@ -22,9 +22,9 @@ public class HashBasedMapPerformanceTest {
 	@Parameters(name = "case {index}: size={0}, ratio={1}, threshold={2}")
 	public static List<Object> data() {
 		List<Object> data = new ArrayList<>();
-		for (int size = 100_000; size <= 100_000; size += 10_000) {
+		for (int size = 1_000_000; size <= 1_000_000; size += 1_000) {
 			for (double ratio = 0.75; ratio < 0.95; ratio += 0.05) {
-				for (int threshold = 6; threshold <= 12; threshold += 1) {
+				for (double threshold = 1.5; threshold <= 2.5; threshold += 0.1) {
 					data.add(new Object[] { size, ratio, threshold });
 				}
 			}
@@ -41,7 +41,7 @@ public class HashBasedMapPerformanceTest {
 	public static double ratio;
 
 	@Parameter(2)
-	public static int threshold;
+	public static double threshold;
 
 	@Before
 	public void before() {

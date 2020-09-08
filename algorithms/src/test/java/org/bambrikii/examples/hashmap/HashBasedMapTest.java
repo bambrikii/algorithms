@@ -9,7 +9,7 @@ public class HashBasedMapTest {
 	@Test
 	public void shouldAddAndSearchAndRemove() {
 		HashExtractor hash = new HashExtractor();
-		HashBasedMap<Integer, String> map = new HashBasedMap<Integer, String>(hash, 0.85);
+		HashBasedMap<Integer, String> map = new HashBasedMap<Integer, String>(hash);
 
 		System.out.println("Adding...");
 		for (int i = 0; i < 100; i++) {
