@@ -1,7 +1,6 @@
 package org.bambrikii.examples.hashmap;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,8 +34,7 @@ public class HashMapPerformanceTest2 {
     public void after() {
     }
 
-    @DisplayName("add {index}: size={0}, ratio={1}")
-    @ParameterizedTest
+    @ParameterizedTest(name = "add {index}: size={0}, ratio={1}")
     @MethodSource("data")
     public void should1Add(int size, double ratio) {
         HashMap<Integer, Integer> map = before(size, ratio);
@@ -46,8 +44,7 @@ public class HashMapPerformanceTest2 {
         }
     }
 
-    @DisplayName("find {index}: size={0}, ratio={1}")
-    @ParameterizedTest
+    @ParameterizedTest(name = "find {index}: size={0}, ratio={1}")
     @MethodSource("data")
     public void should2Find(int size, double ratio) {
         HashMap<Integer, Integer> map = before(size, ratio);
@@ -57,8 +54,7 @@ public class HashMapPerformanceTest2 {
         }
     }
 
-    @DisplayName("remove {index}: size={0}, ratio={1}")
-    @ParameterizedTest
+    @ParameterizedTest(name = "remove {index}: size={0}, ratio={1}")
     @MethodSource("data")
     public void should3Remove(int size, double ratio) {
         HashMap<Integer, Integer> map = before(size, ratio);

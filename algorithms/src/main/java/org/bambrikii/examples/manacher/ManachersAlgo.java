@@ -10,11 +10,12 @@ public class ManachersAlgo {
         }
         int len = in.length();
         StringBuilder result = new StringBuilder();
-        for (int pos1 = 0; pos1 < len; pos1++) {
+        int mid = (len + 1) / 2;
+        for (int pos1 = 0; pos1 < mid; pos1++) {
             StringBuilder sb1 = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
-            int mid = (len - pos1 + 1) / 2;
-            for (int pos2 = 0; pos2 < mid; pos2++) {
+            int mid2 = (len - pos1 + 1) / 2;
+            for (int pos2 = 0; pos2 < mid2; pos2++) {
                 tryMatch(in, sb1, pos1 + pos2, len - 1 - pos2);
                 tryMatch(in, sb2, pos2, len - 1 - pos1 - pos2);
             }

@@ -1,7 +1,6 @@
 package org.bambrikii.examples.hashmap;
 
 import org.bambrikii.examples.graphs.hashmap.HashBasedMap;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,8 +35,7 @@ public class HashBasedMapPerformanceTest {
         return map;
     }
 
-    @DisplayName("add {index}: size={0}, ratio={1}, threshold={2}")
-    @ParameterizedTest
+    @ParameterizedTest(name = "add {index}: size={0}, ratio={1}, threshold={2}")
     @MethodSource("data")
     public void should1Add(int size, double ratio, double threshold) {
         HashBasedMap<Integer, Integer> map = before(size, ratio, threshold);
@@ -47,8 +45,7 @@ public class HashBasedMapPerformanceTest {
         }
     }
 
-    @DisplayName("find {index}: size={0}, ratio={1}, threshold={2}")
-    @ParameterizedTest
+    @ParameterizedTest(name = "find {index}: size={0}, ratio={1}, threshold={2}")
     @MethodSource("data")
     public void should2Find(int size, double ratio, double threshold) {
         HashBasedMap<Integer, Integer> map = before(size, ratio, threshold);
@@ -58,8 +55,7 @@ public class HashBasedMapPerformanceTest {
         }
     }
 
-    @DisplayName("remove {index}: size={0}, ratio={1}, threshold={2}")
-    @ParameterizedTest
+    @ParameterizedTest(name = "remove {index}: size={0}, ratio={1}, threshold={2}")
     @MethodSource("data")
     public void should3Remove(int size, double ratio, double threshold) {
         HashBasedMap<Integer, Integer> map = before(size, ratio, threshold);
