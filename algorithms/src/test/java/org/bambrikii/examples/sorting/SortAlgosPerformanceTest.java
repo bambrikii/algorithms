@@ -13,9 +13,8 @@ import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickRandomSort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
 import org.bambrikii.examples.sorting.three_pyramids_sort.ThreePyramidsSort;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -24,9 +23,9 @@ public class SortAlgosPerformanceTest {
 
     private static int[] array;
 
-    @BeforeClass
+    @BeforeAll
     public static void before() {
-        int n = 6800;
+        int n = 68;
         array = new int[n];
         for (int i = 0; i < n; i++) {
             array[i] = new Random().nextInt(n);
@@ -69,7 +68,6 @@ public class SortAlgosPerformanceTest {
     }
 
     @Test
-    @Ignore
     public void testMySort() throws SortingException {
         runAlgo(new MySort(), array);
     }
@@ -114,7 +112,7 @@ public class SortAlgosPerformanceTest {
         runAlgo(new CountSort(), array);
     }
 
-    @Test
+//    @Test
     public void testBucketSort() throws SortingException {
         runAlgo(new BucketSort(), array);
     }

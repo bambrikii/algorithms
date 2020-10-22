@@ -1,24 +1,21 @@
 package org.bambrikii.examples.manachers;
 
 import org.bambrikii.examples.manacher.ManachersAlgo;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * https://www.geeksforgeeks.org/manachers-algorithm-linear-time-longest-palindromic-substring-part-1/
  */
-@RunWith(Parameterized.class)
 public class ManachersAlgoTest {
     private ManachersAlgo algo;
 
-    @Parameterized.Parameters(name = "{index}: {0} - {1}")
     public static List<Object[]> data() {
         return Arrays.asList(
                 new Object[]{"forgeeksskeegfor", "geeksskeeg"},
@@ -29,19 +26,14 @@ public class ManachersAlgoTest {
         );
     }
 
-    @Before
+    @BeforeEach
     public void before() {
         algo = new ManachersAlgo();
     }
 
-    @Parameterized.Parameter
-    public static String in;
-
-    @Parameterized.Parameter(1)
-    public static String expected;
-
-    @Test
-    public void findOne() {
+    @ParameterizedTest
+    @MethodSource("data")
+    public void findOne(String in, String expected) {
         assertEquals(expected, algo.find(in));
     }
 }

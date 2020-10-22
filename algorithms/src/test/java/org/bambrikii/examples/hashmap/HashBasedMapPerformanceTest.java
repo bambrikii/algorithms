@@ -1,80 +1,71 @@
 package org.bambrikii.examples.hashmap;
 
+import org.bambrikii.examples.graphs.hashmap.HashBasedMap;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bambrikii.examples.graphs.hashmap.HashBasedMap;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
-
-@RunWith(Parameterized.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class HashBasedMapPerformanceTest {
-	public static final int SAMPLE_SIZE = 1_000_000;
+    public static final int SAMPLE_SIZE = 1_000_000;
 
-	private HashExtractor hash = new HashExtractor();
+    private HashExtractor hash = new HashExtractor();
 
-	@Parameters(name = "case {index}: size={0}, ratio={1}, threshold={2}")
-	public static List<Object> data() {
-		List<Object> data = new ArrayList<>();
-		for (int size = SAMPLE_SIZE; size <= SAMPLE_SIZE; size += 1_000) {
-			for (double ratio = 0.85; ratio < 0.95; ratio += 0.05) {
-				for (double threshold = 1.8; threshold <= 2.1; threshold += 0.1) {
-					data.add(new Object[] { size, ratio, threshold });
-				}
-			}
-		}
-		return data;
-	}
+    public static List<Object> data() {
+        List<Object> data = new ArrayList<>();
+        for (int size = SAMPLE_SIZE; size <= SAMPLE_SIZE; size += 1_000) {
+            for (double ratio = 0.85; ratio < 0.95; ratio += 0.05) {
+                for (double threshold = 1.8; threshold <= 2.1; threshold += 0.1) {
+                    data.add(new Object[]{size, ratio, threshold});
+                }
+            }
+        }
+        return data;
+    }
 
-	private HashBasedMap<Integer, Integer> map;
+    private HashBasedMap<Integer, Integer> before(int size, double ratio, double threshold) {
+        HashBasedMap<Integer, Integer> map = new HashBasedMap<Integer, Integer>(hash, ratio, threshold);
+        for (int i = 0; i < size; i++) {
+            map.add(i, i);
+        }
+        return map;
+    }
 
-	@Parameter(0)
-	public static int size;
+    @DisplayName("add {index}: size={0}, ratio={1}, threshold={2}")
+    @ParameterizedTest
+    @MethodSource("data")
+    public void should1Add(int size, double ratio, double threshold) {
+        HashBasedMap<Integer, Integer> map = before(size, ratio, threshold);
 
-	@Parameter(1)
-	public static double ratio;
+        for (int i = 0; i < size; i++) {
+            map.add(i, i);
+        }
+    }
 
-	@Parameter(2)
-	public static double threshold;
+    @DisplayName("find {index}: size={0}, ratio={1}, threshold={2}")
+    @ParameterizedTest
+    @MethodSource("data")
+    public void should2Find(int size, double ratio, double threshold) {
+        HashBasedMap<Integer, Integer> map = before(size, ratio, threshold);
 
-	@Before
-	public void before() {
-		map = new HashBasedMap<Integer, Integer>(hash, ratio, threshold);
-		for (int i = 0; i < size; i++) {
-			map.add(i, i);
-		}
-	}
+        for (int i = 0; i < size; i++) {
+            map.find(i);
+        }
+    }
 
-	@After
-	public void after() {
-	}
+    @DisplayName("remove {index}: size={0}, ratio={1}, threshold={2}")
+    @ParameterizedTest
+    @MethodSource("data")
+    public void should3Remove(int size, double ratio, double threshold) {
+        HashBasedMap<Integer, Integer> map = before(size, ratio, threshold);
 
-	@Test
-	public void should1Add() {
-		for (int i = 0; i < size; i++) {
-			map.add(i, i);
-		}
-	}
-
-	@Test
-	public void should2Find() {
-		for (int i = 0; i < size; i++) {
-			map.find(i);
-		}
-	}
-
-	@Test
-	public void should3Remove() {
-		for (int i = 0; i < size; i++) {
-			map.remove(i);
-		}
-	}
+        for (int i = 0; i < size; i++) {
+            map.remove(i);
+        }
+    }
 }

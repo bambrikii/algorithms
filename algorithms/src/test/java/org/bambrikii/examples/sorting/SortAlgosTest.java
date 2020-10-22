@@ -13,7 +13,7 @@ import org.bambrikii.examples.sorting.my.MySort;
 import org.bambrikii.examples.sorting.quick.QuickSort;
 import org.bambrikii.examples.sorting.selection.SelectionSort;
 import org.bambrikii.examples.sorting.three_pyramids_sort.ThreePyramidsSort;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 

@@ -3,7 +3,7 @@ package org.bambrikii.examples.graphs.rbtree2;
 import org.bambrikii.examples.graphs.rbtree.RBNode;
 import org.bambrikii.examples.graphs.rbtree2.utils.RotationUtils;
 import org.bambrikii.examples.graphs.treeutils.RBTreePrinter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RotationUtilsTest {
     @Test

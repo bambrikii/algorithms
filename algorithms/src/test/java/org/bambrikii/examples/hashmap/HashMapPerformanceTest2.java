@@ -1,71 +1,70 @@
 package org.bambrikii.examples.hashmap;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
-
-@RunWith(Parameterized.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class HashMapPerformanceTest2 {
-	@Parameters(name = "case {index}: size={0}, ratio={1}")
-	public static List<Object> data() {
-		List<Object> data = new ArrayList<>();
-		for (int size = HashBasedMapPerformanceTest.SAMPLE_SIZE; size <= HashBasedMapPerformanceTest.SAMPLE_SIZE; size += 1_000) {
-			for (double ratio = 0.75; ratio <= 1.2; ratio += 0.05) {
-				data.add(new Object[] { size, ratio });
-			}
-		}
-		return data;
-	}
+    public static List<Object> data() {
+        List<Object> data = new ArrayList<>();
+        for (int size = HashBasedMapPerformanceTest.SAMPLE_SIZE; size <= HashBasedMapPerformanceTest.SAMPLE_SIZE; size += 1_000) {
+            for (double ratio = 0.75; ratio <= 1.2; ratio += 0.05) {
+                data.add(new Object[]{size, ratio});
+            }
+        }
+        return data;
+    }
 
-	private HashMap<Integer, Integer> map;
+    private HashMap<Integer, Integer> before(int size, double ratio) {
+        HashMap<Integer, Integer> map = new HashMap<>(0, (float) ratio);
+        for (int i = 0; i < size; i++) {
+            map.put(i, i);
+        }
+        return map;
+    }
 
-	@Parameter(0)
-	public static int size;
+    @AfterEach
+    public void after() {
+    }
 
-	@Parameter(1)
-	public static double ratio;
+    @DisplayName("add {index}: size={0}, ratio={1}")
+    @ParameterizedTest
+    @MethodSource("data")
+    public void should1Add(int size, double ratio) {
+        HashMap<Integer, Integer> map = before(size, ratio);
 
-	@Before
-	public void before() {
-		map = new HashMap<>(0, (float) ratio);
-		for (int i = 0; i < size; i++) {
-			map.put(i, i);
-		}
-	}
+        for (int i = 0; i < size; i++) {
+            map.put(i, i);
+        }
+    }
 
-	@After
-	public void after() {
-	}
+    @DisplayName("find {index}: size={0}, ratio={1}")
+    @ParameterizedTest
+    @MethodSource("data")
+    public void should2Find(int size, double ratio) {
+        HashMap<Integer, Integer> map = before(size, ratio);
 
-	@Test
-	public void should1Add() {
-		for (int i = 0; i < size; i++) {
-			map.put(i, i);
-		}
-	}
+        for (int i = 0; i < size; i++) {
+            map.get(i);
+        }
+    }
 
-	@Test
-	public void should2Find() {
-		for (int i = 0; i < size; i++) {
-			map.get(i);
-		}
-	}
+    @DisplayName("remove {index}: size={0}, ratio={1}")
+    @ParameterizedTest
+    @MethodSource("data")
+    public void should3Remove(int size, double ratio) {
+        HashMap<Integer, Integer> map = before(size, ratio);
 
-	@Test
-	public void should3Remove() {
-		for (int i = 0; i < size; i++) {
-			map.remove(i);
-		}
-	}
+        for (int i = 0; i < size; i++) {
+            map.remove(i);
+        }
+    }
 }
