@@ -7,8 +7,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BFSDistance<T> {
+public class BfsDistance<T> {
     private int weight;
     private Edge<T> edge;
-    private BFSDistance<T> prev;
+    private BfsDistance<T> prev;
 }

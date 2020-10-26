@@ -2,10 +2,10 @@ package org.bambrikii.examples.graphs.bfs;
 
 import org.junit.jupiter.api.Test;
 
-public class BFSTest {
+public class BfsTest {
     @Test
     public void shouldFindShortestPath() {
-        BFS<Integer> bfs = new BFS<>();
+        Bfs<Integer> bfs = new Bfs<>();
         bfs
                 .edge(1, 2, 2)
                 .edge(1, 3, 3)
@@ -16,7 +16,7 @@ public class BFSTest {
 
         ;
 
-        BFSDistance<Integer> result = bfs.find(1, 4);
+        BfsDistance<Integer> result = bfs.find(1, 4);
         System.out.println(" " + result);
     }
 }

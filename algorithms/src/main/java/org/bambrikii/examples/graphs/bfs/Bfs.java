@@ -6,16 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class BFS<T> {
+public class Bfs<T> {
     private final Map<T, Vertex<T>> vertexes = new HashMap<>();
     private final Map<Vertex<T>, List<Edge<T>>> fromEdges = new HashMap<>();
 
-    public BFS<T> edge(T valFrom, T valTo) {
+    public Bfs<T> edge(T valFrom, T valTo) {
         edge(valFrom, valTo, 0);
         return this;
     }
 
-    public BFS<T> edge(T valFrom, T valTo, int weight) {
+    public Bfs<T> edge(T valFrom, T valTo, int weight) {
         Vertex<T> vFrom = ensureVertex(valFrom);
         Vertex<T> vTo = ensureVertex(valTo);
         ensureEdge(vFrom, vTo, weight);
@@ -44,22 +44,22 @@ public class BFS<T> {
         return edge;
     }
 
-    private BFSDistance<T> createResult(BFSDistance<T> prev, Edge<T> edge, int weight) {
-        BFSDistance<T> reverse = new BFSDistance<>();
+    private BfsDistance<T> createResult(BfsDistance<T> prev, Edge<T> edge, int weight) {
+        BfsDistance<T> reverse = new BfsDistance<>();
         reverse.setPrev(prev);
         reverse.setEdge(edge);
         reverse.setWeight(weight);
         return reverse;
     }
 
-    public BFSDistance<T> find(T valFrom, T valTo) {
-        Map<Vertex<T>, BFSDistance<T>> distances = new HashMap<>();
+    public BfsDistance<T> find(T valFrom, T valTo) {
+        Map<Vertex<T>, BfsDistance<T>> distances = new HashMap<>();
 
         LinkedList<Edge<T>> queue = new LinkedList<>();
 
         Vertex<T> shortestDistanceVertex = vertexes.get(valFrom);
         Vertex<T> targetVertex = vertexes.get(valTo);
-        BFSDistance<T> startingDistance = createResult(null, null, 0);
+        BfsDistance<T> startingDistance = createResult(null, null, 0);
         distances.put(shortestDistanceVertex, startingDistance);
 
         List<Edge<T>> startingEdges = fromEdges.get(shortestDistanceVertex);
@@ -80,12 +80,12 @@ public class BFS<T> {
 
             int thisEdgeWeight = edge.getWeight();
 
-            BFSDistance<T> fromDistance = distances.get(vFrom);
+            BfsDistance<T> fromDistance = distances.get(vFrom);
 
             int newWeight = thisEdgeWeight + (fromDistance != null ? fromDistance.getWeight() : 0);
 
             if (distances.containsKey(vTo)) {
-                BFSDistance<T> toDistance = distances.get(vTo);
+                BfsDistance<T> toDistance = distances.get(vTo);
                 int currentWeight = toDistance.getWeight();
                 if (newWeight < currentWeight) {
                     toDistance.setWeight(newWeight);
