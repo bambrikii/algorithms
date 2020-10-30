@@ -10,8 +10,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = "children")
+@ToString(exclude = "children")
 public class Node {
     private int val;
     private List<Node> children = new ArrayList<>();
