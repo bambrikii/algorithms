@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 @Getter
 @Setter
-@ToString
-class StronglyConnectedComponentsTarjanNode extends ArrayList<StronglyConnectedComponentsTarjanNode> {
+@ToString(callSuper = false)
+public class StronglyConnectedComponentsTarjanNode extends ArrayList<StronglyConnectedComponentsTarjanNode> {
     private int val;
     private int index;
 
