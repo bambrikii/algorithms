@@ -3,6 +3,8 @@ package org.bambrikii.examples.mstree;
 import org.bambrikii.examples.mstree.KruskalAlgoMatrix.Edge;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class KruskalAlgoMatrixTest {
     static int[][] buildInput() {
         return new int[][]{
@@ -14,17 +16,23 @@ public class KruskalAlgoMatrixTest {
         };
     }
 
-    @Test
-    public void shouldFind() {
-        KruskalAlgoMatrix algo = new KruskalAlgoMatrix();
-        KruskalAlgoMatrix.KruskalAlgoMatrixResult result = algo.find(buildInput());
+    static void printOutput(List<Edge> edges) {
         int w = 0;
-        for (Edge edge : result.getEdges()) {
+        for (Edge edge : edges) {
             System.out.println(edge);
             w += edge.getW();
         }
 
         System.out.println("Weight: " + w);
+    }
+
+    @Test
+    public void shouldFind() {
+        KruskalAlgoMatrix algo = new KruskalAlgoMatrix();
+
+        KruskalAlgoMatrix.KruskalAlgoMatrixResult result = algo.find(buildInput());
+
+        printOutput(result.getEdges());
 
         for (Integer processed : result.getProcessed()) {
             System.out.print(" -> " + processed);
