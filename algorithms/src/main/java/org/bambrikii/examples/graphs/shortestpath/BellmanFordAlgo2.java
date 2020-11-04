@@ -1,4 +1,4 @@
-package org.bambrikii.examples.mstree;
+package org.bambrikii.examples.graphs.shortestpath;
 
 import java.util.ArrayList;
 import java.util.HashMap;
