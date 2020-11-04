@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.bambrikii.examples.graphs.dfs.DfsTopologicalSortTest.createGraph;
 
-public class BfsDfsTopologicalSortTest {
+public class BfsTopologicalSortTest {
     @Test
     public void shouldSort() {
         BfsTopologicalSort algo = new BfsTopologicalSort();

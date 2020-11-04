@@ -18,19 +18,6 @@ public class BfsTopologicalSort {
 
         q.addAll(Arrays.asList(roots));
 
-        Map<Node, Integer> in = new HashMap<>();
-
-        while (!q.isEmpty()) {
-            Node node = q.poll();
-            for (Node child : node.getChildren()) {
-                if (!in.containsKey(child)) {
-                    in.put(child, 0);
-                }
-                in.put(child, in.get(child) + 1);
-                q.add(child);
-            }
-        }
-
         List<Node> result = new ArrayList<>();
 
         Map<Node, Boolean> visited = new HashMap<>();
@@ -40,13 +27,6 @@ public class BfsTopologicalSort {
         while (!q.isEmpty()) {
             Node node = q.poll();
             for (Node child : node.getChildren()) {
-                if (!in.containsKey(child)) {
-                    continue;
-                }
-                if (in.get(child) == 0) {
-                    continue;
-                }
-                in.put(child, in.get(child) - 1);
                 if (visited.containsKey(child) && visited.get(child)) {
                     continue;
                 }
