@@ -12,6 +12,8 @@ public class FordFulkersonAlgoTest {
                 .edge(2, 3, 2)
                 .edge(3, 4, 1)
                 .edge(4, 9, 1)
+                .edge(2, 10, 3)
+                .edge(10, 9, 3)
                 .edge(1, 5, 3)
                 .edge(5, 9, 2)
                 .edge(1, 6, 4)

@@ -9,10 +9,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "capacity")
+@EqualsAndHashCode(exclude = {"capacity", "flow"})
 @ToString
 public class Edge {
     private Integer from;
     private Integer to;
     private Integer capacity;
+    private Integer flow;
 }

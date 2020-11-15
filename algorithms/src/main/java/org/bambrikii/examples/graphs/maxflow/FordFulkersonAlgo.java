@@ -13,83 +13,70 @@ public class FordFulkersonAlgo {
         if (!edges.containsKey(from)) {
             edges.put(from, new ArrayList<>());
         }
-        edges.get(from).add(new Edge(from, to, val));
+        edges.get(from).add(new Edge(from, to, val, 0));
         return this;
     }
 
-    public LinkedList<EdgeFlow> find(int from, int to) {
-        LinkedList<EdgeFlow> path = findPath(from, to, new LinkedList<>());
+    public Integer find(int from, int to) {
+        Integer maxFlow = findPath(from, to, Integer.MAX_VALUE);
 
         System.out.println("Path:");
-        for (EdgeFlow edgeFlow : path) {
-            System.out.print(" " + edgeFlow);
-            if (edgeFlow.getEdge().getFrom() == from) {
-                System.out.print(" > ");
+        LinkedList<Edge> queue = new LinkedList<>();
+        queue.addAll(edges.get(from));
+        while (!queue.isEmpty()) {
+            Edge edge = queue.poll();
+            System.out.print(" " + edge);
+            Integer to2 = edge.getTo();
+            if (to2 != null) {
+                List<Edge> to2Edges = edges.get(to2);
+                if (to2Edges != null && !to2Edges.isEmpty()) {
+                    queue.addAll(to2Edges);
+                }
             }
-            if (edgeFlow.getEdge().getTo() == to) {
-                System.out.print(" = " + edgeFlow.getFlow());
+            if (edge.getFrom() == from) {
+                System.out.print(" start: ");
+            }
+            if (edge.getTo() == to) {
+                System.out.print(" end: " + edge.getFlow());
             }
             System.out.println();
         }
 
-        int max = path
-                .stream()
-                .filter(edgeFlow -> edgeFlow.getEdge().getFrom() == from)
-                .mapToInt(edgeFlow -> edgeFlow.getFlow())
-                .sum();
-        System.out.println("Max flow = " + max);
+        System.out.println("Max flow by value = " + maxFlow);
+        System.out.println("Max flow by from edges = " + edges.get(from).stream().mapToInt(edge -> edge.getFlow()).sum());
 
-        return path;
+        return maxFlow;
     }
 
-    private LinkedList<EdgeFlow> findPath(Integer from, Integer to, LinkedList<EdgeFlow> path) {
-        if (from == null) {
-            return path;
-        }
-        if (to == null) {
-            return path;
+    private Integer findPath(Integer from, Integer to, Integer parentFlow) {
+        if (from == to) {
+            return parentFlow;
         }
         List<Edge> fromEdges = edges.get(from);
         if (fromEdges == null || fromEdges.isEmpty()) {
-            return path;
+            return 0;
         }
-        Integer flow = path.size() == 0 ? null : path.getLast().getFlow();
+        Integer residualFlow = fromEdges.stream().mapToInt(edge -> edge.getCapacity()).sum();
+        if (parentFlow < residualFlow) {
+            residualFlow = parentFlow;
+        }
+        Integer edgeFlow = 0;
         for (Edge fromEdge : fromEdges) {
             Integer capacity = fromEdge.getCapacity();
-            if (flow == null) {
-                if (capacity > 0) {
-                    EdgeFlow edgeFlow = new EdgeFlow(fromEdge, capacity);
-                    path.add(edgeFlow);
-                    path = findPath(fromEdge.getTo(), to, path);
-                    EdgeFlow lastEdge = path.getLast();
-                    if (!lastEdge.equals(edgeFlow) && lastEdge.getFlow() < edgeFlow.getFlow()) {
-                        edgeFlow.setFlow(lastEdge.getFlow());
-                    }
-                } else if (capacity == 0) {
-                    EdgeFlow edgeFlow = new EdgeFlow(fromEdge, 0);
-                    path.add(edgeFlow);
-                }
-            } else if (capacity < flow) {
-                EdgeFlow edgeFlow = new EdgeFlow(fromEdge, capacity);
-                path.add(edgeFlow);
-                path = findPath(fromEdge.getTo(), to, path);
-                EdgeFlow lastEdge = path.getLast();
-                if (!lastEdge.equals(edgeFlow) && lastEdge.getFlow() < edgeFlow.getFlow()) {
-                    edgeFlow.setFlow(lastEdge.getFlow());
-                }
-            } else if (capacity >= flow) {
-                EdgeFlow edgeFlow = new EdgeFlow(fromEdge, flow);
-                path.add(edgeFlow);
-                path = findPath(fromEdge.getTo(), to, path);
-                EdgeFlow lastEdge = path.getLast();
-                if (!lastEdge.equals(edgeFlow) && lastEdge.getFlow() < edgeFlow.getFlow()) {
-                    edgeFlow.setFlow(lastEdge.getFlow());
-                }
+            if (capacity < residualFlow) {
+                int childFlow = findPath(fromEdge.getTo(), to, capacity);
+                fromEdge.setFlow(fromEdge.getFlow() + childFlow);
+                edgeFlow += childFlow;
+                residualFlow -= childFlow;
+            } else if (capacity >= residualFlow) {
+                int childFlow = findPath(fromEdge.getTo(), to, residualFlow);
+                fromEdge.setFlow(childFlow);
+                edgeFlow += childFlow;
+                residualFlow -= childFlow;
             } else {
-                EdgeFlow edgeFlow = new EdgeFlow(fromEdge, 0);
-                path.add(edgeFlow);
+                fromEdge.setFlow(0);
             }
         }
-        return path;
+        return edgeFlow;
     }
 }
