@@ -28,10 +28,9 @@ public class FordFulkersonAlgo2 {
 
         for (Edge2 edge : edges.get(start)) {
             Integer residualCapacity = edge.getCapacity() - edge.getFlow();
+            edge.setResidualCapacity(residualCapacity);
             if (residualCapacity > 0 && !path.contains(edge)) {
-                edge.setResidualCapacity(residualCapacity);
-                LinkedList<Edge2> path2 = new LinkedList<>();
-                path2.addAll(path);
+                LinkedList<Edge2> path2 = new LinkedList<>(path);
                 path2.add(edge);
                 LinkedList<Edge2> result = getPath(edge.getTo(), end, path2);
                 if (result != null) {
@@ -49,8 +48,6 @@ public class FordFulkersonAlgo2 {
             Integer flow = path.stream().mapToInt(edge -> edge.getResidualCapacity()).min().getAsInt();
             for (Edge2 edge2 : path) {
                 edge2.setFlow(edge2.getFlow() + flow);
-                Edge returnEdge = edge2.getReturnEdge();
-                returnEdge.setFlow(returnEdge.getFlow() - flow);
             }
             path = getPath(start, end, new LinkedList<>());
         }
