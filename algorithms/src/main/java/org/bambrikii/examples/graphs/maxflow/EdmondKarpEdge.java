@@ -7,14 +7,13 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"flow", "residualCapacity"})
+@EqualsAndHashCode(exclude = {"flow", "prev"})
 @ToString
 class EdmondKarpEdge {
     private Integer from;
     private Integer to;
     private Integer capacity;
     private Integer flow;
-    private Integer residualCapacity = 0;
     private EdmondKarpEdge prev;
 
     public EdmondKarpEdge(Integer from, Integer to, Integer capacity, Integer flow) {

@@ -24,12 +24,12 @@ public class EdmondKarpAlgo {
     public void find(Integer from, Integer to) {
         EdmondKarpEdge path = findPath(from, to);
         while (path != null) {
-            findMin(path);
+            findAndSetMin(path);
             path = findPath(from, to);
         }
     }
 
-    private void findMin(EdmondKarpEdge path) {
+    private void findAndSetMin(EdmondKarpEdge path) {
         EdmondKarpEdge edge = path;
         Integer min = null;
         while (edge != null) {
