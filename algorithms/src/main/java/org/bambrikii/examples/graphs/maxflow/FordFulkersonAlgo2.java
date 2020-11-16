@@ -8,6 +8,13 @@ import java.util.Map;
 
 /**
  * https://brilliant.org/wiki/ford-fulkerson-algorithm/#
+ * <p>
+ * 1. find a path that with available capacity minus flow,
+ * 2. calculate residual capacities of available path,
+ * 3. calculate minimum residual capacity for the path found,
+ * 4. add residual capacity to flow of the path found,
+ * 5. repeat to 1 until no path found,
+ * 6. sum flow values of outgoing starting edges.
  */
 public class FordFulkersonAlgo2 {
 
