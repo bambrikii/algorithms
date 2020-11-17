@@ -1,4 +1,4 @@
-package org.bambrikii.examples.mstree;
+package org.bambrikii.examples.graphs.mstree;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

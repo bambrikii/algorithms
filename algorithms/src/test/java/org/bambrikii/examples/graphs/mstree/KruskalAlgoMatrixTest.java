@@ -1,6 +1,6 @@
-package org.bambrikii.examples.mstree;
+package org.bambrikii.examples.graphs.mstree;
 
-import org.bambrikii.examples.mstree.KruskalAlgoMatrix.Edge;
+import org.bambrikii.examples.graphs.mstree.KruskalAlgoMatrix.Edge;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
