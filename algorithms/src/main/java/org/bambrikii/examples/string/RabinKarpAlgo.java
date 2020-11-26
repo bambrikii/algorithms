@@ -1,7 +1,7 @@
 package org.bambrikii.examples.string;
 
 /**
- *
+ * https://brilliant.org/wiki/rabin-karp-algorithm/
  */
 public class RabinKarpAlgo {
     public int pos(String text, String match) {
