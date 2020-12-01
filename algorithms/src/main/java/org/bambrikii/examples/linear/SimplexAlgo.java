@@ -20,13 +20,15 @@ public class SimplexAlgo {
             if (pivotCol == -1) {
                 return extractResults(rows, arrCols, arr);
             }
-            int pivotRow = findPivotRowAndSetPivotCellToOne(arr, pivotCol);
+
+            int pivotRow = findPivotRow(arr, pivotCol);
             if (pivotRow == -1) {
                 break;
             }
 
-            relaxAllRows(arr, pivotCol, pivotRow);
+            updatePivotWithPivotCellToOne(arr, pivotRow, pivotCol);
 
+            relaxAllRows(arr, pivotRow, pivotCol);
         }
 
         return null;
@@ -45,21 +47,22 @@ public class SimplexAlgo {
     }
 
     // Update all rows except pivot row to have "0" in pivot column
-    private void relaxAllRows(double[][] arr, int pivotCol, int pivotRow) {
+    private void relaxAllRows(double[][] arr, int pivotRow, int pivotCol) {
         int rows = arr.length;
         int arrCols = arr[0].length;
         for (int i = 0; i < rows; i++) {
-            if (i != pivotRow) {
-                double div = arr[i][pivotCol];
-                for (int j = 0; j < arrCols; j++) {
-                    arr[i][j] = arr[i][j] - arr[pivotRow][j] * div;
-                }
+            if (i == pivotRow) {
+                continue;
+            }
+            double div = arr[i][pivotCol];
+            for (int j = 0; j < arrCols; j++) {
+                arr[i][j] = arr[i][j] - arr[pivotRow][j] * div;
             }
         }
     }
 
     // find min divisor
-    private int findPivotRowAndSetPivotCellToOne(double[][] arr, int pivotCol) {
+    private int findPivotRow(double[][] arr, int pivotCol) {
         int rows = arr.length;
         int arrCols = arr[0].length;
         int pivotRow = -1;
@@ -75,15 +78,16 @@ public class SimplexAlgo {
             }
         }
         //
-        if (pivotRow == -1) {
-            return -1;
-        }
+        return pivotRow;
+    }
+
+    private void updatePivotWithPivotCellToOne(double[][] arr, int pivotRow, int pivotCol) {
+        int arrCols = arr[0].length;
         // Update pivot row to have value "1" in pivot cell
         double pivotVal2 = arr[pivotRow][pivotCol];
         for (int j = 0; j < arrCols; j++) {
             arr[pivotRow][j] = arr[pivotRow][j] / pivotVal2;
         }
-        return pivotRow;
     }
 
     // Should return solution
