@@ -1,4 +1,4 @@
-package org.bambrikii.examples.graphs.euler;
+package org.bambrikii.examples.graphs.alledges;
 
 import org.junit.jupiter.api.Test;
 
@@ -49,5 +49,22 @@ public class EulerPathAlgoTest {
         algo.printPaths(paths);
 
         assertThat(paths).isEqualTo(Arrays.asList(Arrays.asList(0, 1, 2, 1, 3, 4)));
+    }
+
+    @Test
+    public void shouldFindCycle() {
+        EulerPathAlgo algo = new EulerPathAlgo();
+
+        algo
+                .directedEdge(1, 2)
+                .directedEdge(2, 3)
+                .directedEdge(3, 1);
+
+        List<List<Integer>> paths = algo.findPaths();
+
+        algo.printPaths(paths);
+
+        assertThat(paths).hasSize(3);
+        assertThat(paths.get(0)).isEqualTo(Arrays.asList(1, 2, 3, 1));
     }
 }

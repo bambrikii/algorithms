@@ -1,4 +1,4 @@
-package org.bambrikii.examples.graphs.euler;
+package org.bambrikii.examples.graphs.alledges;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,7 +111,8 @@ public class EulerPathAlgo {
 
     public void printPaths(List<List<Integer>> paths) {
         for (List<Integer> path : paths) {
-            System.out.println("Path: " + path);
+            boolean isCycle = path.get(0) == path.get(path.size() - 1);
+            System.out.println((isCycle ? "Cycle" : "Path") + ": " + path);
         }
     }
 }

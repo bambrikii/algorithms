@@ -1,4 +1,4 @@
-package org.bambrikii.examples.graphs.euler;
+package org.bambrikii.examples.graphs.alledges;
 
 import lombok.Getter;
 import lombok.Setter;
