@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -55,16 +54,10 @@ public class EulerPathAlgo {
     }
 
     private List<Entry<Integer, EulerPathCounts>> validateEdgesCount(Map<Integer, EulerPathCounts> edgesCount) {
-        Predicate<? super Entry<Integer, EulerPathCounts>> filter = new Predicate<Entry<Integer, EulerPathCounts>>() {
-            @Override
-            public boolean test(Entry<Integer, EulerPathCounts> entry) {
-                return Math.abs(entry.getValue().getFrom() - entry.getValue().getTo()) > 1;
-            }
-        };
         List<Entry<Integer, EulerPathCounts>> oddEdges = edgesCount
                 .entrySet()
                 .stream()
-                .filter(filter)
+                .filter(entry -> Math.abs(entry.getValue().getFrom() - entry.getValue().getTo()) > 1)
                 .collect(Collectors.toList());
         if (oddEdges.size() > 2) {
             throw new UnsupportedOperationException("The following vertexes have odd number of edges: " + oddEdges);
