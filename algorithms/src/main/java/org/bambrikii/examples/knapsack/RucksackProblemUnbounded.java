@@ -1,4 +1,4 @@
-package org.bambrikii.examples.rucksack;
+package org.bambrikii.examples.knapsack;
 
 import java.util.ArrayList;
 import java.util.Collections;

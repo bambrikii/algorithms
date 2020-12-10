@@ -1,4 +1,4 @@
-package org.bambrikii.examples.rucksack;
+package org.bambrikii.examples.knapsack;
 
 /**
  * Created by Alexander Arakelyan on 02/04/17 19:04.
