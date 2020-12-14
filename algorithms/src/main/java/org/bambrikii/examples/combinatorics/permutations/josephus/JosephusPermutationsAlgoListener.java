@@ -1,4 +1,4 @@
-package org.bambrikii.examples.permutations.josephus;
+package org.bambrikii.examples.combinatorics.permutations.josephus;
 
 public interface JosephusPermutationsAlgoListener {
     void onAdd(int i, Integer elem);

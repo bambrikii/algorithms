@@ -1,4 +1,4 @@
-package org.bambrikii.examples.permutations.permutations1;
+package org.bambrikii.examples.combinatorics.permutations.permutations1;
 
 /**
  * Created by Alexander Arakelyan on 02/03/17 20:26.
