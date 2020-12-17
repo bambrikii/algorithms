@@ -1,16 +1,12 @@
-package org.bambrikii.examples.combinatorics.combinations;
+package org.bambrikii.examples.combinatorics.permutations;
 
-import static org.bambrikii.examples.combinatorics.combinations.PermutationsRecursiveMain.swap;
+import static org.bambrikii.examples.combinatorics.permutations.PermutationsRecursive.swap;
 
 public class PermutationsNonRecursive {
-    public static void main(String[] args) {
-        new PermutationsNonRecursive().permute(new int[]{1, 2, 3, 4});
-    }
-
     public void permute(int[] a) {
         int[] q = new int[a.length];
         int i = 0;
-        PermutationsRecursiveMain.print(a);
+        PermutationsRecursive.print(a);
         while (i < a.length) {
             if (q[i] < i) {
                 if (i % 2 == 0) {

@@ -1,10 +1,6 @@
-package org.bambrikii.examples.combinatorics.combinations;
+package org.bambrikii.examples.combinatorics.permutations;
 
-public class PermutationsRecursiveMain {
-    public static void main(String[] args) {
-        permute(new int[]{1, 2, 3, 4});
-    }
-
+public class PermutationsRecursive {
     public static void permute(int[] arr) {
         permute(arr, 0);
     }
