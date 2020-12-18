@@ -35,16 +35,14 @@ public class CombinationsRecursive<T> {
         return this;
     }
 
-    private List<List<Integer>> combine(int elemIx, List<Integer> prev) {
+    private void combine(int elemIx, List<Integer> prev) {
+        if (prev.size() == k) {
+            results.add(prev);
+        }
         for (int i = elemIx; i < elements.size(); i++) {
             List<Integer> next = new ArrayList<>(prev);
             next.add(i);
-            if (next.size() == k) {
-                results.add(next);
-            } else {
-                combine(i + 1, next);
-            }
+            combine(i + 1, next);
         }
-        return results;
     }
 }
