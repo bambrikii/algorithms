@@ -11,7 +11,7 @@ public class CombinationsForwardBackward {
             return;
         }
 
-        int pointers[] = new int[k]; // init combination index array
+        int[] pointers = new int[k]; // init combination index array
 
         int r = 0; // index for combination array
         int i = 0; // index for elements array
@@ -39,7 +39,7 @@ public class CombinationsForwardBackward {
 
     private static void print(int[] pointers, Object[] elements) {
         for (int i : pointers) {
-            System.out.printf(elements[i] + " ");
+            System.out.print(elements[i] + " ");
         }
         System.out.println();
     }
