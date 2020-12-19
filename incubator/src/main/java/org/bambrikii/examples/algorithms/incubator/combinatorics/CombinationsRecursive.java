@@ -38,6 +38,7 @@ public class CombinationsRecursive<T> {
     private void combine(int elemIx, List<Integer> prev) {
         if (prev.size() == k) {
             results.add(prev);
+            return;
         }
         for (int i = elemIx; i < elements.size(); i++) {
             List<Integer> next = new ArrayList<>(prev);
