@@ -4,13 +4,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CountStrings {
+    public static final int OK = -2;
+
     static class MainNode extends CountNode {
         private final List<CountNode> children;
 
@@ -19,20 +26,19 @@ public class CountStrings {
         }
 
         @Override
-        boolean matches(CountCtx ctx) {
+        int matches(CountCtx ctx) {
             int pos = ctx.start();
             int matches = 0;
             for (CountNode node : children) {
-                if (!node.matches(ctx)) {
+                if (node.matches(ctx) != OK) {
                     break;
                 }
                 matches++;
             }
             if (matches == 0 || ctx.str.length() != ctx.pos + 1) {
-                ctx.rollback(pos);
-                return false;
+                return ctx.rollback(pos);
             }
-            return true;
+            return OK;
         }
     }
 
@@ -44,18 +50,17 @@ public class CountStrings {
         }
 
         @Override
-        boolean matches(CountCtx ctx) {
+        int matches(CountCtx ctx) {
             int pos = ctx.start();
             if (children.size() > 1) {
                 for (CountNode node : children) {
-                    if (node.matches(ctx)) {
-                        return true;
+                    if (node.matches(ctx) == OK) {
+                        return OK;
                     }
                 }
-                return false;
+                return ctx.rollback(pos);
             }
-            ctx.rollback(pos);
-            return false;
+            return ctx.rollback(pos);
         }
     }
 
@@ -71,11 +76,13 @@ public class CountStrings {
         }
 
         @Override
-        boolean matches(CountCtx ctx) {
+        int matches(CountCtx ctx) {
             int pos = ctx.start();
             int added = 0;
+            int lastPos = OK;
             while (true) {
-                if (!child.matches(ctx)) {
+                lastPos = child.matches(ctx);
+                if (lastPos != OK) {
                     break;
                 }
                 added++;
@@ -83,9 +90,9 @@ public class CountStrings {
             boolean b = added >= min && added <= max;
             if (!b) {
                 ctx.rollback(pos);
-                return false;
+                return lastPos;
             }
-            return true;
+            return OK;
         }
     }
 
@@ -97,15 +104,14 @@ public class CountStrings {
         }
 
         @Override
-        boolean matches(CountCtx ctx) {
+        int matches(CountCtx ctx) {
             int pos = ctx.start();
             for (int i = 0; i < chars.size(); i++) {
                 if (ctx.nextChar() != chars.get(i)) {
-                    ctx.rollback(pos);
-                    return false;
+                    return ctx.rollback(pos);
                 }
             }
-            return true;
+            return OK;
         }
     }
 
@@ -117,25 +123,27 @@ public class CountStrings {
         }
 
         @Override
-        boolean matches(CountCtx ctx) {
+        int matches(CountCtx ctx) {
             int pos = ctx.start();
-            int added = 0;
+            int matches = 0;
+            int lastPos = OK;
             for (CountNode child : children) {
-                if (!child.matches(ctx)) {
+                lastPos = child.matches(ctx);
+                if (lastPos != OK) {
                     break;
                 }
-                added++;
+                matches++;
             }
-            if (added == 0) {
+            if (matches != children.size()) {
                 ctx.rollback(pos);
-                return false;
+                return lastPos;
             }
-            return true;
+            return OK;
         }
     }
 
     abstract static class CountNode {
-        abstract boolean matches(CountCtx ctx);
+        abstract int matches(CountCtx ctx);
     }
 
     static class CountCtx {
@@ -157,8 +165,10 @@ public class CountStrings {
             return pos;
         }
 
-        public void rollback(int pos) {
+        public int rollback(int pos) {
+            int prevPos = this.pos;
             this.pos = pos;
+            return prevPos;
         }
     }
 
@@ -325,18 +335,21 @@ public class CountStrings {
         }
         CountCtx patternCtx = new CountCtx(r);
         CountNode ast = matchesMain(patternCtx);
-        int nn = 0;
+        int count = 0;
+        int startPos;
         do {
             StringBuilder str = buildString(dict, pos);
             CountCtx ctx = new CountCtx(str);
-            if (ast.matches(ctx)) {
+            int lastMatchPos = ast.matches(ctx);
+            startPos = lastMatchPos < 0 ? 0 : lastMatchPos;
+            if (lastMatchPos == OK) {
                 System.out.println(r + " -> " + str + " (match)");
-                nn++;
+                count++;
             } else {
-                System.out.println(r + " != " + str);
+//                System.out.println(r + " != " + str);
             }
-        } while (inc(pos, n, 0));
-        return nn;
+        } while (inc(pos, n, startPos));
+        return count;
     }
 
     private static boolean inc(int[] pos, int n, int curr) {
@@ -419,7 +432,10 @@ public class CountStrings {
         return Stream.of(
                 new Object[]{"((ab)|(ba))", 2, 2},
                 new Object[]{"((a|b)*)", 5, 32},
-                new Object[]{"((a*)(b(a*)))", 100, 100}
+                new Object[]{"((a*)(b(a*)))", 100, 100}//,
+                //
+//                new Object[]{"(((((((b|(((b|((a*)b))*)((b|((b*)*))a)))*)|a)*)|b)|(b|b))(a*))", 50, 750333556},
+//                new Object[]{"(((((ba)|(((a|(((b|a)((ab)|(b*)))(ba)))(b|a))|a))(((a|a)*)|(((a|(b|(a(b|a))))(b*))(b|b))))*)*)", 50, 512127296}
         );
     }
 
@@ -431,5 +447,40 @@ public class CountStrings {
         int n = countStrings(p, len);
         System.out.println(n);
         assertEquals(matches, n);
+    }
+
+    @Test
+    public void tryMatchLong() {
+        CountCtx patternCtx = new CountCtx("((a*)(b(a*)))");
+        CountNode ast = matchesMain(patternCtx);
+        CountCtx ctx = new CountCtx("aa");
+
+        int actual = ast.matches(ctx);
+
+        assertThat(actual).isGreaterThanOrEqualTo(-1);
+    }
+
+    @Test
+//    @Disabled
+    public void shouldInput07() throws IOException {
+        Scanner scanner = new Scanner(this.getClass().getResourceAsStream("input07.txt"));
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int t = Integer.parseInt(scanner.nextLine().trim());
+
+        for (int tItr = 0; tItr < t; tItr++) {
+            String[] rl = scanner.nextLine().split(" ");
+
+            String r = rl[0];
+
+            int l = Integer.parseInt(rl[1].trim());
+
+            int result = countStrings(r, l);
+
+            bufferedWriter.write(String.valueOf(result));
+            bufferedWriter.newLine();
+        }
+
+        bufferedWriter.close();
     }
 }
