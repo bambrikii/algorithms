@@ -4,10 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -79,15 +77,19 @@ public class CountStrings {
         int matches(CountCtx ctx) {
             int pos = ctx.start();
             int added = 0;
-            int lastPos = OK;
+            int lastPos;
+            int charsLeft = ctx.charsLeft();
             while (true) {
                 lastPos = child.matches(ctx);
-                if (lastPos != OK) {
+                if ((lastPos != OK)) {
                     break;
                 }
                 added++;
+                if (added >= charsLeft || added > max) {
+                    break;
+                }
             }
-            boolean b = added >= min && added <= max;
+            boolean b = min <= added && added <= max;
             if (!b) {
                 ctx.rollback(pos);
                 return lastPos;
@@ -159,6 +161,10 @@ public class CountStrings {
                 return 0;
             }
             return str.charAt(++pos);
+        }
+
+        public int charsLeft() {
+            return str.length() - (pos + 1);
         }
 
         public int start() {
@@ -346,7 +352,10 @@ public class CountStrings {
                 System.out.println(r + " -> " + str + " (match)");
                 count++;
             } else {
-//                System.out.println(r + " != " + str);
+                for (int i = 0; i < startPos; i++) {
+                    pos[i] = 0;
+                }
+                System.out.println(r + " != " + str);
             }
         } while (inc(pos, n, startPos));
         return count;
@@ -428,27 +437,6 @@ public class CountStrings {
         assertEquals(1, n);
     }
 
-    public static Stream<Object[]> params() {
-        return Stream.of(
-                new Object[]{"((ab)|(ba))", 2, 2},
-                new Object[]{"((a|b)*)", 5, 32},
-                new Object[]{"((a*)(b(a*)))", 100, 100}//,
-                //
-//                new Object[]{"(((((((b|(((b|((a*)b))*)((b|((b*)*))a)))*)|a)*)|b)|(b|b))(a*))", 50, 750333556},
-//                new Object[]{"(((((ba)|(((a|(((b|a)((ab)|(b*)))(ba)))(b|a))|a))(((a|a)*)|(((a|(b|(a(b|a))))(b*))(b|b))))*)*)", 50, 512127296}
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("params")
-    public void shouldPassBulk(String p, int len, int matches) {
-        System.out.println("Test: pattern: " + p + ", sample length: " + len + ", expected matches: " + matches);
-
-        int n = countStrings(p, len);
-        System.out.println(n);
-        assertEquals(matches, n);
-    }
-
     @Test
     public void tryMatchLong() {
         CountCtx patternCtx = new CountCtx("((a*)(b(a*)))");
@@ -461,26 +449,54 @@ public class CountStrings {
     }
 
     @Test
-//    @Disabled
-    public void shouldInput07() throws IOException {
-        Scanner scanner = new Scanner(this.getClass().getResourceAsStream("input07.txt"));
-        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+    public void shouldMatchOrOptional() {
+        CountCtx patternCtx = new CountCtx("((((ab)|a)*)|(((aa)|(bb))*))");
+        CountCtx ctx = new CountCtx("aabb");
 
-        int t = Integer.parseInt(scanner.nextLine().trim());
+        CountNode ast = matchesMain(patternCtx);
+        int actual = ast.matches(ctx);
 
-        for (int tItr = 0; tItr < t; tItr++) {
-            String[] rl = scanner.nextLine().split(" ");
+        assertThat(actual).isEqualTo(OK);
+    }
 
-            String r = rl[0];
-
-            int l = Integer.parseInt(rl[1].trim());
-
-            int result = countStrings(r, l);
-
-            bufferedWriter.write(String.valueOf(result));
-            bufferedWriter.newLine();
+    public static List<Object[]> extractInputParams(String name) {
+        try (
+                Scanner scanner = new Scanner(CountStrings.class.getResourceAsStream("input" + name + ".txt"));
+                Scanner scanner2 = new Scanner(CountStrings.class.getResourceAsStream("expected" + name + ".txt"));
+        ) {
+            List<Object[]> results = new ArrayList<>();
+            int t = Integer.parseInt(scanner.nextLine().trim());
+            for (int tItr = 0; tItr < t; tItr++) {
+                String[] rl = scanner.nextLine().split(" ");
+                String r = rl[0];
+                String expected = scanner2.nextLine();
+                int l = Integer.parseInt(rl[1].trim());
+                results.add(new Object[]{r, l, expected});
+            }
+            return results;
         }
+    }
 
-        bufferedWriter.close();
+    public static Stream<Object[]> inputParams() {
+        List<Object[]> results = new ArrayList<>();
+        results.addAll(
+                Arrays.asList(
+//                new Object[]{"(((((((b|(((b|((a*)b))*)((b|((b*)*))a)))*)|a)*)|b)|(b|b))(a*))", 50, 750333556}//,
+//                new Object[]{"(((((ba)|(((a|(((b|a)((ab)|(b*)))(ba)))(b|a))|a))(((a|a)*)|(((a|(b|(a(b|a))))(b*))(b|b))))*)*)", 50, 512127296}
+                )
+        );
+        results.addAll(extractInputParams("00"));
+        results.addAll(extractInputParams("01"));
+        return results.stream();
+    }
+
+    @ParameterizedTest
+    @MethodSource("inputParams")
+    public void shouldPassInputs(String p, int len, int matches) {
+        System.out.println("Test: pattern: " + p + ", sample length: " + len + ", expected matches: " + matches);
+
+        int n = countStrings(p, len);
+        System.out.println(n);
+        assertEquals(matches, n);
     }
 }
