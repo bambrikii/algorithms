@@ -1,13 +1,6 @@
 package org.bambrikii.examples.algorithms.incubator.countstring;
 
-import static org.bambrikii.examples.algorithms.incubator.countstring.AstBuilder.matchesMain;
-import static org.bambrikii.examples.algorithms.incubator.countstring.CountNode.ANSI_GREEN;
-import static org.bambrikii.examples.algorithms.incubator.countstring.CountNode.ANSI_RED;
-import static org.bambrikii.examples.algorithms.incubator.countstring.CountNode.ANSI_RESET;
-
 public class CountStrings {
-    public static final int OK = -2;
-
     /*
      * Complete the countStrings function below.
      */
@@ -15,51 +8,60 @@ public class CountStrings {
         /*
          * Write your code here.
          */
-        char[] dict = {'a', 'b'};
+        char[] dict = new char[]{'a', 'b'};
         int n = dict.length;
         int[] pos = new int[l];
-        char[] sb = new char[l];
-        for (int i = 0; i < l; i++) {
-            sb[i] = dict[0];
-        }
-        CountCtx patternCtx = new CountCtx(r);
-        CountNode ast = matchesMain(patternCtx);
+        Ctx patternCtx = new Ctx(r);
+        Ast astBuilder = new Ast();
+        Node ast = astBuilder.main(patternCtx);
         int count = 0;
         int startPos;
         do {
-            StringBuilder str = buildString(dict, pos);
-            CountCtx ctx = new CountCtx(str);
-            System.out.println("=== " + r + " -> " + str + " ===");
-            ast.tryMatch(ctx);
-            boolean matched = ((MainNode) ast).isMatched();
-            int lastMatchPos = ctx.getRollbackPos();
-            startPos = lastMatchPos < 1 ? 0 : lastMatchPos - 1;
+            StringBuilder str = buildString(pos, dict);
+            Ctx ctx = new Ctx(str);
+            ctx.enableLogging();
+            tryLog("=== " + r + " -> " + str + " ===");
+            boolean matched = ast.match(ctx);
+            startPos = ctx.getRollbackPos();
+            tryLog("matches: " + matched + ", rollbackPos: " + startPos);
             if (matched) {
-                System.out.println(ANSI_GREEN + " (match)" + ANSI_RESET);
+                startPos = l - 1;
+                tryLog(Node.ANSI_GREEN + " (match)" + Node.ANSI_RESET);
                 count++;
             } else {
-                for (int i = 0; i < startPos; i++) {
+                if (startPos < 0) {
+                    startPos = 0;
+                } else if (startPos >= l) {
+                    startPos = l - 1;
+                }
+                for (int i = startPos + 1; i < l; i++) {
                     pos[i] = 0;
                 }
-                System.out.println(ANSI_RED + " (no match)" + ANSI_RESET);
+                tryLog(Node.ANSI_RED + " (no match)" + Node.ANSI_RESET);
             }
         } while (inc(pos, n, startPos));
         return count;
     }
 
-    private static boolean inc(int[] pos, int n, int curr) {
-        if (curr == pos.length) {
+    private static void tryLog(String msg) {
+        if (Node.debug) {
+            System.out.println(msg);
+        }
+    }
+
+    static boolean inc(int[] pos, int n, int curr) {
+        if (curr == -1) {
             return false;
         }
-        if (pos[curr] == n - 1) {
+        if (pos[curr] >= n - 1) {
             pos[curr] = 0;
-            return inc(pos, n, curr + 1);
+            return inc(pos, n, curr - 1);
         }
         pos[curr]++;
         return true;
     }
 
-    private static StringBuilder buildString(char[] dict, int[] pos) {
+    static StringBuilder buildString(int[] pos, char[] dict) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < pos.length; i++) {
             sb.append(dict[pos[i]]);

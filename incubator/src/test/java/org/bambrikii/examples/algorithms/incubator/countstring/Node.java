@@ -1,21 +1,18 @@
 package org.bambrikii.examples.algorithms.incubator.countstring;
 
-abstract class CountNode {
-    private CountNode parent;
+abstract class Node {
+    private Node next = True.TRUE;
+    public static boolean debug;
 
-    void setParent(CountNode parent) {
-        this.parent = parent;
+    void next(Node next) {
+        this.next = next;
     }
 
-    CountNode getParent() {
-        return parent;
+    Node next() {
+        return next;
     }
 
-    abstract boolean tryMatch(CountCtx ctx);
-
-    boolean matchCallback(CountCtx ctx) {
-        return parent.matchCallback(ctx);
-    }
+    abstract boolean match(Ctx ctx);
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -25,8 +22,8 @@ abstract class CountNode {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
 
+    public static final String ANSI_WHITE = "\u001B[37m";
     public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
     public static final String ANSI_RED_BACKGROUND = "\u001B[41m";
     public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
@@ -34,9 +31,10 @@ abstract class CountNode {
     public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
     public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
     public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
-    protected String logStr(CountCtx ctx) {
+    protected String logStr(Ctx ctx) {
         return logStr(ctx, 0);
     }
 
@@ -44,7 +42,7 @@ abstract class CountNode {
         return this.getClass().getSimpleName().replaceAll("Node$", "");
     }
 
-    protected String logStr(CountCtx ctx, int offset) {
+    protected String logStr(Ctx ctx, int offset) {
         CharSequence seq = ctx.getStr();
         int pos = ctx.getPos() + offset;
         StringBuilder sb = new StringBuilder();
@@ -60,8 +58,10 @@ abstract class CountNode {
         return sb.toString();
     }
 
-    protected void log(CountCtx ctx, String comment) {
-        System.out.println("+ " + cls() + " " + logStr(ctx) + " " + comment);
+    protected void log(Ctx ctx, String comment) {
+        if (debug) {
+            System.out.println(printDepth(ctx.getDepth()) + "? " + cls() + " " + logStr(ctx) + " " + comment);
+        }
     }
 
     private String printDepth(int depth) {
@@ -72,15 +72,21 @@ abstract class CountNode {
         return sb.toString();
     }
 
-    protected void logStart(CountCtx ctx, String comment) {
-        System.out.println(printDepth(ctx.incDepth()) + "> " + cls() + " " + logStr(ctx, 1) + ANSI_BLUE + " start, " + comment + ANSI_RESET);
+    private void tryDebug(Ctx ctx, String comment, int i, String s, int i2, String ansiRed, String s2) {
+        if (debug) {
+            System.out.println(printDepth(i) + s + cls() + " " + logStr(ctx, i2) + ansiRed + s2 + comment + ANSI_RESET);
+        }
     }
 
-    protected void logComplete(CountCtx ctx, String comment) {
-        System.out.println(printDepth(ctx.decDepth()) + "< " + cls() + " " + logStr(ctx) + ANSI_GREEN + " complete, " + comment + ANSI_RESET);
+    protected void logStart(Ctx ctx, String comment) {
+        tryDebug(ctx, comment, ctx.incDepth(), "> ", 0, ANSI_BLUE, " st. ");
     }
 
-    protected void logRollback(CountCtx ctx, String comment) {
-        System.out.println(printDepth(ctx.decDepth()) + "< " + cls() + " " + logStr(ctx) + ANSI_RED + " rollback, " + comment + ANSI_RESET);
+    protected void logComplete(Ctx ctx, String comment) {
+        tryDebug(ctx, comment, ctx.decDepth(), "< ", -1, ANSI_GREEN, " ok. ");
+    }
+
+    protected void logRollback(Ctx ctx, String comment) {
+        tryDebug(ctx, comment, ctx.decDepth(), "< ", -1, ANSI_RED, " rb. ");
     }
 }
