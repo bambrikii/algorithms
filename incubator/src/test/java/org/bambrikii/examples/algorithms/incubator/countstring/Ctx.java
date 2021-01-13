@@ -4,8 +4,6 @@ class Ctx {
     private CharSequence str;
     private int pos = 0;
     private int depth;
-
-    private boolean enableLogging;
     private int rollbackPos = -1;
 
     public Ctx(CharSequence str) {
@@ -73,10 +71,6 @@ class Ctx {
 
     public int decDepth() {
         return --depth;
-    }
-
-    public void enableLogging() {
-        this.enableLogging = true;
     }
 
     public int getDepth() {

@@ -34,47 +34,59 @@ abstract class Node {
 
     public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
 
-    protected String logStr(Ctx ctx) {
-        return logStr(ctx, 0);
+    protected void logStr(Ctx ctx) {
+        logStr(ctx, 0);
     }
 
     private String cls() {
         return this.getClass().getSimpleName().replaceAll("Node$", "");
     }
 
-    protected String logStr(Ctx ctx, int offset) {
+    protected void logStr(Ctx ctx, int offset) {
         CharSequence seq = ctx.getStr();
         int pos = ctx.getPos() + offset;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < seq.length(); i++) {
             char ch = seq.charAt(i);
             if (pos == i) {
-                sb.append(ANSI_GREEN + ch + ANSI_RESET);
+                sb.append(ANSI_GREEN).append(ch).append(ANSI_RESET);
             } else {
                 sb.append(ch);
             }
+            if (sb.length() % 100 == 0) {
+                System.out.print(sb);
+                System.out.flush();
+                sb.setLength(0);
+            }
         }
         sb.append("[").append(pos).append("]");
-        return sb.toString();
+        System.out.print(sb.toString());
     }
 
     protected void log(Ctx ctx, String comment) {
         if (debug) {
-            System.out.println(printDepth(ctx.getDepth()) + "? " + cls() + " " + logStr(ctx) + " " + comment);
+            printDepth(ctx.getDepth());
+            System.out.print("? " + cls() + " ");
+            logStr(ctx);
+            System.out.print(" " + comment);
+            System.out.println();
         }
     }
 
-    private String printDepth(int depth) {
-        StringBuilder sb = new StringBuilder();
+    private void printDepth(int depth) {
         for (int i = 0; i < depth; i++) {
-            sb.append(".  ");
+            System.out.print(".  ");
         }
-        return sb.toString();
     }
 
     private void tryDebug(Ctx ctx, String comment, int i, String s, int i2, String ansiRed, String s2) {
         if (debug) {
-            System.out.println(printDepth(i) + s + cls() + " " + logStr(ctx, i2) + ansiRed + s2 + comment + ANSI_RESET);
+            printDepth(i);
+            System.out.print(s + cls() + " ");
+            logStr(ctx, i2);
+            System.out.print(ansiRed + s2 + comment + ANSI_RESET);
+            System.out.println();
+            System.out.flush();
         }
     }
 

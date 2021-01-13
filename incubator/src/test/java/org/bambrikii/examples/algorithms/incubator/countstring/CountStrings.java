@@ -1,5 +1,7 @@
 package org.bambrikii.examples.algorithms.incubator.countstring;
 
+import org.bambrikii.examples.algorithms.incubator.countstring.Str.StrReverse;
+
 public class CountStrings {
     /*
      * Complete the countStrings function below.
@@ -8,38 +10,32 @@ public class CountStrings {
         /*
          * Write your code here.
          */
-        char[] dict = new char[]{'a', 'b'};
-        int n = dict.length;
-        int[] pos = new int[l];
+        int pos;
         Ctx patternCtx = new Ctx(r);
         Ast astBuilder = new Ast();
         Node ast = astBuilder.main(patternCtx);
+        StrReverse str = new Str(l).new StrReverse();
         int count = 0;
-        int startPos;
         do {
-            StringBuilder str = buildString(pos, dict);
             Ctx ctx = new Ctx(str);
-            ctx.enableLogging();
             tryLog("=== " + r + " -> " + str + " ===");
             boolean matched = ast.match(ctx);
-            startPos = ctx.getRollbackPos();
-            tryLog("matches: " + matched + ", rollbackPos: " + startPos);
+            pos = ctx.getRollbackPos();
+            tryLog("matches: " + matched + ", rollbackPos: " + pos);
             if (matched) {
-                startPos = l - 1;
+                pos = l - 1;
                 tryLog(Node.ANSI_GREEN + " (match)" + Node.ANSI_RESET);
                 count++;
             } else {
-                if (startPos < 0) {
-                    startPos = 0;
-                } else if (startPos >= l) {
-                    startPos = l - 1;
+                if (pos < 0) {
+                    pos = 0;
+                } else if (pos >= l) {
+                    pos = l - 1;
                 }
-                for (int i = startPos + 1; i < l; i++) {
-                    pos[i] = 0;
-                }
+                str.resetBefore(pos);
                 tryLog(Node.ANSI_RED + " (no match)" + Node.ANSI_RESET);
             }
-        } while (inc(pos, n, startPos));
+        } while (str.inc(pos));
         return count;
     }
 
@@ -47,25 +43,5 @@ public class CountStrings {
         if (Node.debug) {
             System.out.println(msg);
         }
-    }
-
-    static boolean inc(int[] pos, int n, int curr) {
-        if (curr == -1) {
-            return false;
-        }
-        if (pos[curr] >= n - 1) {
-            pos[curr] = 0;
-            return inc(pos, n, curr - 1);
-        }
-        pos[curr]++;
-        return true;
-    }
-
-    static StringBuilder buildString(int[] pos, char[] dict) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < pos.length; i++) {
-            sb.append(dict[pos[i]]);
-        }
-        return sb;
     }
 }
