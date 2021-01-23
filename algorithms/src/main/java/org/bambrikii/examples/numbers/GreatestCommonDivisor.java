@@ -6,6 +6,7 @@ public class GreatestCommonDivisor {
         System.out.println(gcd(15, 3));
         System.out.println(gcd(15, 9));
         System.out.println(gcd(24, 36));
+		System.out.println(gcd(2, 3));
     }
 
     static int gcd(int a, int b) {

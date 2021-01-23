@@ -1,6 +1,6 @@
 package org.bambrikii.examples.numbers;
 
-public class GreatestCommonDivisorRecursive {
+public class GreatestCommonDivisorEuclidean {
 	public static void main(String[] args) {
 		System.out.println(gcd(12, 8));
 		System.out.println(gcd(15, 3));
@@ -16,18 +16,21 @@ public class GreatestCommonDivisorRecursive {
 		if (b == 0) {
 			return a;
 		}
-		int min = a < b ? a : b;
-		return gcd2(a, b, min, 1);
-	}
-
-	static int gcd2(int a, int b, int min, int i) {
-		int mini = min / i;
-		if (a % mini == 0 && b % mini == 0) {
-			return mini;
+		int a1;
+		int b1;
+		if (a > b) {
+			a1 = a;
+			b1 = b;
+		} else {
+			a1 = b;
+			b1 = a;
 		}
-		if (i == min) {
-			return -1;
+		int r = a1 % b1;
+		while (r != 0) {
+			a1 = b1;
+			b1 = r;
+			r = a1 % b1;
 		}
-		return gcd2(a, b, min, i + 1);
+		return b1;
 	}
 }
