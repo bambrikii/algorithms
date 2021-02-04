@@ -73,17 +73,21 @@ public class EulerPathAlgo {
         List<Entry<Integer, EulerPathCounts>> oddEdges = validateEdgesCount(edgesCount);
 
         int oddEdgesSize = oddEdges.size();
-        if (oddEdgesSize == 2) {
-            Integer vertexFrom1 = oddEdges.get(0).getKey();
-            Integer vertexFrom2 = oddEdges.get(1).getKey();
-            findPath(vertexFrom1, path, paths, 0);
-            findPath(vertexFrom2, path, paths, 0);
-        } else if (oddEdgesSize == 1) {
-            Integer vertexFrom1 = oddEdges.get(0).getKey();
-            findPath(vertexFrom1, path, paths, 0);
-        } else {
-            for (Integer vertexFrom : edgesFrom.keySet()) {
-                findPath(vertexFrom, path, paths, 0);
+        switch (oddEdgesSize) {
+            case 2: {
+                Integer vertexFrom1 = oddEdges.get(0).getKey();
+                Integer vertexFrom2 = oddEdges.get(1).getKey();
+                findPath(vertexFrom1, path, paths, 0);
+                findPath(vertexFrom2, path, paths, 0);
+            }
+            case 1: {
+                Integer vertexFrom1 = oddEdges.get(0).getKey();
+                findPath(vertexFrom1, path, paths, 0);
+            }
+            case 0: {
+                for (Integer vertexFrom : edgesFrom.keySet()) {
+                    findPath(vertexFrom, path, paths, 0);
+                }
             }
         }
         return paths;
