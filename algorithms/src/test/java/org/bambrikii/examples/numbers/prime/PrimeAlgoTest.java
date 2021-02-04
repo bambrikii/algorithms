@@ -1,4 +1,4 @@
-package org.bambrikii.examples.prime;
+package org.bambrikii.examples.numbers.prime;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

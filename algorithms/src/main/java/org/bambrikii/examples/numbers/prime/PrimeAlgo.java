@@ -1,4 +1,4 @@
-package org.bambrikii.examples.prime;
+package org.bambrikii.examples.numbers.prime;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,7 +4,8 @@ out
 .idea
 .classpath
 .project
-.settings/
+.settings
 .gradle
 sorting-algos.iml
 *.iml
+bin
