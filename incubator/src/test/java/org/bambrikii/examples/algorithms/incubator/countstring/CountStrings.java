@@ -2,6 +2,10 @@ package org.bambrikii.examples.algorithms.incubator.countstring;
 
 import org.bambrikii.examples.algorithms.incubator.countstring.Str.StrReverse;
 
+import static org.bambrikii.examples.algorithms.incubator.utils.ConsoleUtils.ANSI_GREEN;
+import static org.bambrikii.examples.algorithms.incubator.utils.ConsoleUtils.ANSI_RED;
+import static org.bambrikii.examples.algorithms.incubator.utils.ConsoleUtils.ANSI_RESET;
+
 public class CountStrings {
     /*
      * Complete the countStrings function below.
@@ -24,7 +28,7 @@ public class CountStrings {
             tryLog("matches: " + matched + ", rollbackPos: " + pos);
             if (matched) {
                 pos = l - 1;
-                tryLog(Node.ANSI_GREEN + " (match)" + Node.ANSI_RESET);
+                tryLog(ANSI_GREEN + " (match)" + ANSI_RESET);
                 count++;
             } else {
                 if (pos < 0) {
@@ -33,7 +37,7 @@ public class CountStrings {
                     pos = l - 1;
                 }
                 str.resetBefore(pos);
-                tryLog(Node.ANSI_RED + " (no match)" + Node.ANSI_RESET);
+                tryLog(ANSI_RED + " (no match)" + ANSI_RESET);
             }
         } while (str.inc(pos));
         return count;

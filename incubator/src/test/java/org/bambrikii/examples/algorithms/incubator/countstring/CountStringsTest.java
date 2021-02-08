@@ -159,9 +159,7 @@ public class CountStringsTest {
     public void shouldPassInputs(String p, int len, int matches) {
         System.out.println("Test: pattern: " + p + ", sample length: " + len + ", expected matches: " + matches);
 //        Node.debug = true;
-        int n = countStrings(p, len);
-        System.out.println(n);
-        assertEquals(matches, n);
+        assertThat(countStrings(p, len)).isEqualTo(matches);
     }
 
     @Test
