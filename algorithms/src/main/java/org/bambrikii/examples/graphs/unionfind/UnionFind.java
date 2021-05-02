@@ -16,19 +16,20 @@ public class UnionFind {
         return this;
     }
 
+    private int parent(int child) {
+        int parent = values.get(child);
+        if (parent == child) {
+            return parent;
+        }
+        Integer parent2 = parent(parent);
+        if (parent != parent2) {
+            values.put(child, parent2);
+        }
+        return parent2;
+    }
+
     public boolean find(int left, int right) {
-        Integer leftVal = values.get(left);
-        if (leftVal.equals(right)) {
-            return true;
-        }
-        if (leftVal.equals(left)) {
-            return leftVal.equals(right);
-        }
-        boolean found = find(leftVal, right);
-        if (found) {
-            values.put(left, right);
-        }
-        return found;
+        return parent(left) == right;
     }
 
     public static void main(String[] args) {
