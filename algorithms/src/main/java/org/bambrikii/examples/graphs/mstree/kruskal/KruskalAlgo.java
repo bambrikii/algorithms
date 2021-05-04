@@ -1,4 +1,4 @@
-package org.bambrikii.examples.graphs.mstree;
+package org.bambrikii.examples.graphs.mstree.kruskal;
 
 import java.util.ArrayList;
 import java.util.Collections;

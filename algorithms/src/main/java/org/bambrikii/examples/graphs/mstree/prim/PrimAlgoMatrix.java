@@ -1,11 +1,13 @@
-package org.bambrikii.examples.graphs.mstree;
+package org.bambrikii.examples.graphs.mstree.prim;
+
+import org.bambrikii.examples.graphs.mstree.Edge;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PrimAlgoMatrix {
-    public List<KruskalAlgoMatrix.Edge> find(int[][] matrix) {
-        List<KruskalAlgoMatrix.Edge> edges = new ArrayList<>();
+    public List<Edge> find(int[][] matrix) {
+        List<Edge> edges = new ArrayList<>();
         int from = 0;
         while (true) {
             int w = 0;
@@ -24,7 +26,7 @@ public class PrimAlgoMatrix {
             if (to == -1) {
                 break;
             }
-            edges.add(new KruskalAlgoMatrix.Edge(w, from, to));
+            edges.add(new Edge(w, from, to));
             from = to;
         }
         return edges;

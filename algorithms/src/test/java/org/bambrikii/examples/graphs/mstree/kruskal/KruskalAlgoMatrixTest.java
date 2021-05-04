@@ -1,12 +1,12 @@
-package org.bambrikii.examples.graphs.mstree;
+package org.bambrikii.examples.graphs.mstree.kruskal;
 
-import org.bambrikii.examples.graphs.mstree.KruskalAlgoMatrix.Edge;
+import org.bambrikii.examples.graphs.mstree.Edge;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 public class KruskalAlgoMatrixTest {
-    static int[][] buildInput() {
+    public static int[][] buildInput() {
         return new int[][]{
                 {0, 2, 3, 4, 5},
                 {2, 0, 1, 1, 4},
@@ -16,7 +16,7 @@ public class KruskalAlgoMatrixTest {
         };
     }
 
-    static void printOutput(List<Edge> edges) {
+    public static void printOutput(List<Edge> edges) {
         int w = 0;
         for (Edge edge : edges) {
             System.out.println(edge);

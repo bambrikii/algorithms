@@ -1,4 +1,4 @@
-package org.bambrikii.examples.graphs.mstree;
+package org.bambrikii.examples.graphs.mstree.kruskal;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

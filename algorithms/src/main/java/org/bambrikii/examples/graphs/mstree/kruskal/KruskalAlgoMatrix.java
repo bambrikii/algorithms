@@ -1,10 +1,6 @@
-package org.bambrikii.examples.graphs.mstree;
+package org.bambrikii.examples.graphs.mstree.kruskal;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import org.bambrikii.examples.graphs.mstree.Edge;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,16 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public class KruskalAlgoMatrix {
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @ToString
-    static class Edge {
-        int w;
-        int from;
-        int to;
-    }
 
     public KruskalAlgoMatrixResult find(int[][] matrix) {
         Set<Integer> processed = new HashSet<>();
@@ -35,10 +21,10 @@ public class KruskalAlgoMatrix {
             }
         }
         Collections.sort(sorted, (o1, o2) -> {
-            if (o1.w < o2.w) {
+            if (o1.getW() < o2.getW()) {
                 return -1;
             }
-            if (o1.w > o2.w) {
+            if (o1.getW() > o2.getW()) {
                 return 1;
             }
             return 0;
@@ -66,11 +52,24 @@ public class KruskalAlgoMatrix {
         return new KruskalAlgoMatrixResult(processed, result);
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
     static class KruskalAlgoMatrixResult {
         private Set<Integer> processed;
         private List<Edge> edges;
+
+        public KruskalAlgoMatrixResult(
+                Set<Integer> processed,
+                List<Edge> edges
+        ) {
+            this.processed = processed;
+            this.edges = edges;
+        }
+
+        public Set<Integer> getProcessed() {
+            return processed;
+        }
+
+        public List<Edge> getEdges() {
+            return edges;
+        }
     }
 }
