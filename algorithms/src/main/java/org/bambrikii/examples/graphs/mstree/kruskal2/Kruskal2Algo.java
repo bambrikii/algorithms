@@ -19,17 +19,18 @@ public class Kruskal2Algo {
             edgesMap.put(from, new ArrayList<>());
         }
         edgesMap.get(from).add(edge);
+        parents.putIfAbsent(from, from);
+        parents.putIfAbsent(to, to);
         return this;
     }
 
     private Integer find(int child) {
-        if (parents.get(child) == null) {
-            parents.put(child, child);
-        }
         Integer parent = parents.get(child);
-        if (parents.get(child) != parents.get(parent)) {
-            parent = find(parent);
-            parents.put(child, parent);
+        if (parent == child) {
+            return child;
+        }
+        if (parent != find(parent)) {
+            parents.put(child, find(parent));
         }
         return parents.get(child);
     }

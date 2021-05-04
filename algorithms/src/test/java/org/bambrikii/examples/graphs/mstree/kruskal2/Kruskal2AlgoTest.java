@@ -28,8 +28,8 @@ public class Kruskal2AlgoTest {
                 .msp();
 
         assertThat(result).hasSize(2);
-        assertThat(result.get(0)).extracting("w").contains(1);
-        assertThat(result.get(1)).extracting("w").contains(2);
+        assertThat(result.get(0)).isEqualToComparingFieldByField(new Edge(1, 1, 2));
+        assertThat(result.get(1)).isEqualToComparingFieldByField(new Edge(2, 2, 3));
     }
 
     @Test
@@ -50,7 +50,7 @@ public class Kruskal2AlgoTest {
                 .edge(1, 10, 11)
                 .msp();
 
-        result.forEach(elem -> System.out.println(elem));
+        result.forEach(System.out::println);
 
         assertThat(result).hasSize(10);
     }
