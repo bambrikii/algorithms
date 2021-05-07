@@ -1,61 +1,57 @@
 package org.bambrikii.examples.graphs.mstree.kruskal;
 
+import org.bambrikii.examples.graphs.mstree.Edge;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * https://www.programiz.com/dsa/kruskal-algorithm
+ */
 public class KruskalAlgoTest {
+    private KruskalAlgo algo;
+
+    @BeforeEach
+    public void before() {
+        algo = new KruskalAlgo();
+    }
+
     @Test
-    public void shouldFindMinimumSpanningTree() {
-        KruskalTree<String, Integer> tree = new KruskalTree<>();
+    public void shouldFind1() {
+        List<Edge> result = algo
+                .edge(1, 1, 2)
+                .edge(2, 2, 3)
+                .edge(3, 1, 3)
+                .msp();
 
-        tree.edge(1, "1-7", "1-3-4-5");
-        tree.edge(2, "2-4", "2-3-6");
-        tree.edge(3, "2-3-6", "1-3-4-5");
-        tree.edge(4, "1-3-4-5", "2-4");
-        tree.edge(5, "1-3-4-5", "5-6-7");
-        tree.edge(6, "2-3-6", "5-6-7");
-        tree.edge(7, "1-7", "5-6-7");
-
-        KruskalAlgo<String, Integer> algo = new KruskalAlgo<>();
-        List<KruskalEdge<Integer, String>> result = algo.minimumSpanningTree(tree);
-
-        for (KruskalEdge<Integer, String> edge : result) {
-            System.out.println(edge);
-        }
-
-        assertEquals(4, result.size());
-        assertTrue(matchEdge(result, 1, "1-7", "1-3-4-5"));
-        assertTrue(matchEdge(result, 2, "2-4", "2-3-6"));
-        assertTrue(matchEdge(result, 3, "2-3-6", "1-3-4-5"));
-        assertTrue(matchEdge(result, 5, "1-3-4-5", "5-6-7"));
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0)).isEqualToComparingFieldByField(new Edge(1, 1, 2));
+        assertThat(result.get(1)).isEqualToComparingFieldByField(new Edge(2, 2, 3));
     }
 
-    private boolean matchEdge( //
-                               List<KruskalEdge<Integer, String>> result, //
-                               Integer edgeVal, String vertex1Val, String vertex2Val //
-    ) {
-        return result.stream().filter(matchEdgePredicate(edgeVal, vertex1Val, vertex2Val)).findAny().isPresent();
-    }
+    @Test
+    public void shouldFind2() {
+        List<Edge> result = algo
+                .edge(10, 1, 2)
+                .edge(9, 2, 3)
+                .edge(8, 3, 4)
+                .edge(7, 4, 5)
+                .edge(6, 5, 6)
+                .edge(5, 6, 7)
+                .edge(5, 6, 8)
+                .edge(5, 6, 9)
+                .edge(4, 7, 8)
+                .edge(3, 8, 9)
+                .edge(3, 8, 10)
+                .edge(2, 9, 10)
+                .edge(1, 10, 11)
+                .msp();
 
-    private Predicate<KruskalEdge<Integer, String>> matchEdgePredicate(Integer edgeVal, String vertex1Val,
-                                                                       String vertex2Val) {
-        return new Predicate<KruskalEdge<Integer, String>>() {
+        result.forEach(System.out::println);
 
-            @Override
-            public boolean test(KruskalEdge<Integer, String> edge) {
-                Integer val = edge.getVal();
-                String val1 = edge.getVertex1().getVal();
-                String val2 = edge.getVertex2().getVal();
-                return Integer.valueOf(edgeVal).equals(val) //
-                        && (vertex1Val.equals(val1) || vertex2Val.equals(val1)) //
-                        && (vertex2Val.equals(val2) || vertex1Val.equals(val2)) //
-                        ;
-            }
-        };
+        assertThat(result).hasSize(10);
     }
 }

@@ -1,78 +1,70 @@
 package org.bambrikii.examples.graphs.mstree.kruskal;
 
+import org.bambrikii.examples.graphs.mstree.Edge;
+
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * https://www.hackerearth.com/practice/algorithms/graphs/minimum-spanning-tree/tutorial/
- * 
- * @param <V>
- * @param <E>
  */
-public class KruskalAlgo<V, E extends Comparable<E>> {
+public class KruskalAlgo {
+    private Map<Integer, List<Edge>> edgesMap = new HashMap<>();
+    private Map<Integer, Integer> parents = new HashMap<>();
 
-	public List<KruskalEdge<E, V>> minimumSpanningTree(KruskalTree<V, E> tree) {
-		final Map<KruskalVertex<V>, Integer> vertexesToGroups = new HashMap<>();
-		final Map<Integer, Set<KruskalVertex<V>>> groupsToVertexes = new HashMap<>();
-		int maxGroups = 0;
+    public KruskalAlgo edge(int weight, int from, int to) {
+        Edge edge = new Edge(weight, from, to);
+        if (!edgesMap.containsKey(from)) {
+            edgesMap.put(from, new ArrayList<>());
+        }
+        edgesMap.get(from).add(edge);
+        parents.putIfAbsent(from, from);
+        parents.putIfAbsent(to, to);
+        return this;
+    }
 
-		final List<KruskalEdge<E, V>> sortedEdges = new ArrayList<>(tree.edges());
-		Collections.sort(sortedEdges);
+    private Integer find(int child) {
+        Integer parent = parents.get(child);
+        if (parent == child) {
+            return child;
+        }
+        if (parent != find(parent)) {
+            parents.put(child, find(parent));
+        }
+        return parents.get(child);
+    }
 
-		final List<KruskalEdge<E, V>> spanningEdges = new ArrayList<>();
+    private void union(int from, int to) {
+        parents.put(from, to);
+    }
 
-		for (KruskalEdge<E, V> edge : sortedEdges) {
-			KruskalVertex<V> vertex1 = edge.getVertex1();
-			KruskalVertex<V> vertex2 = edge.getVertex2();
-			Integer group1 = vertexesToGroups.get(vertex1);
-			Integer group2 = vertexesToGroups.get(vertex2);
-			if (group1 == null && group2 == null) {
-				maxGroups++;
-				vertexesToGroups.put(vertex1, maxGroups);
-				vertexesToGroups.put(vertex2, maxGroups);
-				if (!groupsToVertexes.containsKey(maxGroups)) {
-					groupsToVertexes.put(maxGroups, new HashSet<>());
-				}
-				Set<KruskalVertex<V>> groupToVertexes = groupsToVertexes.get(maxGroups);
-				groupToVertexes.add(vertex1);
-				groupToVertexes.add(vertex2);
-				spanningEdges.add(edge);
-				continue;
-			}
-			if (group2 == null) {
-				Integer group2Prev = vertexesToGroups.put(vertex2, group1);
-				if (group2Prev != null) {
-					groupsToVertexes.get(group2Prev).remove(vertex2);
-				}
-				groupsToVertexes.get(group1).add(vertex2);
-				spanningEdges.add(edge);
-				continue;
-			}
-			if (group1 == null) {
-				Integer group1Prev = vertexesToGroups.put(vertex1, group2);
-				if (group1Prev != null) {
-					groupsToVertexes.get(group1Prev).remove(vertex1);
-				}
-				groupsToVertexes.get(group2).add(vertex1);
-				spanningEdges.add(edge);
-				continue;
-			}
-			if (!group1.equals(group2)) {
-				Set<KruskalVertex<V>> groups2 = groupsToVertexes.get(group2);
-				groups2.forEach(vertex -> {
-					vertexesToGroups.put(vertex, group1);
-				});
-				groupsToVertexes.get(group1).addAll(groups2);
-				groupsToVertexes.remove(group2);
-				spanningEdges.add(edge);
-				continue;
-			}
-		}
-		return spanningEdges;
-	}
+    public List<Edge> msp() {
+        List<Edge> msp = new ArrayList<>();
+
+        ArrayList<Edge> edges = new ArrayList<>(this.edgesMap.values()
+                .stream()
+                .flatMap(e -> e.stream())
+                .sorted(Comparator.comparingInt(o -> o.getW()))
+                .collect(Collectors.toList())
+        );
+
+        for (Edge edge : edges) {
+            int from = edge.getFrom();
+            int to = edge.getTo();
+
+            Integer fromParent = find(from);
+            Integer toParent = find(to);
+
+            if (fromParent != toParent) {
+                msp.add(edge);
+                union(from, to);
+            }
+        }
+        return msp;
+    }
+
 }

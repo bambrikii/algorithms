@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public class KruskalAlgoMatrix {
-
     public KruskalAlgoMatrixResult find(int[][] matrix) {
         Set<Integer> processed = new HashSet<>();
         List<Edge> sorted = new ArrayList<>();
