@@ -2,40 +2,31 @@ package org.bambrikii.examples.graphs.bfs;
 
 import org.bambrikii.examples.graphs.dfs.Node;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * https://www.hackerearth.com/practice/algorithms/graphs/topological-sort/tutorial/
  */
 public class BfsTopologicalSort {
     public List<Node> sort(Node... roots) {
-        LinkedList<Node> q = new LinkedList<>();
-
-        q.addAll(Arrays.asList(roots));
-
         List<Node> result = new ArrayList<>();
 
-        Map<Node, Boolean> visited = new HashMap<>();
-
-        q.clear();
-        q.addAll(Arrays.asList(roots));
-        while (!q.isEmpty()) {
-            Node node = q.poll();
+        Set<Node> visited = new HashSet<>();
+        LinkedList<Node> queue = new LinkedList<>();
+        List<Node> rootNodes = Arrays.asList(roots);
+        queue.addAll(rootNodes);
+        result.addAll(rootNodes);
+        visited.addAll(rootNodes);
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
             for (Node child : node.getChildren()) {
-                if (visited.containsKey(child) && visited.get(child)) {
+                if (visited.contains(child)) {
                     continue;
                 }
-                q.add(child);
+                result.add(child);
+                queue.add(child);
+                visited.add(child);
             }
-            if (!visited.containsKey(node) || !visited.get(node)) {
-                result.add(node);
-            }
-            visited.put(node, true);
         }
         return result;
     }

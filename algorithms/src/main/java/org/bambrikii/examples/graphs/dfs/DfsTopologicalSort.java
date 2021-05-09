@@ -15,6 +15,9 @@ public class DfsTopologicalSort {
         for (Node root : roots) {
             dfs(root, result, visited);
         }
+        for (Node root : roots) {
+            result.addFirst(root);
+        }
 
         return result;
     }
@@ -28,8 +31,8 @@ public class DfsTopologicalSort {
             visited.put(child, TRUE);
 
             dfs(child, result, visited);
+            result.addFirst(child);
         }
-        result.addFirst(node);
     }
 
     public void print(List<Node> result) {
