@@ -26,10 +26,11 @@ public class Factoradix {
     public int toNumber(int factoradic, int radix) {
         int result = 0;
         int len = getLen(factoradic, radix);
+        int pow = (int) Math.pow(radix, len - 1);
         for (int i = len; i >= 1; i--) {
-            double pow = Math.pow(radix, i - 1);
-            int digit = ((int) (factoradic / pow)) % radix;
+            int digit = (factoradic / pow) % radix;
             result = result * i + digit;
+            pow /= radix;
         }
         return result;
     }
