@@ -22,22 +22,23 @@ public class SieveOfEratosthenes {
 
     public List<Integer> findPrimes(int upTo) {
         boolean[] arr = new boolean[upTo + 1];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = true;
-        }
         for (int i = 2; i <= upTo; i++) {
+            if (arr[i]) {
+                continue;
+            }
             for (int j = 2; i * j <= upTo; j++) {
                 int ind = i * j;
-                if (arr[ind]) {
-                    arr[ind] = false;
+                if (!arr[ind]) {
+                    arr[ind] = true;
                 }
             }
         }
         List<Integer> results = new ArrayList<>();
         for (int i = 1; i <= upTo; i++) {
             if (arr[i]) {
-                results.add(i);
+                continue;
             }
+            results.add(i);
         }
         return results;
     }
