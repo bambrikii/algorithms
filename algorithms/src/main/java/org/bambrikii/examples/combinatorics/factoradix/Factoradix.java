@@ -1,36 +1,30 @@
 package org.bambrikii.examples.combinatorics.factoradix;
 
-public class Factoradix {
-    private int getLen(int num, int radix) {
-        int len = 0;
-        while (num > 0) {
-            num /= radix;
-            len++;
-        }
-        return len;
-    }
+import java.util.LinkedList;
 
-    public int toFactoradic(int num, int radix) {
+public class Factoradix {
+    public int toNumber(int[] num) {
         int result = 0;
-        int i = 1;
-        int pow = 1;
-        while (num > 0) {
-            result += (num % i) * pow;
-            pow *= radix;
-            num /= i;
-            i++;
+        int len = num.length;
+        for (int i = 0; i < len; i++) {
+            int digit = num[i];
+            result = result * (len - i) + digit;
         }
         return result;
     }
 
-    public int toNumber(int factoradic, int radix) {
-        int result = 0;
-        int len = getLen(factoradic, radix);
-        int pow = (int) Math.pow(radix, len - 1);
-        for (int i = len; i >= 1; i--) {
-            int digit = (factoradic / pow) % radix;
-            result = result * i + digit;
-            pow /= radix;
+    public int[] toFactoradic(int factoradic) {
+        int n = factoradic;
+        LinkedList<Integer> nums = new LinkedList<>();
+        int i = 1;
+        while (n > 0) {
+            nums.addFirst(n % i);
+            n /= i;
+            i++;
+        }
+        int[] result = new int[nums.size()];
+        for (int j = 0; j < nums.size(); j++) {
+            result[j] = nums.get(j);
         }
         return result;
     }
