@@ -13,25 +13,25 @@ public class Trie {
     }
 
     public void insert(String str) {
-        Trie curr = null;
+        Trie curr = this;
         for (int i = 0; i < str.length(); i++) {
             char ch = str.charAt(i);
-            if (!children.containsKey(ch)) {
-                children.put(ch, new Trie(ch));
+            if (!curr.children.containsKey(ch)) {
+                curr.children.put(ch, new Trie(ch));
             }
-            curr = children.get(ch);
+            curr = curr.children.get(ch);
         }
         curr.word = str;
     }
 
     public boolean find(String str) {
-        Trie curr = null;
+        Trie curr = this;
         for (int i = 0; i < str.length(); i++) {
             char ch = str.charAt(i);
-            if (!children.containsKey(ch)) {
+            if (!curr.children.containsKey(ch)) {
                 return false;
             }
-            curr = children.get(ch);
+            curr = curr.children.get(ch);
         }
         return curr.word != null;
     }
