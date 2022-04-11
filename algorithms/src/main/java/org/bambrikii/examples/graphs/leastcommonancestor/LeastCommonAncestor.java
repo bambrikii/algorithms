@@ -12,7 +12,13 @@ public class LeastCommonAncestor {
 
         Node(int val, Node lt, Node gt) {
             this.val = val;
+            if (lt != null && lt.val > val) {
+                throw new IllegalArgumentException(val + " should be greater than " + lt.val);
+            }
             this.lt = lt;
+            if (gt != null && gt.val < val) {
+                throw new IllegalArgumentException(val + " should be less than " + gt.val);
+            }
             this.gt = gt;
         }
     }
@@ -45,14 +51,14 @@ public class LeastCommonAncestor {
 
     private int find(Node root, int val1, int val2) {
         while (true) {
-            if (root.val > val1 && root.val > val2) {
+            if (root == null) {
+                throw new IllegalArgumentException("Branch is null");
+            } else if (root.val > val1 && root.val > val2) {
                 root = root.lt;
             } else if (root.val < val1 && root.val < val2) {
                 root = root.gt;
-            } else if (root != null) {
-                return root.val;
             } else {
-                throw new IllegalArgumentException("Binary tree is not correct");
+                return root.val;
             }
         }
     }
