@@ -28,14 +28,12 @@ public class KosarajuAlgo {
     }
 
     public static void main(String[] args) {
-        KosarajuAlgo algo = new KosarajuAlgo();
-        algo
+        KosarajuAlgo algo = new KosarajuAlgo()
                 .edge(0, 1).edge(1, 2).edge(2, 0)
                 .edge(2, 3)
                 .edge(3, 4)
                 .edge(4, 5).edge(5, 6).edge(6, 4)
-                .edge(6, 7)
-        ;
+                .edge(6, 7);
 
         List<List<Integer>> com = algo.find(0);
         algo.print(com);

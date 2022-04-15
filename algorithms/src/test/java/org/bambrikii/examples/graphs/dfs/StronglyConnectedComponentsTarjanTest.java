@@ -24,7 +24,10 @@ public class StronglyConnectedComponentsTarjanTest {
 
                 .edge(6, 7);
 
-        Collection<List<StronglyConnectedComponentsTarjanNode>> result = algo.list();
+        Collection<List<StronglyConnectedComponentsTarjanNode>> result = algo
+                .build()
+                .print()
+                .collect();
 
         algo.print(result);
     }
@@ -51,7 +54,10 @@ public class StronglyConnectedComponentsTarjanTest {
 
                 .edge(6, 7);
 
-        Collection<List<StronglyConnectedComponentsTarjanNode>> result = algo.list();
+        Collection<List<StronglyConnectedComponentsTarjanNode>> result = algo
+                .build()
+                .print()
+                .collect();
 
         algo.print(result);
     }

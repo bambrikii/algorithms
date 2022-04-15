@@ -28,19 +28,18 @@ public class StronglyConnectedComponentsTarjan {
         return this;
     }
 
-    public Collection<List<StronglyConnectedComponentsTarjanNode>> list() {
+    public StronglyConnectedComponentsTarjan build() {
         for (Map.Entry<Integer, StronglyConnectedComponentsTarjanNode> entry : nodes.entrySet()) {
             StronglyConnectedComponentsTarjanNode node = entry.getValue();
             if (node.getIndex() == 0) {
                 node.setIndex(++index);
-
             }
             dfs(node);
         }
-        for (StronglyConnectedComponentsTarjanNode node : nodes.values()) {
-            System.out.println(node);
-        }
+        return this;
+    }
 
+    public Collection<List<StronglyConnectedComponentsTarjanNode>> collect() {
         Map<Integer, List<StronglyConnectedComponentsTarjanNode>> components = new HashMap<>();
         for (StronglyConnectedComponentsTarjanNode node : nodes.values()) {
             int index = node.getIndex();
@@ -52,23 +51,28 @@ public class StronglyConnectedComponentsTarjan {
         return components.values();
     }
 
+    public StronglyConnectedComponentsTarjan print() {
+        for (StronglyConnectedComponentsTarjanNode node : nodes.values()) {
+            System.out.println(node);
+        }
+        return this;
+    }
+
     private void dfs(StronglyConnectedComponentsTarjanNode parent) {
         for (StronglyConnectedComponentsTarjanNode child : parent) {
             if (child.getIndex() == 0) {
                 child.setIndex(++this.index);
             }
-            if (child.getIndex() <= parent.getIndex()) {
-                markIndexes(parent, child.getIndex());
-                parent.setIndex(child.getIndex());
-//                System.out.println(" - " + parent + " <- " + child);
-            } else {
+            if (child.getIndex() > parent.getIndex()) {
                 dfs(child);
-                if (child.getIndex() <= parent.getIndex()) {
-                    markIndexes(parent, child.getIndex());
-                    parent.setIndex(child.getIndex());
-//                    System.out.println(" - " + parent + " <- " + child);
+                if (child.getIndex() > parent.getIndex()) {
+                    continue;
                 }
             }
+            int newIndex = child.getIndex();
+            markIndexes(parent, newIndex);
+            parent.setIndex(newIndex);
+//                    System.out.println(" - " + parent + " <- " + child);
         }
     }
 
@@ -77,10 +81,10 @@ public class StronglyConnectedComponentsTarjan {
         if (oldIndex == newIndex) {
             return;
         }
-        for (StronglyConnectedComponentsTarjanNode child2 : parent) {
-            if (child2.getIndex() == oldIndex) {
-                child2.setIndex(newIndex);
-                markIndexes(child2, newIndex);
+        for (StronglyConnectedComponentsTarjanNode child : parent) {
+            if (child.getIndex() == oldIndex) {
+                child.setIndex(newIndex);
+                markIndexes(child, newIndex);
             }
         }
     }
