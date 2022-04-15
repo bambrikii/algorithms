@@ -8,8 +8,6 @@ import java.util.Map;
 
 public class TarjanAlgo {
     private Map<Integer, List<Integer>> v = new LinkedHashMap<>();
-    private Map<Integer, Integer> time = new HashMap<>();
-    private Map<Integer, Integer> min = new HashMap<>();
 
     public TarjanAlgo edge(int from, int to) {
         if (!v.containsKey(from)) {
