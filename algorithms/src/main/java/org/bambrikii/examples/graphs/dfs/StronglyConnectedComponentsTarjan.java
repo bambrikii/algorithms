@@ -33,8 +33,8 @@ public class StronglyConnectedComponentsTarjan {
             StronglyConnectedComponentsTarjanNode node = entry.getValue();
             if (node.getIndex() == 0) {
                 node.setIndex(++index);
+                dfs(node);
             }
-            dfs(node);
         }
         return this;
     }
@@ -63,16 +63,16 @@ public class StronglyConnectedComponentsTarjan {
             if (child.getIndex() == 0) {
                 child.setIndex(++this.index);
             }
-            if (child.getIndex() > parent.getIndex()) {
+            if (parent.getIndex() < child.getIndex()) {
                 dfs(child);
-                if (child.getIndex() > parent.getIndex()) {
+                if (parent.getIndex() < child.getIndex()) {
                     continue;
                 }
             }
             int newIndex = child.getIndex();
             markIndexes(parent, newIndex);
             parent.setIndex(newIndex);
-//                    System.out.println(" - " + parent + " <- " + child);
+            // System.out.println(" - " + parent + " <- " + child);
         }
     }
 
