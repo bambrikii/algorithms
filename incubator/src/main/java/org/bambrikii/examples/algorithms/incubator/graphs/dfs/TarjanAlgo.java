@@ -28,6 +28,7 @@ public class TarjanAlgo {
     public static void main(String[] args) {
         main1();
         main2();
+        main3();
     }
 
     private static void main1() {
@@ -71,6 +72,19 @@ public class TarjanAlgo {
 
                 .print(algo.find(new HashMap<>()));
     }
+
+    private static void main3() {
+        TarjanAlgo algo = new TarjanAlgo();
+        algo
+                .edge(1, 0)
+
+                .edge(1, 2)
+                .edge(2, 3)
+                .edge(3, 1)
+
+                .print(algo.find(new HashMap<>()));
+    }
+
 
     private int counter = 0;
 
