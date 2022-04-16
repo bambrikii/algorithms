@@ -73,6 +73,16 @@ public class PrimsAlgo {
         }
     }
 
+    /**
+     * Visit all unvisited yet <b>vertexes</b>,
+     * add them to <b>visited</b> list,
+     * and try to advance via min weight <b>edges</b> to unvisited vertexes
+     * add unvisited vertexes to <b>visited</b> list
+     * <p>
+     * https://www.youtube.com/watch?v=cplfcGZmX7I
+     *
+     * @return
+     */
     public List<Edge> build() {
         List<Edge> result = new ArrayList<>();
         Set<Integer> visited = new HashSet<>();
