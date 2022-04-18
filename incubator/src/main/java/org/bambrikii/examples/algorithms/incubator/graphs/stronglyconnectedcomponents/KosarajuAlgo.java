@@ -1,4 +1,4 @@
-package org.bambrikii.examples.algorithms.incubator.graphs.dfs;
+package org.bambrikii.examples.algorithms.incubator.graphs.stronglyconnectedcomponents;
 
 import java.util.ArrayList;
 import java.util.HashMap;
