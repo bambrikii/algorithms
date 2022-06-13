@@ -107,6 +107,10 @@ public class HungarianAlgo {
 //            balanceColumns();
             logPrint();
 
+            if (allAssigned()) {
+                break;
+            }
+
             lowerMin();
             logPrint();
 
