@@ -31,7 +31,13 @@ public class HungarianAlgo {
 
     public static void main(String[] args) {
         HungarianAlgo algo = new HungarianAlgo();
-        algo.let(1, 1, 108).let(2, 1, 150).let(3, 1, 122).let(1, 2, 125).let(2, 2, 135).let(3, 2, 148).let(1, 3, 150).let(2, 3, 175).let(3, 3, 250).print().calc().print();
+        algo
+                .let(1, 1, 108).let(2, 1, 150).let(3, 1, 122)
+                .let(1, 2, 125).let(2, 2, 135).let(3, 2, 148)
+                .let(1, 3, 150).let(2, 3, 175).let(3, 3, 250)
+                .print()
+                .calc()
+                .print();
     }
 
     private final Map<Integer, Map<Integer, Integer>> curr = new HashMap<>();
