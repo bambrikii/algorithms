@@ -28,7 +28,45 @@ public class ConvexHullAlgoTest {
                 )
         );
         // TODO: more test cases
-        // with negative values
+        params.add(
+                params(
+                        asList(
+                                new Coord(3, 3),
+                                new Coord(3, 4),
+                                new Coord(4, 4),
+                                new Coord(4, 5),
+                                new Coord(3, 5),
+                                new Coord(2, 4),
+                                new Coord(1, 3),
+                                new Coord(1, 4)
+                        ),
+                        asList(
+                                new Coord(1, 3),
+                                new Coord(3, 3),
+                                new Coord(4, 4),
+                                new Coord(4, 5),
+                                new Coord(3, 5),
+                                new Coord(1, 4)
+                        )
+                )
+        );
+        params.add(
+                params(
+                        asList(
+                                new Coord(2, 1),
+                                new Coord(2, 2),
+                                new Coord(3, 2),
+                                new Coord(2, 4),
+                                new Coord(1, 2)
+                        ),
+                        asList(
+                                new Coord(2, 1),
+                                new Coord(3, 2),
+                                new Coord(2, 4),
+                                new Coord(1, 2)
+                        )
+                )
+        );
         return params;
     }
 

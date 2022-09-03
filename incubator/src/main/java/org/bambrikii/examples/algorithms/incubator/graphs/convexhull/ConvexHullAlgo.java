@@ -10,6 +10,10 @@ public class ConvexHullAlgo {
 
     private final List<Coord> coords;
 
+    private void log(Object msg) {
+        System.out.println("log: " + msg);
+    }
+
     public ConvexHullAlgo() {
         this.coords = new ArrayList<>();
     }
@@ -36,19 +40,26 @@ public class ConvexHullAlgo {
         int dy = y2 - y1;
 
         double d = Math.sqrt(dx * dx + dy * dy);
-        double sin = dy / d;
 
-        if (dx >= 0) {
+        if (dx > 0) {
             if (dy >= 0) {
-                return Math.abs(sin);
+                return Math.abs(dy / d);
             } else {
-                return Math.abs(sin) + 3;
+                return 1 - Math.abs(dy / d) + 3;
+            }
+        } else if (dx < 0) {
+            if (dy > 0) {
+                return 1 - Math.abs(dy / d) + 1;
+            } else {
+                return Math.abs(dy / d) + 2;
             }
         } else {
             if (dy > 0) {
-                return Math.abs(sin) + 1;
+                return 1;
+            } else if (dy < 0) {
+                return 3;
             } else {
-                return Math.abs(sin) + 2;
+                return 0;
             }
         }
     }
@@ -58,37 +69,46 @@ public class ConvexHullAlgo {
         if (coords.isEmpty()) {
             return Collections.emptyList();
         }
-        var curr = coords
+        var lastPoint = coords
                 .stream()
                 .sorted(Comparator.comparingInt(Coord::y).thenComparingInt(Coord::x))
                 .findFirst()
                 .get();
 
+        log("lastPoint: " + lastPoint);
+
         List<Coord> results = new ArrayList<>();
-        points.remove(curr);
-        results.add(curr);
+        results.add(lastPoint);
+        points.remove(lastPoint);
+        double minAngle = 0.0;
         while (!points.isEmpty()) {
-            curr = findMin(points, curr);
-            if (curr == null) {
+            double nextAngle = Double.MAX_VALUE;
+            Coord nextPoint = null;
+            for (Coord point : points) {
+                var angle = calcAngle(lastPoint, point);
+                if (angle < nextAngle && angle >= minAngle) {
+                    nextPoint = point;
+                    nextAngle = angle;
+                } else {
+                    log("skipping " + point + " <- " + lastPoint/* + ", " + angle + ">" + minAngle*/);
+                }
+            }
+            log("nextPoint: " + nextPoint);
+            log("nextAngle: " + nextAngle);
+            if (nextPoint == null) {
                 break;
             }
-            points.remove(curr);
-            results.add(curr);
+            if (nextAngle >= minAngle) {
+                minAngle = nextAngle;
+                results.add(nextPoint);
+            } else {
+                log("skipping " + nextPoint + " <- " + lastPoint);
+            }
+            points.remove(nextPoint);
+            lastPoint = nextPoint;
         }
 
         return results;
     }
 
-    private Coord findMin(HashSet<Coord> points, Coord curr) {
-        double minAngle = Double.MAX_VALUE;
-        Coord next = null;
-        for (Coord coord : points) {
-            var angle = calcAngle(curr, coord);
-            if (angle < minAngle) {
-                next = coord;
-                minAngle = angle;
-            }
-        }
-        return next;
-    }
 }
