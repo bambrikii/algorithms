@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 /**
  * https://www.youtube.com/watch?v=95_E2EBPEHo&ab_channel=MichaelChristensen
  * <p>
- * 1. Using BFS find shortest path from Source to Target based on available Capacity minus consumed Flow,
+ * 1. Using BFS find the shortest path from Source to Target based on available Capacity minus consumed Flow,
  * 2. Find and set flow based on Min capacity of the Path found,
  * 3. Repeat 1 until all path are found.
  */

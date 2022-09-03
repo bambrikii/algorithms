@@ -29,6 +29,7 @@ public class TarjanAlgo {
         main1();
         main2();
         main3();
+        main4();
     }
 
     private static void main1() {
@@ -81,6 +82,16 @@ public class TarjanAlgo {
                 .edge(1, 2)
                 .edge(2, 3)
                 .edge(3, 1)
+
+                .print(algo.find(new HashMap<>()));
+    }
+
+    private static void main4() {
+        TarjanAlgo algo = new TarjanAlgo();
+        algo
+                .edge(1, 2)
+
+                .edge(2, 1)
 
                 .print(algo.find(new HashMap<>()));
     }
