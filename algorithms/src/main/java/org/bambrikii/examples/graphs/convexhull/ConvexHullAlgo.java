@@ -1,4 +1,4 @@
-package org.bambrikii.examples.algorithms.incubator.graphs.convexhull;
+package org.bambrikii.examples.graphs.convexhull;
 
 import java.util.ArrayList;
 import java.util.Collections;

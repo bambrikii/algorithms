@@ -1,7 +1,5 @@
-package org.bambrikii.examples.algorithms.incubator.graphs.dfs;
+package org.bambrikii.examples.graphs.convexhull;
 
-import org.bambrikii.examples.algorithms.incubator.graphs.convexhull.ConvexHullAlgo;
-import org.bambrikii.examples.algorithms.incubator.graphs.convexhull.Coord;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
