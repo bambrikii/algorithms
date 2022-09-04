@@ -101,7 +101,7 @@ public class ConvexHullAlgo {
             for (Coord to : points) {
                 var angle = calcAngle(from, to);
                 var len = calcDistance(from, to);
-                if (angle >= minAllowedNextAngle && (angle < nextAngle || angle == nextAngle && len <= nextLen)) {
+                if (angle >= minAllowedNextAngle && (angle < nextAngle || (angle == nextAngle && len <= nextLen))) {
                     nextPoint = to;
                     nextLen = len;
                     nextAngle = angle;
