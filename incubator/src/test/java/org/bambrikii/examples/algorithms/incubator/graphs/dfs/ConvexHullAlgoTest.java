@@ -91,6 +91,22 @@ public class ConvexHullAlgoTest {
                         )
                 )
         );
+        params.add(
+                params(
+                        asList(
+                                new Coord(-1, -1),
+                                new Coord(1, 1),
+                                new Coord(-2, 2),
+                                new Coord(-3, 1)
+                        ),
+                        asList(
+                                new Coord(-1, -1),
+                                new Coord(1, 1),
+                                new Coord(-2, 2),
+                                new Coord(-3, 1)
+                        )
+                )
+        );
         return params;
     }
 

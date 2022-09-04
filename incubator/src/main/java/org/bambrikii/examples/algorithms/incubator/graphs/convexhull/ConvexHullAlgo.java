@@ -93,26 +93,20 @@ public class ConvexHullAlgo {
         List<Coord> results = new ArrayList<>();
         results.add(from);
         points.remove(from);
-        double minAngle = 0.0;
+        double minAllowedNextAngle = 0.0;
         while (!points.isEmpty()) {
-            double nextAngle = Double.MAX_VALUE;
-            double nextLen = Double.MAX_VALUE;
+            double nextAngle = Double.MAX_VALUE; // Angle related to x vector is increasing
+            double nextLen = Double.MAX_VALUE; // if multiple points have the same angle, we choose the closest one.
             Coord nextPoint = null;
             for (Coord to : points) {
                 var angle = calcAngle(from, to);
                 var len = calcDistance(from, to);
-                if (angle >= minAngle) {
-                    if (angle < nextAngle) {
-                        nextPoint = to;
-                        nextLen = len;
-                        nextAngle = angle;
-                    } else if (angle == nextAngle && len <= nextLen) {
-                        nextPoint = to;
-                        nextLen = len;
-                        nextAngle = angle;
-                    }
+                if (angle >= minAllowedNextAngle && (angle < nextAngle || angle == nextAngle && len <= nextLen)) {
+                    nextPoint = to;
+                    nextLen = len;
+                    nextAngle = angle;
                 } else {
-                    log("skipping " + to + " <- " + from + ", " + angle + ">" + minAngle + "," + nextLen);
+                    log("skipping " + to + " <- " + from + ", " + angle + ">" + minAllowedNextAngle + "," + nextLen);
                 }
             }
             log("nextPoint: " + nextPoint);
@@ -120,8 +114,8 @@ public class ConvexHullAlgo {
             if (nextPoint == null) {
                 break;
             }
-            if (nextAngle >= minAngle) {
-                minAngle = nextAngle;
+            if (nextAngle >= minAllowedNextAngle) {
+                minAllowedNextAngle = nextAngle;
                 results.add(nextPoint);
             } else {
                 log("skipping " + nextPoint + " <- " + from);
