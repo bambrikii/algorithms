@@ -67,6 +67,30 @@ public class ConvexHullAlgoTest {
                         )
                 )
         );
+        params.add(
+                params(
+                        asList(
+                                new Coord(2, 1),
+                                new Coord(3, 1),
+                                new Coord(4, 1),
+                                new Coord(5, 2),
+                                new Coord(4, 3),
+                                new Coord(3, 3),
+                                new Coord(2, 3),
+                                new Coord(1, 2)
+                        ),
+                        asList(
+                                new Coord(2, 1),
+                                new Coord(3, 1),
+                                new Coord(4, 1),
+                                new Coord(5, 2),
+                                new Coord(4, 3),
+                                new Coord(3, 3),
+                                new Coord(2, 3),
+                                new Coord(1, 2)
+                        )
+                )
+        );
         return params;
     }
 

@@ -64,33 +64,55 @@ public class ConvexHullAlgo {
         }
     }
 
+    private double calcDistance(Coord from, Coord to) {
+        int x1 = from.x();
+        int y1 = from.y();
+
+        int x2 = to.x();
+        int y2 = to.y();
+
+        int dx = x2 - x1;
+        int dy = y2 - y1;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     public List<Coord> find() {
         var points = new HashSet<>(coords);
         if (coords.isEmpty()) {
             return Collections.emptyList();
         }
-        var lastPoint = coords
+        var from = coords
                 .stream()
                 .sorted(Comparator.comparingInt(Coord::y).thenComparingInt(Coord::x))
                 .findFirst()
                 .get();
 
-        log("lastPoint: " + lastPoint);
+        log("lastPoint: " + from);
 
         List<Coord> results = new ArrayList<>();
-        results.add(lastPoint);
-        points.remove(lastPoint);
+        results.add(from);
+        points.remove(from);
         double minAngle = 0.0;
         while (!points.isEmpty()) {
             double nextAngle = Double.MAX_VALUE;
+            double nextLen = Double.MAX_VALUE;
             Coord nextPoint = null;
-            for (Coord point : points) {
-                var angle = calcAngle(lastPoint, point);
-                if (angle < nextAngle && angle >= minAngle) {
-                    nextPoint = point;
-                    nextAngle = angle;
+            for (Coord to : points) {
+                var angle = calcAngle(from, to);
+                var len = calcDistance(from, to);
+                if (angle >= minAngle) {
+                    if (angle < nextAngle) {
+                        nextPoint = to;
+                        nextLen = len;
+                        nextAngle = angle;
+                    } else if (angle == nextAngle && len <= nextLen) {
+                        nextPoint = to;
+                        nextLen = len;
+                        nextAngle = angle;
+                    }
                 } else {
-                    log("skipping " + point + " <- " + lastPoint/* + ", " + angle + ">" + minAngle*/);
+                    log("skipping " + to + " <- " + from + ", " + angle + ">" + minAngle + "," + nextLen);
                 }
             }
             log("nextPoint: " + nextPoint);
@@ -102,13 +124,12 @@ public class ConvexHullAlgo {
                 minAngle = nextAngle;
                 results.add(nextPoint);
             } else {
-                log("skipping " + nextPoint + " <- " + lastPoint);
+                log("skipping " + nextPoint + " <- " + from);
             }
             points.remove(nextPoint);
-            lastPoint = nextPoint;
+            from = nextPoint;
         }
 
         return results;
     }
-
 }
