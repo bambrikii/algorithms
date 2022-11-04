@@ -1,6 +1,6 @@
 package org.bambrikii.examples.algorithms.incubator.strings;
 
-public class BracketsMatch {
+public class BracketsMatchRecursion {
     private boolean log = false;
 
     private void log(String msg) {
@@ -11,7 +11,7 @@ public class BracketsMatch {
     }
 
     public static void main(String[] args) {
-        BracketsMatch match = new BracketsMatch();
+        BracketsMatchRecursion match = new BracketsMatchRecursion();
         System.out.println(match.isValid("([]){}") + " == " + true);
         System.out.println(match.isValid("([]){}}") + " == " + false);
         System.out.println(match.isValid("([])[}") + " == " + false);
