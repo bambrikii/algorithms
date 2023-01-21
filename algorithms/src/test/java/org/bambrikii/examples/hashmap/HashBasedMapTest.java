@@ -19,9 +19,9 @@ public class HashBasedMapTest {
         assertThat(map.size()).isEqualTo(100);
 
         System.out.println("Searching...");
-        assertThat(map.find(1)).extracting("val").contains("val=1");
-        assertThat(map.find(50)).extracting("val").contains("val=50");
-        assertThat(map.find(99)).extracting("val").contains("val=99");
+        assertThat(map.find(1)).extracting("val").isEqualTo("val=1");
+        assertThat(map.find(50)).extracting("val").isEqualTo("val=50");
+        assertThat(map.find(99)).extracting("val").isEqualTo("val=99");
 
         System.out.println("Removing...");
         for (int i = 0; i < 100; i++) {
