@@ -2,6 +2,11 @@ package org.bambrikii.examples.combinatorics.factoradix;
 
 import java.util.LinkedList;
 
+/**
+ * Lehmer codes
+ * <p>
+ * https://2ality.com/2013/03/permutations.html
+ */
 public class Factoradix {
     public int toNumber(int[] num) {
         int result = 0;
