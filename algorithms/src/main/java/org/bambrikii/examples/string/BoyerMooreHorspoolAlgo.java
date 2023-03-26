@@ -21,15 +21,15 @@ import java.util.Map;
 public class BoyerMooreHorspoolAlgo {
     public static void main(String[] args) {
         var algo = new BoyerMooreHorspoolAlgo();
-        System.out.println(algo.find("eovadabcdftoy", "abcd")); // 5
-        System.out.println(algo.find("longtextline", "text")); // 4
-        System.out.println(algo.find("1text", "text")); // 1
-        System.out.println(algo.find("text1", "text")); // 0
-        System.out.println(algo.find("text", "k")); // -1
-        System.out.println(algo.find("text1", "find")); // -1
+        System.out.println(algo.pos("eovadabcdftoy", "abcd")); // 5
+        System.out.println(algo.pos("longtextline", "text")); // 4
+        System.out.println(algo.pos("1text", "text")); // 1
+        System.out.println(algo.pos("text1", "text")); // 0
+        System.out.println(algo.pos("text", "k")); // -1
+        System.out.println(algo.pos("text1", "find")); // -1
     }
 
-    public int find(String text, String match) {
+    public int pos(String text, String match) {
         var matchLen = match.length();
         Map<Character, Integer> shifts = new HashMap<>();
         for (var i = 0; i < matchLen; i++) {

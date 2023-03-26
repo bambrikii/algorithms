@@ -18,7 +18,7 @@ public class StringMatchAlgoTest {
                 Arguments.of("abc", "abc", 0),
                 Arguments.of("abc", "abd", -1),
                 Arguments.of("ababdabe", "abd", 2), // Skip to the next in Knuth-Morris-Pratt algo
-                //
+//                //
                 Arguments.of("eovadabcdftoy", "abcd", 5),
                 Arguments.of("longtextline", "text", 4),
                 Arguments.of("1text", "text", 1),
@@ -43,6 +43,6 @@ public class StringMatchAlgoTest {
     @ParameterizedTest
     @MethodSource("params")
     public void shouldBoyerMooreHorspool(String text, String match, int pos) {
-        assertEquals(pos, new BoyerMooreHorspoolAlgo().find(text, match));
+        assertEquals(pos, new BoyerMooreHorspoolAlgo().pos(text, match));
     }
 }
