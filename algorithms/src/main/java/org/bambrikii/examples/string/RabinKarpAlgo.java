@@ -24,7 +24,7 @@ public class RabinKarpAlgo {
             return 0;
         }
         int powFirst = (int) Math.pow(prime, matchLen - 1);
-        for (int i = 1; i < textLen - matchLen; i++) {
+        for (int i = 1; i <= textLen - matchLen; i++) {
             textHash = textHash - text.charAt(i - 1) * powFirst;
             textHash = textHash * prime + text.charAt(i + matchLen - 1);
             if (matchHash == textHash) {

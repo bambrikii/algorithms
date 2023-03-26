@@ -29,11 +29,11 @@ public class BoyerMooreHorspoolAlgo {
         System.out.println(algo.find("text1", "find")); // -1
     }
 
-    public int find(String text, String find) {
-        var findLen = find.length();
+    public int find(String text, String match) {
+        var matchLen = match.length();
         Map<Character, Integer> shifts = new HashMap<>();
-        for (var i = 0; i < findLen; i++) {
-            var ch = find.charAt(i);
+        for (var i = 0; i < matchLen; i++) {
+            var ch = match.charAt(i);
             if (!shifts.containsKey(ch)) {
                 shifts.put(ch, i);
             }
@@ -43,13 +43,13 @@ public class BoyerMooreHorspoolAlgo {
         var pos = 0;
         w:
         while (pos < len) {
-            for (int i = findLen - 1; i >= 0; i--) {
+            for (int i = matchLen - 1; i >= 0; i--) {
                 var posPlus = pos + i;
                 if (posPlus >= text.length()) {
                     break w;
                 }
                 var textChar = text.charAt(posPlus);
-                char findChar = find.charAt(i);
+                char findChar = match.charAt(i);
                 if (textChar == findChar) {
                     continue;
                 }
