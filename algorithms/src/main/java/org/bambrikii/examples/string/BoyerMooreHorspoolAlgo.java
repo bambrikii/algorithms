@@ -7,48 +7,58 @@ import java.util.Map;
  * Substring search
  * <p>
  * https://www.encora.com/insights/the-boyer-moore-horspool-algorithm
+ * <p>
+ * 1. find min indexes per character in search string
+ * 2. in text to go over starting from position 0:
+ * 3. for search string starting from last to first position
+ * 4. if search string character position is over text position, break with not found
+ * 5. if current text character matches search string character, continue
+ * 6. if for current text character min index found in search string,
+ * 6.1. increment text position to current search position minus min index found
+ * 7. if the loop 3 is complete, return text current position
+ * 8. break with not found
  */
 public class BoyerMooreHorspoolAlgo {
     public static void main(String[] args) {
-        System.out.println(new BoyerMooreHorspoolAlgo().find("eovadabcdftoy", "abcd"));
-        System.out.println(new BoyerMooreHorspoolAlgo().find("longtextline", "text"));
+        var algo = new BoyerMooreHorspoolAlgo();
+        System.out.println(algo.find("eovadabcdftoy", "abcd")); // 5
+        System.out.println(algo.find("longtextline", "text")); // 4
+        System.out.println(algo.find("1text", "text")); // 1
+        System.out.println(algo.find("text1", "text")); // 0
+        System.out.println(algo.find("text", "k")); // -1
+        System.out.println(algo.find("text1", "find")); // -1
     }
 
-    public int find(String text, String str) {
-        int strLen = str.length();
+    public int find(String text, String find) {
+        var findLen = find.length();
         Map<Character, Integer> shifts = new HashMap<>();
-        for (int i = 0; i < strLen; i++) {
-            char ch = str.charAt(i);
-            Integer found = shifts.get(ch);
-            int sh = i == strLen - 1 ? strLen : strLen - i - 1;
-            if (found != null && sh < found) {
-                shifts.put(ch, sh);
+        for (var i = 0; i < findLen; i++) {
+            var ch = find.charAt(i);
+            if (!shifts.containsKey(ch)) {
+                shifts.put(ch, i);
             }
         }
 
-        int len = text.length();
-        int pos = 0;
+        var len = text.length();
+        var pos = 0;
         w:
         while (pos < len) {
-            for (int i = strLen - 1; i >= 0; i--) {
-                int posPlus = pos + i;
+            for (int i = findLen - 1; i >= 0; i--) {
+                var posPlus = pos + i;
                 if (posPlus >= text.length()) {
-                    break;
+                    break w;
                 }
-                char textChar = text.charAt(posPlus);
-                if (i >= str.length()) {
-                    break;
-                }
-                char strChar = str.charAt(i);
-                if (textChar == strChar) {
+                var textChar = text.charAt(posPlus);
+                char findChar = find.charAt(i);
+                if (textChar == findChar) {
                     continue;
                 }
-                Integer shift = shifts.get(textChar);
+                var shift = shifts.get(textChar);
                 if (shift != null) {
-                    pos += shift - 1;
+                    pos += i - shift;
                     continue w;
                 }
-                pos += strLen;
+                pos += findLen;
                 continue w;
             }
             return pos;
