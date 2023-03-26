@@ -54,11 +54,7 @@ public class BoyerMooreHorspoolAlgo {
                     continue;
                 }
                 var shift = shifts.get(textChar);
-                if (shift != null) {
-                    pos += i - shift;
-                    continue w;
-                }
-                pos += findLen;
+                pos += i + (shift == null ? 1 : -shift);
                 continue w;
             }
             return pos;
