@@ -5,17 +5,17 @@ import org.bambrikii.examples.sorting.Sortable;
 
 public class InsertionSort implements Sortable {
 
-	public int[] sort(int[] array) {
-		for (int j = 1; j < array.length; j++) {
-			int key = array[j];
-			int i = j - 1;
-			while (i > -1 && key < array[i]) {
-				array[i + 1] = array[i];
-				i--;
-				ArrayAsStringFactory.log(array);
-			}
-			array[i + 1] = key;
-		}
-		return array;
-	}
+    public int[] sort(int[] arr) {
+        for (int pos = 1; pos < arr.length; pos++) {
+            int min = arr[pos];
+            int prev = pos - 1;
+            while (prev > -1 && min < arr[prev]) {
+                arr[prev + 1] = arr[prev];
+                prev--;
+                ArrayAsStringFactory.log(arr);
+            }
+            arr[prev + 1] = min;
+        }
+        return arr;
+    }
 }
